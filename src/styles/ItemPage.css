@@ -1,0 +1,40 @@
+
+.page-body{
+	padding: 5px;
+}
+
+.card{
+  transition: ease-in-out opacity .8s;
+}
+
+.card:hover{
+	border-top: 4px solid #20c997;
+}
+
+.card:hover .icon-close{
+	opacity: 1;
+}
+
+.card:hover .icon-repair{
+	opacity: 1;
+}
+
+.icon-close, .icon-repair{
+	position: absolute;
+	opacity: 0;
+	font-size: 20px;
+	cursor: pointer;
+  transition: ease-in-out opacity .5s;
+}
+
+.icon-close{
+  right: 2%;
+  top: 2%;
+  background-color: green;
+  border-radius: 100%;
+}
+
+.icon-repair{
+  right: 2%;
+  bottom: 5px;
+}
