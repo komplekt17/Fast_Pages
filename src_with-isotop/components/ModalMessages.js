@@ -63,7 +63,7 @@ const EditPageModal = (props) => {
 
   const { 
     nameModal, 
-    categories, 
+    cathegories, 
     pageDetails, 
     handlerInputsValue,
     updateEditPage,
@@ -107,15 +107,15 @@ const EditPageModal = (props) => {
 
   //id: 0, name: 'N-0', link: link, type: 'banking', user: 'komp', screen: img
 
-	let categoriesList;
+	let cathegoriesList;
   
-	if(categories.length !== 0){
-    categoriesList = categories.map((item, index)=>{
+	if(cathegories.length !== 0){
+    cathegoriesList = cathegories.map((item, index)=>{
       	return(
 	        <option
 	        	key={index}
-	        	className={item.catClass}
-	        	value={item.catClass}>{item.catName}</option>
+	        	className={item.cathClass}
+	        	value={item.cathClass}>{item.cathName}</option>
       	)
     });
 	}
@@ -176,7 +176,7 @@ const EditPageModal = (props) => {
                   value={pageDetails.type} 
   					    	id="type" 
   					    	className="form-control">
-					         {categoriesList}
+					         {cathegoriesList}
 				      	</select>
 						    <label htmlFor="type">Select Cathegorie</label>
 						  </div>

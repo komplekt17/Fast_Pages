@@ -17,7 +17,9 @@
   "devDependencies": {
     "bootstrap": "^4.3.1",
     "bootswatch": "^4.3.1",
+    "isotope-layout": "^3.0.6",
     "jquery": "^3.4.1",
+    "jquery-bridget": "^2.0.1",
     "popper.js": "^1.15.0",
     "react-flickity-component": "^3.3.1",
     "typescript": "3.3.3"

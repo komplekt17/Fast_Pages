@@ -20,7 +20,7 @@ const ItemPage = (props) => {
 	if(pages && pages.length !== 0){
 		listItems = pages.map((item, index)=>{
 			return (
-				<div className={"shadow-lg px-1 mb-4 col-6 col-sm-6 col-md-4 col-lg-2 "+item.type}
+				<div className={"grid-item shadow-lg px-1 mb-4 col-6 col-sm-6 col-md-4 col-lg-2 "+item.type}
 				key={index} data-category={item.type}>
 	      	<div className="card">
 	      		<div className="page-categorie px-2">{item.type}</div>
@@ -78,7 +78,7 @@ const ItemPage = (props) => {
 
 	return(
 			<div className="container">
-				<div className="row">
+				<div className="grid">
 					{listItems}
 					</div>
 					{/*

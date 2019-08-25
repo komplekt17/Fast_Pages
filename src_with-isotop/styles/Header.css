@@ -1,0 +1,24 @@
+.navbar{
+	height: 45px;
+}
+
+#formHeader .col{
+  height: 20px;
+  padding: 0 2px;
+}
+
+#formHeader .form-control-sm{
+  height: calc(1.5em + 0.5rem + -5px);
+  padding: 0.25rem 0.5rem;
+  width: 150px;
+}
+
+#formHeader .btn-sm{
+  height: 24px;
+  padding: 0 5px;
+}
+
+.nav-item span{
+	cursor: pointer;
+}
+

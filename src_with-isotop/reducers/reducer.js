@@ -6,7 +6,6 @@ const initialState = {
 	nameModal: '', // названия header/button ModalMassages
 	pageDetails: {},
 	searchQwery: '', // поисковый запрос
-	filter: 'all',
 	search: [
 		{service: 'google'}, 
 		{service: 'yandex'}, 
@@ -19,17 +18,16 @@ const initialState = {
 		pass: '',
 		newPass: ''
 	}, 
-	categories: [  
-		//{catName: 'Show All', catClass: 'all', user: 'komp'},
-		{catName: 'Banking', catClass: 'banking', user: 'komp'}, 
-		{catName: 'Torrents', catClass: 'torrents', user: 'komp'}, 
-		{catName: 'AudioBooks', catClass: 'audiobooks', user: 'komp'}, 
-		{catName: 'WebWallets', catClass: 'webwallets', user: 'komp'},
-		{catName: 'Freelance', catClass: 'freelance', user: 'komp'},
-		{catName: 'Services', catClass: 'services', user: 'komp'},
-		{catName: 'Programming', catClass: 'programming', user: 'komp'},
-		{catName: 'Trading', catClass: 'trading', user: 'komp'},
-		{catName: 'SocialNets', catClass: 'socialnets', user: 'komp'}
+	cathegories: [ 
+		{cathName: 'Banking', cathClass: 'banking', user: 'komp'}, 
+		{cathName: 'Torrents', cathClass: 'torrents', user: 'komp'}, 
+		{cathName: 'AudioBooks', cathClass: 'audiobooks', user: 'komp'}, 
+		{cathName: 'WebWallets', cathClass: 'webwallets', user: 'komp'},
+		{cathName: 'Freelance', cathClass: 'freelance', user: 'komp'},
+		{cathName: 'Services', cathClass: 'services', user: 'komp'},
+		{cathName: 'Programming', cathClass: 'programming', user: 'komp'},
+		{cathName: 'Trading', cathClass: 'trading', user: 'komp'},
+		{cathName: 'SocialNets', cathClass: 'socialnets', user: 'komp'}
 	],
 	pages: [
 		{id: 0, name: 'N-0', link: link, type: 'banking', user: 'komp', screen: img},
@@ -95,7 +93,6 @@ const addingPage = (state, obj) => {
 	return arr;
 }
 
-// удаление из pages page с id === idx
 const deletingPage = (state, idx) => {
 	const arr = state.pages.slice();
 	//ищем заметку с id === idx
@@ -105,6 +102,7 @@ const deletingPage = (state, idx) => {
 	return arr;
 }
 
+// удаление из pages page с id === idx
 const Reducer = (state = initialState, action) => {
 	switch (action.type){
 
@@ -128,12 +126,6 @@ const Reducer = (state = initialState, action) => {
 				};
 			};
 
-		case 'HANDLER_FILTER_ACTION':
-			return { 
-				...state,
-				filter: action.categorie
-			};
-
 		case 'STATUS_LOGIN_ACTION':
 			return { 
 				...state,
@@ -154,16 +146,17 @@ const Reducer = (state = initialState, action) => {
 			};
 
 		case 'ADD_NEW_PAGE_ACTION':
+		//console.log(action.obj)
 			return { 
 				...state,
 				pages: addingPage(state, action.obj)
 			};
 
 		case 'DELETE_PAGE_ACTION':
-			return {
-				...state,
-				pages: deletingPage(state, action.idx)
-			}
+		return {
+			...state,
+			pages: deletingPage(state, action.idx)
+		}
 
 		default:
 			return state

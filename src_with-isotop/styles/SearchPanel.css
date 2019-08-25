@@ -1,0 +1,26 @@
+
+#selectSearch {
+	padding: 0 7px 0 0;
+  width: 100px;
+  display: inline-block;
+  outline: none; }
+.yahoo {
+  background-image: url("img/yahoo.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+   }
+.google {
+  background-image: url("img/google.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.yandex {
+  background-image: url("img/yandex.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.mailru {
+  background-image: url("img/mailru.jpg");
+  background-repeat: no-repeat;
+  background-size: contain;
+}

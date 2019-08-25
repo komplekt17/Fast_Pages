@@ -1,5 +1,8 @@
 import React from 'react';
 import $ from "jquery";
+import jQueryBridget from 'jquery-bridget';
+import Isotope from "isotope-layout";
+
 import "bootswatch/dist/superhero/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
 import {
@@ -8,7 +11,6 @@ import {
 import { connect } from "react-redux";
 import {
   handlerInputsValueAction,
-  handlerFilterAction,
   getNameModalAction,
   statusLogInAction,
   getEditablePageAction,
@@ -30,16 +32,111 @@ import "../styles/App.css";
 
 class App extends React.Component {
 
+	// componentDidUpdate = () => {
+
+	// 	jQueryBridget( 'isotope', Isotope, $ );
+
+	// 	// init Isotope
+	// 	var $grid = $('.grid').isotope({
+	// 	  itemSelector: '.grid-item',
+	// 	  getSortData: {
+	// 	    name: '.name',
+	// 	    symbol: '.symbol',
+	// 	    number: '.number parseInt',
+	// 	    category: '[data-category]'
+	// 	  }
+	// 	});
+
+	// 	// filter functions
+	// 	var filterFns = {
+	// 	  // show if number is greater than 50
+	// 	  numberGreaterThan50: function() {
+	// 	    var number = $(this).find('.number').text();
+	// 	    return parseInt( number, 10 ) > 50;
+	// 	  },
+	// 	  // show if name ends with -ium
+	// 	  ium: function() {
+	// 	    var name = $(this).find('.name').text();
+	// 	    return name.match( /ium$/ );
+	// 	  }
+	// 	};
+
+	// 	// bind filter span click
+	// 	$('#filters').on( 'click', 'span', function() {
+	// 	  var filterValue = $( this ).attr('data-filter');
+	// 	  // use filterFn if matches value
+	// 	  filterValue = filterFns[ filterValue ] || filterValue;
+	// 	  $grid.isotope({ filter: filterValue });
+	// 	});
+
+	// 	// bind sort button click
+	// 	$('#sorts').on( 'click', 'button', function() {
+	// 	  var sortByValue = $(this).attr('data-sort-by');
+	// 	  $grid.isotope({ sortBy: sortByValue });
+	// 	});
+
+	// 	// change is-checked class on buttons
+	// 	$('.site-header').each( function( i, buttonGroup ) {
+	// 	  var $buttonGroup = $( buttonGroup );
+	// 	  $buttonGroup.on( 'click', '.carousel-cell', function() {
+	// 	    $buttonGroup.find('.is-checked').removeClass('is-checked');
+	// 	    $( this ).addClass('is-checked');
+	// 	  });
+	// 	});
+	// };
+
 	componentDidMount = () => {
 
-    // change is-checked class on NavigationPanel
-    $('.site-header').each( function( i, navGroup ) {
-      var $navGroup = $( navGroup );
-      $navGroup.on( 'click', '.carousel-cell', function() {
-        $navGroup.find('.is-checked').removeClass('is-checked');
-        $( this ).addClass('is-checked');
-      });
-    });
+		jQueryBridget( 'isotope', Isotope, $ );
+
+		// init Isotope
+		var $grid = $('.grid').isotope({
+		  itemSelector: '.grid-item',
+		  getSortData: {
+		    name: '.name',
+		    symbol: '.symbol',
+		    number: '.number parseInt',
+		    category: '[data-category]'
+		  }
+		});
+
+		// filter functions
+		var filterFns = {
+		  // show if number is greater than 50
+		  numberGreaterThan50: function() {
+		    var number = $(this).find('.number').text();
+		    return parseInt( number, 10 ) > 50;
+		  },
+		  // show if name ends with -ium
+		  ium: function() {
+		    var name = $(this).find('.name').text();
+		    return name.match( /ium$/ );
+		  }
+		};
+
+		// bind filter span click
+		$('#filters').on( 'click', 'span', function() {
+		  var filterValue = $( this ).attr('data-filter');
+		  // use filterFn if matches value
+		  filterValue = filterFns[ filterValue ] || filterValue;
+		  $grid.isotope({ filter: filterValue });
+		});
+
+		// bind sort button click
+		$('#sorts').on( 'click', 'button', function() {
+		  var sortByValue = $(this).attr('data-sort-by');
+		  $grid.isotope({ sortBy: sortByValue });
+		});
+
+		// change is-checked class on buttons
+		$('.site-header').each( function( i, buttonGroup ) {
+		  var $buttonGroup = $( buttonGroup );
+		  $buttonGroup.on( 'click', '.carousel-cell', function() {
+		    $buttonGroup.find('.is-checked').removeClass('is-checked');
+		    $( this ).addClass('is-checked');
+		  });
+		});
+		
 
 		/* обработка фона селекта поиска*/
 		$('#selectSearch').on('change', function(){
@@ -60,7 +157,6 @@ class App extends React.Component {
 		const {
 			store,
 			handlerInputsValueToApp,
-			handlerFilterToApp,
 			getNameModalToApp,
 			statusLogInToApp,
 			getEditablePageToApp,
@@ -73,33 +169,15 @@ class App extends React.Component {
 			userProfile,
 			auth,
 			nameModal,
-			filter,
-			categories,
+			cathegories,
 			pages,
 			search } = store;
-
-		// фильтрация массива pages по значению
-		// активного фильтра state.filter  
-		const filterNotes = (arr, status) => {
-			const newArr = arr.filter((item)=>{
-				let qqq;
-				if(status === item.type) qqq = item.type;
-				if(status === 'all') qqq = arr;
-				return qqq;
-			});
-			return newArr;
-		}
-
-		// определяем массив видимых pges для рендеринга
-		const visibleItems = filterNotes(pages, filter);
 
 		console.log(store);
 
 	  	return (
 		    <Router>
-					<NavigationPanel 
-						categories={categories} 
-						handlerFilter={handlerFilterToApp} />
+				<NavigationPanel cathegories={cathegories} />
 		    	<Header 
 		    		auth={auth} 
 		    		user={userProfile}
@@ -108,7 +186,7 @@ class App extends React.Component {
 		  		<SearchPanel search={search} />
 		    	<ListPages 
 		    		auth={auth}  
-		    		pages={visibleItems} 
+		    		pages={pages} 
 	    		 	getNameModal={getNameModalToApp}
 	    		 	getEditablePage={getEditablePageToApp}
 						deletePage={deletePageToApp}/>
@@ -117,7 +195,7 @@ class App extends React.Component {
 	        <SuccessMessage />
 	        <EditPageModal
 	        	pageDetails={pageDetails}
-	        	categories={categories} 
+	        	cathegories={cathegories} 
 	        	nameModal={nameModal} 
             handlerInputsValue={handlerInputsValueToApp}
             updateEditPage={updateEditPageToApp}
@@ -140,9 +218,6 @@ const mapDispatchToProps = (dispatch) => {
     handlerInputsValueToApp: (value, id) => {
     	dispatch(handlerInputsValueAction(value, id))
     },
-		handlerFilterToApp: (categorie) => {
-			dispatch(handlerFilterAction(categorie))
-		},
     statusLogInToApp: (status) => dispatch(statusLogInAction(status)),
 		getEditablePageToApp: (id) => dispatch(getEditablePageAction(id)),
     updateEditPageToApp: (obj) => dispatch(updateEditPageAction(obj)),

@@ -16,14 +16,6 @@ const handlerInputsValueAction = (value, id) => {
   }
 };
 
-// обработчик фильтра pages
-const handlerFilterAction = (categorie) => {
-  return {
-      type: 'HANDLER_FILTER_ACTION',
-      categorie
-  }
-};
-
 // обработчик статуса логина (залогинен или нет User)
 const statusLogInAction = (status) => {
   return {
@@ -67,7 +59,6 @@ const deletePageAction = (idx) => {
 
 export {
   handlerInputsValueAction,
-  handlerFilterAction,
   getNameModalAction,
   statusLogInAction,
   getEditablePageAction, 

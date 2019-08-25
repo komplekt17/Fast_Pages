@@ -11,30 +11,24 @@ const flickityOptions = {
    wrapAround: true
 }
 
-const NavigationPanel = ({ categories, handlerFilter }) => {
+const NavigationPanel = ({cathegories}) => {
 
   let navList = ERROR_TEXT;
-  if(categories.length !== 0){
-    navList = categories.map((item, index)=>{
+  if(cathegories.length !== 0){
+    navList = cathegories.map((item, index)=>{
       return(
         <div key={index} className="carousel-cell d-flex justify-content-center">
-          <span 
-            className="pt-1"
-            onClick={()=>handlerFilter(item.catClass)}>
-            {item.catName}
-          </span>
+          <span className="pt-1" data-filter={"."+item.cathClass}>{item.cathName}</span>
         </div>
       )
     });
   }
 
 	return(
-    <nav className="site-header sticky-top py-1">
+    <nav id="filters" className="site-header sticky-top py-1">
        <Flickity className="carousel" options={flickityOptions}>
         <div className="carousel-cell is-checked d-flex justify-content-center">
-          <span className="pt-1" onClick={()=>handlerFilter('all')}>
-            Show All
-          </span>
+          <span className="pt-1" data-filter="*">Show All</span>
         </div>
         {navList}
       </Flickity>
