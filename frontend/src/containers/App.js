@@ -11,7 +11,9 @@ import {
   handlerFilterAction,
   getNameModalAction,
   getAllUsersAction,
-  getUserByLoginAction,
+  getAllPagesAction,
+  getAllCategoriesAction,
+  getDataByUserLoginAction,
   statusLogInAction,
   getEditablePageAction,
   updateEditPageAction,
@@ -64,8 +66,10 @@ class App extends React.Component {
 			handlerInputsValueToApp,
 			handlerFilterToApp,
 			getNameModalToApp,
-			getAllUsersToApp,
-			getUserByLoginToApp,
+			// getAllUsersToApp,
+			// getAllPagesToApp,
+			// getAllCategoriesToApp,
+			getDataByUserLoginToApp,
 			statusLogInToApp,
 			getEditablePageToApp,
 			updateEditPageToApp,
@@ -90,14 +94,15 @@ class App extends React.Component {
 		const filterNotes = (arr, status) => {
 			const newArr = arr.filter((item)=>{
 				let qqq;
-				if(status === item.type) qqq = item.type;
+				if(status === item.ctgrId) qqq = item.ctgrId;
 				if(status === 'all') qqq = arr;
 				return qqq;
 			});
 			return newArr;
 		}
 
-		// определяем массив видимых pges для рендеринга
+		// определяем массив видимых pages для рендеринга
+		// согласно выбранного фильтра
 		const visibleItems = filterNotes(pages, filter);
 
 		console.log(store);
@@ -111,19 +116,17 @@ class App extends React.Component {
 		    	<Header 
 		    		auth={auth} 
 		    		user={userProfile}
-		    		loading={loading}
 		    		getNameModal={getNameModalToApp}
-		    		getAllUsers={getAllUsersToApp}
-		    		getUserByLogin={getUserByLoginToApp}
-		    		statusLogIn={statusLogInToApp} 
-            handlerInputsValue={handlerInputsValueToApp} />
+		    		getDataByLogin={getDataByUserLoginToApp}
+		    		statusLogIn={statusLogInToApp} />
 		  		<SearchPanel 
 		  			search={search}
 		  			searchDetails={searchDetails} 
             handlerInputsValue={handlerInputsValueToApp} />
 		    	<ListPages 
 		    		auth={auth}  
-		    		pages={visibleItems} 
+		    		pages={visibleItems}
+		    		loading={loading}
 	    		 	getNameModal={getNameModalToApp}
 	    		 	getEditablePage={getEditablePageToApp}
 						deletePage={deletePageToApp}/>
@@ -160,7 +163,9 @@ const mapDispatchToProps = (dispatch) => {
 		},
     statusLogInToApp: (status) => dispatch(statusLogInAction(status)),
     getAllUsersToApp: () => dispatch(getAllUsersAction()),
-    getUserByLoginToApp: (login) => dispatch(getUserByLoginAction(login)),
+    getAllPagesToApp: () => dispatch(getAllPagesAction()),
+    getAllCategoriesToApp: () => dispatch(getAllCategoriesAction()),
+    getDataByUserLoginToApp: (login) => dispatch(getDataByUserLoginAction(login)),
 		getEditablePageToApp: (id) => dispatch(getEditablePageAction(id)),
     updateEditPageToApp: (obj) => dispatch(updateEditPageAction(obj)),
 		addNewUserToApp: (login, pass) => dispatch(addNewUserAction(login, pass)),

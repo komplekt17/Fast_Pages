@@ -20,39 +20,32 @@ const initialState = {
 		{service: 'mailru', link: 'https://go.mail.ru/search?q='}, 
 		{service: 'yahoo', link: 'https://search.yahoo.com/search?p='}
 	],
-	userProfile: {userId: '', login: '', pass: '', newPass: '', status: ''}, 
+	userProfile: {userID: '', login: '', pass: '', newPass: '', status: ''}, 
 	categories: [
-		{catName: 'Banking', catClass: 'banking', userId: 'komp'}, 
-		{catName: 'Torrents', catClass: 'torrents', userId: 'komp'}, 
-		{catName: 'AudioBooks', catClass: 'audiobooks', userId: 'komp'}, 
-		{catName: 'WebWallets', catClass: 'webwallets', userId: 'komp'},
-		{catName: 'Freelance', catClass: 'freelance', userId: 'komp'},
-		{catName: 'Services', catClass: 'services', userId: 'komp'},
-		{catName: 'Programming', catClass: 'programming', userId: 'komp'},
-		{catName: 'Trading', catClass: 'trading', userId: 'komp'},
-		{catName: 'SocialNets', catClass: 'socialnets', userId: 'komp'}
+		{_id:'',catName:'Banking',catClass:'banking',userId:''}, 
+		{_id:'',catName: 'Torrents', catClass: 'torrents', userId:''}, 
+		{_id:'',catName: 'AudioBooks', catClass: 'audiobooks', userId:''}, 
+		{_id:'',catName: 'WebWallets', catClass: 'webwallets', userId:''},
+		{_id:'',catName: 'Freelance', catClass: 'freelance', userId:''},
+		{_id:'',catName: 'Services', catClass: 'services', userId:''},
+		{_id:'',catName: 'Programming', catClass: 'programming', userId:''},
+		{_id:'',catName: 'Trading', catClass: 'trading', userId:''},
+		{_id:'',catName: 'SocialNets', catClass: 'socialnets', userId:''}
 	],
 	pages: [
-		{id: 0, name: 'N-0', link: link, type: 'banking', userId: 'komp', screen: img},
-		{id: 1, name: 'N-1', link: link, type: 'banking', userId: 'komp', screen: img},
-		{id: 2, name: 'N-2', link: link, type: 'banking', userId: 'komp', screen: img},
-		{id: 3, name: 'N-3', link: link, type: 'audiobooks', userId: 'komp', screen: img},
-		{id: 4, name: 'N-4', link: link, type: 'torrents', userId: 'komp', screen: img},
-		{id: 5, name: 'N-5', link: link, type: 'torrents', userId: 'komp', screen: img},
-		{id: 6, name: 'N-6', link: link, type: 'webwallets', userId: 'komp', screen: img},
-		{id: 7, name: 'N-7', link: link, type: 'webwallets', userId: 'komp', screen: img},
-		{id: 8, name: 'N-8', link: link, type: 'freelance', userId: 'komp', screen: img},
-		{id: 9, name: 'N-9', link: link, type: 'freelance', userId: 'komp', screen: img}
+		{id: 0, name: 'N-0', link: link, ctgrId: 'banking', userId: 'komp', screen: img},
+		{id: 1, name: 'N-1', link: link, ctgrId: 'banking', userId: 'komp', screen: img},
+		{id: 2, name: 'N-2', link: link, ctgrId: 'banking', userId: 'komp', screen: img},
+		{id: 3, name: 'N-3', link: link, ctgrId: 'audiobooks', userId: 'komp', screen: img},
+		{id: 4, name: 'N-4', link: link, ctgrId: 'torrents', userId: 'komp', screen: img},
+		{id: 5, name: 'N-5', link: link, ctgrId: 'torrents', userId: 'komp', screen: img},
+		{id: 6, name: 'N-6', link: link, ctgrId: 'webwallets', userId: 'komp', screen: img},
+		{id: 7, name: 'N-7', link: link, ctgrId: 'webwallets', userId: 'komp', screen: img},
+		{id: 8, name: 'N-8', link: link, ctgrId: 'freelance', userId: 'komp', screen: img},
+		{id: 9, name: 'N-9', link: link, ctgrId: 'freelance', userId: 'komp', screen: img}
 	]
 }
 
-/* метод генерации случайного id
-const getRandId = () => {
-	return Math.random();
-}*/
-const getId = (state) => {
-	return state.pages.length;
-}
 
 // получение editable Page
 const findEditablePage = (state, idPage) => {
@@ -76,7 +69,6 @@ const saveInputValuePage = (state, name, value) => {
 	for(var key in obj){
 		if(key === name) obj[key] = value;
 	}
-
 	return obj;
 }
 
@@ -110,33 +102,11 @@ const handlerSearchFields = (state, name, value) => {
 	return objectSearch;
 }
 
-// обработчик полей формы авторизации пользователя
-const saveAuthFields = (state, name, value) => {
-
-	const objectUser = state.userProfile;
-
-	// обработка input userLogin
-	if(name === 'userLogin'){
-		for(let key in objectUser){
-			if(key === 'login') objectUser[key] = value;
-		}
-	}
-	// обработка input passLogin
-	else {
-		for(let key in objectUser){
-			if(key === 'pass') objectUser[key] = value;
-		}
-	}
-
-	return objectUser;
-}
-
 // добавление в pages новой page
 const addingPage = (state, obj) => {
 	const arr = state.pages.slice();
 	const newPage = {
-		id: getId(state),
-		//id: getRandId(),
+		id: '',
 		name: obj.name,
 		link: obj.link,
 		type: obj.type,
@@ -155,6 +125,24 @@ const deletingPage = (state, idx) => {
     	if (arr[i].id === idx) arr.splice(i, 1);// вырезаем элемент
 	}
 	return arr;
+}
+
+// получение "нормализованного" массива pages
+// с читаемым классом принадлежности к категории
+const getPagesArr = (pages, categories) =>{
+	for(var i=0; i <= pages.length; i++){
+		for(var j=0; j <= categories.length; j++){
+			for(var kk in pages[i]){
+				for(var dd in categories[j]){
+					if(pages[i]['ctgrId'] === categories[j]['_id']){
+						pages[i]['ctgrId'] = categories[j]['catClass']
+						console.log(kk, dd)
+					}
+				}
+			}
+		}
+	}
+	return pages;
 }
 
 const Reducer = (state = initialState, action) => {
@@ -181,32 +169,31 @@ const Reducer = (state = initialState, action) => {
 				auth: !action.status
 			};
 
-    case "GET_ALL_USERS_ACTION":
-    	console.log(action.result)
-      return {
-        ...state,
-      };
-
-    case "GET_USER_BY_LOGIN_ACTION":
+    case "GET_DATA_BY_USER_LOGIN_ACTION":
+    	//console.log(action.result.data)
       return {
         ...state,
         auth: !action.status,
 				userProfile: {
-					userId: action.result.data._id, 
-					login: action.result.data.login, 
-					pass: action.result.data.pass, 
+					userID: action.result.data.user._id, 
+					login: action.result.data.user.login, 
+					pass: action.result.data.user.pass, 
 					newPass: '',
-					status: action.result.data.status
-				}
+					status: action.result.data.user.status
+				},
+				pages: getPagesArr(action.result.data.pages, action.result.data.categories),
+				categories: action.result.data.categories,
+				loading: false,
+				loaded: true,
       };
 
 		case 'ADD_NEW_USER_ACTION':
-    	console.log(action.result)
+    	//console.log(action.result)
 			return { 
 				...state,
 				auth: !action.status,
 				userProfile: {
-					userId: action.result.data._id, 
+					userID: action.result.data._id, 
 					login: action.result.data.login, 
 					pass: action.result.data.pass, 
 					newPass: '',
@@ -236,15 +223,7 @@ const Reducer = (state = initialState, action) => {
 					...state,
 					searchDetails: handlerSearchFields(state, action.nameInput, action.value)
 				};
-			}
-
-			// inputs авторизации
-			else if(action.nameInput === 'userLogin' || action.nameInput === 'userPass'){
-				return{
-					...state,
-					userProfile: saveAuthFields(state, action.nameInput, action.value)
-				}
-			}
+			} 
 
 			// раные инпуты: редактирование page
 			else {
@@ -259,6 +238,21 @@ const Reducer = (state = initialState, action) => {
 				...state,
 				filter: action.categorie
 			};
+
+    case "GET_ALL_USERS_ACTION":
+      return {
+        ...state,
+      };
+
+    case "GET_ALL_PAGES_ACTION":
+      return {
+        ...state,
+      };
+
+    case "GET_ALL_CATEGORIES_ACTION":
+      return {
+        ...state,
+      };
 
 		case 'GET_EDITABLE_PAGE_ACTION':
 			return { 

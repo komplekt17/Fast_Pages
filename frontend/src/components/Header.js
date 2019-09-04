@@ -6,12 +6,11 @@ import '../styles/Header.css';
 const Header = (props) => {
 
 	const { 
-		auth,
-		getNameModal, 
-		getUserByLogin,
-		statusLogIn, 
+		auth, 
 		user, 
-		handlerInputsValue } = props;
+		statusLogIn, 
+		getNameModal,
+		getDataByLogin } = props;
 
 	return(
 		<nav className="navbar navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-dark bg-dark">
@@ -29,7 +28,7 @@ const Header = (props) => {
 	    	className="collapse navbar-collapse justify-content-md-between"
     		id="navbarsExample08">
 	      <ul className="navbar-nav">
-	        <li className="nav-item" onClick={()=>{console.log('Settings')}}>
+	        <li className="nav-item" onClick={()=>console.log('Settings')}>
 	          <span className="nav-link">
 	          	<i className="fas fa-cogs"></i> Settings
 	          	{/*<i className="fas fa-spin fa-cog"></i>*/}
@@ -96,21 +95,17 @@ const Header = (props) => {
 			      	</button>
 				    </div>
 	      	</div>
-	       	<form id="formHeader">
+	       	<form id="formHeader" onSubmit={(e)=>e.preventDefault()}>
 					  <div className="row">
 					    <div className="col">
 					      <input
 					      	id="userLogin"
-					      	onChange={(ev)=>handlerInputsValue(ev.target.value, ev.target.id)}
-					      	value={user.login}
 					      	type="text" className="form-control-sm" 
 					      	placeholder="enter your@mail" />
 					    </div>
 					    <div className="col">
 					      <input
 					      	id="userPass"
-					      	onChange={(ev)=>handlerInputsValue(ev.target.value, ev.target.id)}
-					      	value={user.pass} 
 					      	type="password" className="form-control-sm" 
 					      	placeholder="password" />
 					    </div>
@@ -119,8 +114,12 @@ const Header = (props) => {
 					      	className="btn btn-sm btn-outline-success"
 					      	type="button" 
 					      	onClick={()=>{
-					      		if(user.login !== '' && user.pass !== ''){
-					      			getUserByLogin(user.login)
+					      		let login = $('#userLogin').val();
+					      		let pass = $('#userPass').val();
+					      		if(login !== '' && pass !== ''){
+					      			getDataByLogin(login);
+					      			login = '';
+					      			pass = '';
 					      		}else {
 					        		getNameModal('Enter all fields');
 					        		$("#modal-alert").modal("show")

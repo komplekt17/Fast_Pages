@@ -20,6 +20,9 @@
 .card:hover .icon-repair, 
 .card:hover .page-categorie{
 	opacity: 1;
+} 
+.card:hover .page-categorie{
+	font-size: 11px;
 }
 
 .page-categorie{

@@ -8,7 +8,7 @@ const ItemPage = (props) => {
 
 	const { 
 		auth, 
-		pages, 
+		pages,
 		getNameModal, 
 		getEditablePage, 
 		deletePage } = props;
@@ -16,12 +16,13 @@ const ItemPage = (props) => {
 	let listItems = <h3>{ERROR_TEXT}</h3>;
 
 	if(pages && pages.length !== 0){
+
 		listItems = pages.map((item, index)=>{
 			return (
-				<div className={"px-1 mb-4 col-6 col-sm-6 col-md-3 col-lg-2 "+item.type}
-				key={index} data-category={item.type}>
+				<div className={"px-1 mb-4 col-6 col-sm-6 col-md-3 col-lg-2 "+item.ctgrId}
+				key={index} data-category={item.ctgrId}>
 	      	<div className="card">
-	      		<div className="page-categorie px-2">{item.type}</div>
+	      		<div className="page-categorie px-2">{item.ctgrId}</div>
 	      		{
 	      			auth ?
 							<i

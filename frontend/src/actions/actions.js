@@ -10,31 +10,8 @@ const getNameModalAction = (text) => {
   }
 };
 
-// получение данных о всех юзерах с сервера
-const getAllUsersAction = () => {
-  return dispatch => {
-    dispatch({
-      type: "LOAD_REQUESTED_DATA_ACTION"
-    });
-    axios.get(`${port}/users/`)
-      .then(response => {
-        dispatch({
-          type: "GET_ALL_USERS_ACTION",
-          result: response.data
-        });
-      })
-      .catch((error) => {
-        dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
-          error: error
-        });
-        console.log(error);
-      })
-  };
-};
-
 // получение юзера по логину
-const getUserByLoginAction = (login) => {
+const getDataByUserLoginAction = (login) => {
   return dispatch => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
@@ -42,7 +19,7 @@ const getUserByLoginAction = (login) => {
     axios.get(`${port}/users/${login}`)
       .then(response => {
         dispatch({
-          type: "GET_USER_BY_LOGIN_ACTION",
+          type: "GET_DATA_BY_USER_LOGIN_ACTION",
           result: response.data
         });
       })
@@ -105,6 +82,75 @@ const handlerFilterAction = (categorie) => {
   }
 };
 
+// получение всех юзеров с сервера
+const getAllUsersAction = () => {
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.get(`${port}/users/`)
+      .then(response => {
+        dispatch({
+          type: "GET_ALL_USERS_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
+  };
+};
+
+// получение всех pages с сервера по ID user'а
+const getAllPagesAction = () => {
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.get(`${port}/pages/`)
+      .then(response => {
+        dispatch({
+          type: "GET_ALL_PAGES_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
+  };
+};
+
+// получение всех categories с сервера по ID user'а
+const getAllCategoriesAction = () => {
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.get(`${port}/categories/`)
+      .then(response => {
+        dispatch({
+          type: "GET_ALL_CATEGORIES_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
+  };
+};
+
 // обработчик для выборки pageDetails
 const getEditablePageAction = (id) => {
   return {
@@ -137,13 +183,14 @@ const deletePageAction = (idx) => {
   }
 };
 
-
 export {
   handlerInputsValueAction,
   handlerFilterAction,
   getNameModalAction,
   getAllUsersAction,
-  getUserByLoginAction,
+  getAllPagesAction,
+  getAllCategoriesAction,
+  getDataByUserLoginAction,
   statusLogInAction,
   getEditablePageAction, 
   updateEditPageAction,

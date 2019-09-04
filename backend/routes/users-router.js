@@ -1,5 +1,7 @@
 const router = require('express').Router();
-let User = require('../models/user-model');
+let User = require('../models/users-model');
+let Page = require('../models/pages-model');
+let Categorie = require('../models/categories-model');
 
 // получение всех юзеров
 router.route('/').get((req, res) => {
@@ -18,14 +20,45 @@ router.route('/').get((req, res) => {
     });
 });
 
-// получение юзера по логину
+// получение юзера по логину, 
+// а затем pages и categories по ID полученного юзера
 router.route('/:login').get((req, res) => {
-  User.findOne({login: req.params.login})
-    .then((user) => {
-    	return res.status(200).json({
-    		success: true,
-    		data: user
-    	})
+
+    let result = {user: '', pages: '', categories: ''}
+
+    User.findOne({login: req.params.login}, (error, user) =>{
+        for(var key in result){
+            if(key === 'user') result[key] = user
+        }
+        Page.find({userId: user._id}, (error, pages) => {
+            for(var key in result){
+                if(key === 'pages') result[key] = pages
+            }
+        })
+        .catch(error => {
+            res.status(400).json({
+                error,
+                message: 'Pages not found!'
+            })
+        });
+        Categorie.find({userId: user._id}, (error, categories) => {
+            for(var key in result){
+                if(key === 'categories') result[key] = categories
+            }
+        })
+        .catch(error => {
+            res.status(400).json({
+                error,
+                message: 'Categories not found!'
+            })
+        })
+        .then(() => {
+            //console.log('result string_59', result)
+            return res.status(200).json({
+                success: true,
+                data: result
+            })
+        })
     })
     .catch(error => {
     	res.status(400).json({

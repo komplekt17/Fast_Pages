@@ -17,7 +17,8 @@ const userSchema = new Schema({
     minlength: 3
   },
   status: {
-  	type: String
+  	type: String,
+    required: true
   }
 }, {
   timestamps: true,

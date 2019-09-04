@@ -7,7 +7,7 @@ const ListPages = (props) => {
 	const { 
 		auth, 
 		loading, 
-		pages, 
+		pages,
 		getNameModal, 
 		getEditablePage, 
 		deletePage } = props;
