@@ -5,7 +5,12 @@ import '../styles/SearchPanel.css';
 
 const SearchPanel = (props) => {
 
-	const { search, searchDetails, handlerInputsValue } = props;
+	const { 
+		search, 
+		searchDetails, 
+		handlerInputsValue,
+		handlerSearchService } = props;
+
 	const { querySearch, linkSearch } = searchDetails;
 
 	// получение selectSearch из класса
@@ -37,6 +42,7 @@ const SearchPanel = (props) => {
 					    <select
 					    	onChange={(ev) => {
 					    		handlerInputsValue(getServiceName(ev.target.className), ev.target.id);
+					    		handlerSearchService()
 					    	}}
 					    	id="selectSearch"
 					    	className={"google form-control"}>

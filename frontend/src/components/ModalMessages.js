@@ -1,23 +1,24 @@
-import React from 'react';
+import React  from 'react';
 import $ from "jquery";
+import {ERROR_TEXT} from '../constants';
 
 import '../styles/ModalMessages.css';
 
-const AlertMessage = ({nameModal}) => {
+const AlertMessage = ({textModal}) => {
 	return(
 		<div className="modal fade" id="modal-alert" tabIndex="-1" role="dialog" 
         aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-danger">
-            <h5 className="modal-title" id="exampleModalLongTitle">Message</h5>
+            <h5 className="modal-title" id="exampleModalLongTitle">Alert Message</h5>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div className="modal-body">
             <div className="alert">
-              <p>{nameModal}</p>
+              <p>{textModal}</p>
             </div>
           </div>
           <div className="modal-footer alert-danger">
@@ -31,21 +32,21 @@ const AlertMessage = ({nameModal}) => {
 	);
 }
 
-const SuccessMessage = () => {
+const SuccessMessage = ({textModal}) => {
 	return(
 		<div className="modal fade" id="modal-success" tabIndex="-1" role="dialog" 
 	        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-success">
-            <h5 className="modal-title" id="exampleModalLongTitle">Message</h5>
+            <h5 className="modal-title" id="exampleModalLongTitle">Success Message</h5>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
           <div className="modal-body">
             <div className="alert">
-              Your changes sent success on server
+              {textModal}
             </div>
           </div>
           <div className="modal-footer alert-success">
@@ -59,15 +60,141 @@ const SuccessMessage = () => {
 	);
 }
 
+const CreatePageModal = (props) => {
+
+  const { 
+    userID,
+    categories,
+    addNewPage } = props;
+
+  const validateForm = (obj) => {
+    
+    // счётчик количества НЕкорректно заполненных полей
+    let invalidCount = 0;
+
+    for(var key in obj){
+
+      if(obj[key] === null || obj[key] === ''){
+        document.getElementById(key).classList.remove("is-invalid", "is-valid");
+        // document.getElementById(key).previousSibling.firstChild
+        //   .classList.remove("text-danger", "text-success");
+        
+        document.getElementById(key).classList.add("is-invalid");
+        // document.getElementById(key).previousSibling.firstChild
+        //   .classList.add("text-danger");
+
+        invalidCount += 1;
+      }
+    }
+      
+    if(invalidCount === 0){
+      // clear feilds
+      $('#namePage').val(''); 
+      $('#linkPage').val(''); 
+      $('#ctgrIdPage').val('');
+      $('#screenPage').val('');
+
+      //console.log(obj)
+      addNewPage(obj);
+      $("#modal-createpage").modal("hide"); // закрываем окно
+    }
+  } 
+
+  let categoriesList = <h3>{ERROR_TEXT}</h3>;
+
+  if(categories.length !== 0){
+    categoriesList = categories.map((item, index)=>{
+        return(
+          <option
+            key={index}
+            className={item.catClass}
+            value={item._id}>{item.catName}</option>
+        )
+    });
+  }
+
+  return(
+    <div className="modal fade" id="modal-createpage" tabIndex="-1" role="dialog" 
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-content">
+          <div className="modal-header alert-success">
+            <h5 
+              className="modal-title" 
+              id="exampleModalLongTitle">
+              Creating new Page
+            </h5>
+            <button 
+              type="button" className="close" 
+              data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+
+            <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
+              <div className="form-label-group">
+                <input
+                  type="text" id="namePage" className="form-control" 
+                  placeholder="enter Name Page" 
+                  aria-describedby="editPage" />
+                <label htmlFor="name">Name Page</label>
+              </div>
+
+              <div className="form-label-group">
+                <input
+                  type="text" id="linkPage" className="form-control" 
+                  placeholder="enter Link Page" 
+                  aria-describedby="editPage" />
+                <label htmlFor="link">Link Page</label>
+              </div>
+
+              <div className="form-label-group">
+                <input
+                  type="text" id="screenPage" 
+                  className="form-control" 
+                  placeholder="enter Link Preview Page" 
+                  aria-describedby="editPage" />
+                <label htmlFor="screen">Link Preview Page</label>
+              </div>
+
+              <div className="form-label-group">
+                <select
+                  id="ctgrIdPage" 
+                  className="form-control">
+                   {categoriesList}
+                </select>
+                <label htmlFor="ctgrId">Select Cathegorie</label>
+              </div>
+              <button 
+                id="addPage"
+                className="btn btn-info btn-block" type="button"
+                onClick={(ev)=>validateForm(
+                  {
+                    name: $('#namePage').val(), 
+                    link: $('#linkPage').val(), 
+                    ctgrId: $('#ctgrIdPage').val(),
+                    userId: userID,
+                    screen: $('#screenPage').val(),
+                  }
+                )}>
+                Create Page
+              </button>  
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 const EditPageModal = (props) => {
 
   const { 
-    nameModal, 
     categories, 
     pageDetails, 
     handlerInputsValue,
-    updateEditPage,
-    addNewPage } = props;
+    updateEditPage } = props;
 
   const validateForm = (obj) => {
     
@@ -88,32 +215,24 @@ const EditPageModal = (props) => {
         invalidCount += 1;
       }
     }
-      
+
     if(invalidCount === 0){
-      // clear feilds
-      $('#name').val('');
-      $('#link').val('');
-      $('#type').val('');
-      $('#screen').val('');
 
-      if(nameModal === 'Edit') updateEditPage(obj);// обновляем page
-      else if(nameModal === 'Add') addNewPage(obj);
-      
-
-      // закрываем окно
-      $("#modal-editpage").modal("hide")
+      updateEditPage(obj)
+      $("#modal-editpage").modal("hide") // закрываем окно
     }
   } 
 
-	let categoriesList;
+	let categoriesList = <h3>{ERROR_TEXT}</h3>;
   
 	if(categories.length !== 0){
     categoriesList = categories.map((item, index)=>{
+
       	return(
-	        <option
-	        	key={index}
-	        	className={item.catClass}
-	        	value={item.catClass}>{item.catName}</option>
+          <option
+            key={index}
+            className={item.catClass}
+            value={item._id}>{item.catName}</option>
       	)
     });
 	}
@@ -127,7 +246,7 @@ const EditPageModal = (props) => {
             <h5 
             	className="modal-title" 
             	id="exampleModalLongTitle">
-            	{nameModal+"ing"} Page
+            	Editor Page
           	</h5>
             <button 
             	type="button" className="close" 
@@ -137,84 +256,62 @@ const EditPageModal = (props) => {
           </div>
           <div className="modal-body">
 
-            <form className="form-signin">
+            <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
 						  <div className="form-label-group">
 						    <input
                   onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
                   value={pageDetails.name}
 						    	type="text" id="name" className="form-control" 
-						    	placeholder="enter Name Page" 
-                  aria-describedby="editPage" />
+						    	placeholder="enter Name Page" />
 						    <label htmlFor="name">Name Page</label>
 						  </div>
 
 						  <div className="form-label-group">
 						    <input
-                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
                   value={pageDetails.link} 
+                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
 						    	type="text" id="link" className="form-control" 
-						    	placeholder="enter Link Page" 
-                  aria-describedby="editPage" />
+						    	placeholder="enter Link Page" />
 						    <label htmlFor="link">Link Page</label>
 						  </div>
 
 						  <div className="form-label-group">
 						    <input
-                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
                   value={pageDetails.screen} 
-						    	type="text" id="screen" 
-						    	className="form-control" 
-						    	placeholder="enter Link Preview Page" 
-                  aria-describedby="editPage" />
+                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
+						    	type="text" id="screen" className="form-control" 
+						    	placeholder="enter Link Preview Page"  />
 						    <label htmlFor="screen">Link Preview Page</label>
 						  </div>
 
 						  <div className="form-label-group">
 						  	<select
-                  onChange={(ev) => {
-                    handlerInputsValue(ev.target.value, ev.target.id)
-                  }}
-                  value={pageDetails.type} 
-  					    	id="type" 
-  					    	className="form-control">
+                  value={pageDetails.ctgrId}
+                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
+  					    	id="ctgrId" className="form-control">
 					         {categoriesList}
 				      	</select>
 						    <label htmlFor="type">Select Cathegorie</label>
 						  </div>
-						  { nameModal === 'Edit' ?
-              <button 
+						  <button 
                 id="editPage"
                 className="btn btn-info btn-block" type="button"
                 onClick={(ev)=>validateForm(
                   {
-                    id: pageDetails.id,
+                    _id: pageDetails._id,
                     name: pageDetails.name, 
                     link: pageDetails.link, 
-                    type: pageDetails.type,
-                    user: pageDetails.user, 
-                    screen: pageDetails.screen,
+                    ctgrId: pageDetails.ctgrId,
+                    ctgrClass: pageDetails.ctgrClass,
+                    ctgrColor: pageDetails.ctgrColor,
+                    ctgrBGC: pageDetails.ctgrBGC,
+                    userId: pageDetails.userId,
+                    screen: pageDetails.screen
                   }
                 )}>
-                {nameModal} Page
+                Save Page Changes
               </button>
-              :
-              <button 
-                id="addPage"
-                className="btn btn-info btn-block" type="button"
-                onClick={(ev)=>validateForm(
-                  {
-                    name: $('#name').val(), 
-                    link: $('#link').val(), 
-                    type: $('#type').val(),
-                    screen: $('#screen').val(),
-                  }
-                )}>
-                {nameModal} Page
-              </button>  
-              }
-						  
 						</form>
-
           </div>
         </div>
       </div>
@@ -222,7 +319,7 @@ const EditPageModal = (props) => {
 	);
 }
 
-const CreateEditUser = ({nameModal, addNewUser}) => {
+const CreateUserModal = ({addNewUser}) => {
 
 	return(
 		<div className="modal fade" id="modal-adduser" tabIndex="-1" role="dialog" 
@@ -233,7 +330,7 @@ const CreateEditUser = ({nameModal, addNewUser}) => {
             <h5 
             	className="modal-title" 
             	id="exampleModalLongTitle">
-            	{nameModal}
+            	Registration
           	</h5>
             <button 
             	type="button" className="close" 
@@ -242,31 +339,28 @@ const CreateEditUser = ({nameModal, addNewUser}) => {
             </button>
           </div>
           <div className="modal-body">
-          { 
-            nameModal === 'Registration' ?
+          <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
+              <div className="form-label-group">
+                <input 
+                  type="email" id="inputEmail" className="form-control" 
+                  placeholder="Email address" required autoFocus/>
+                <label htmlFor="inputEmail">Email address</label>
+              </div>
 
-            <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
-						  <div className="form-label-group">
-						    <input 
-						    	type="email" id="inputEmail" className="form-control" 
-						    	placeholder="Email address" required autoFocus/>
-						    <label htmlFor="inputEmail">Email address</label>
-						  </div>
+              <div className="form-label-group">
+                <input 
+                  type="password" id="inputPassword" className="form-control" 
+                  placeholder="enter Password" required/>
+                <label htmlFor="inputPassword">enter Password</label>
+              </div>
 
-						  <div className="form-label-group">
-						    <input 
-						    	type="password" id="inputPassword" className="form-control" 
-						    	placeholder="enter Password" required/>
-						    <label htmlFor="inputPassword">enter Password</label>
-						  </div>
-
-						  <div className="form-label-group">
-						    <input 
-						    	type="password" id="repeatPassword" 
-						    	className="form-control" 
-						    	placeholder="repeat Password" required/>
-						    <label htmlFor="repeatPassword">repeat Password</label>
-						  </div>
+              <div className="form-label-group">
+                <input 
+                  type="password" id="repeatPassword" 
+                  className="form-control" 
+                  placeholder="repeat Password" required/>
+                <label htmlFor="repeatPassword">repeat Password</label>
+              </div>
               <button
                 onClick={()=>{
                   let login = $('#inputEmail').val();
@@ -281,13 +375,40 @@ const CreateEditUser = ({nameModal, addNewUser}) => {
                   }else alert('complete all fields')
                 }} 
                 className="btn btn-info btn-block" type="button"> 
-                {nameModal}
+                Save
               </button>
             </form>
-              :
+          </div>
+        </div>
+      </div>
+    </div>
+	);
+}
+
+const EditUserModal = ({nameModal}) => {
+
+  return(
+    <div className="modal fade" id="modal-edituser" tabIndex="-1" role="dialog" 
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-content">
+          <div className="modal-header alert-danger">
+            <h5 
+              className="modal-title" 
+              id="exampleModalLongTitle">
+              Editor User Profile
+            </h5>
+            <button 
+              type="button" className="close" 
+              data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
             <form 
               className="form-signin needs-validation" 
               noValidate onSubmit={(ev)=>ev.preventDefault()}>
+
               <div className="form-label-group">
                 <input 
                   type="password" id="inputOldPass" className="form-control" 
@@ -309,20 +430,27 @@ const CreateEditUser = ({nameModal, addNewUser}) => {
                   placeholder="repeat New Password" required/>
                 <label htmlFor="repeatNewPass">repeat New Password</label>
               </div>
-						  <button 
-						  	className="btn btn-info btn-block" type="submit"> 
-            		{/*data-dismiss="modal" aria-label="Close"*/}
-						  	{nameModal}
-						  </button>
-						</form>
-          } 
 
+              <button 
+                onClick={()=>alert('Soon be')}
+                className="btn btn-info btn-block" type="button"> 
+                {/*data-dismiss="modal" aria-label="Close"*/}
+                Save Changes
+              </button>
+            </form>
           </div>
         </div>
       </div>
     </div>
-	);
+  );
 }
 
 
-export {AlertMessage, SuccessMessage, EditPageModal, CreateEditUser};
+export {
+  AlertMessage, 
+  SuccessMessage,
+  CreatePageModal, 
+  EditPageModal, 
+  CreateUserModal, 
+  EditUserModal
+};

@@ -2,25 +2,21 @@ import axios from 'axios';
 
 const port = 'http://localhost:5000';
 
-// обработчик текста хедера модального окна
-const getNameModalAction = (text) => {
-  return {
-      type: 'GET_NAME_MODAL_ACTION',
-      text
-  }
-};
-
 // получение юзера по логину
 const getDataByUserLoginAction = (login) => {
   return dispatch => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
+    // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+    // const targetUrl = 'http://www.skart-info.ru/JSONS/fastpages.json';
+    // axios.get(proxyUrl+targetUrl)
     axios.get(`${port}/users/${login}`)
       .then(response => {
         dispatch({
           type: "GET_DATA_BY_USER_LOGIN_ACTION",
           result: response.data
+          // result: response
         });
       })
       .catch((error) => {
@@ -159,34 +155,126 @@ const getEditablePageAction = (id) => {
   }
 };
 
-// обработчик обновления редактируемой page
-const updateEditPageAction = (obj) => {
-  return {
-      type: 'UPDATE_EDIT_PAGE_ACTION',
-      obj
+// обработчик добавления новой page
+const addNewPageAction = (objPage) => {
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.post(`${port}/pages/add`, objPage)
+      .then(response => {
+        dispatch({
+          type: "ADD_NEW_PAGE_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
   }
 };
 
-// обработчик добавления новой page
-const addNewPageAction = (obj) => {
-  return {
-      type: 'ADD_NEW_PAGE_ACTION',
-      obj
+// обработчик обновления редактируемой page
+const updateEditPageAction = (objPage) => {
+  const id = objPage._id;
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.put(`${port}/pages/update/${id}`, objPage)
+      .then(response => {
+        dispatch({
+          type: "UPDATE_EDIT_PAGE_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
   }
 };
 
 // обработчик обновления редактируемой page
 const deletePageAction = (idx) => {
-  return {
-      type: 'DELETE_PAGE_ACTION',
-      idx
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.delete(`${port}/pages/remove/${idx}`)
+      .then(response => {
+        dispatch({
+          type: "DELETE_PAGE_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
+  }
+};
+
+// обработчик добавления новой categorie
+const addNewCategorieAction = (objCategorie) => {
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.post(`${port}/categories/add`, objCategorie)
+      .then(response => {
+        dispatch({
+          type: "ADD_NEW_CATEGORIE_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
+  }
+};
+
+// обработчик обновления редактируемой categorie
+const updateEditCategorieAction = (objCategorie) => {
+  const id = objCategorie._id;
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.put(`${port}/categories/update/${id}`, objCategorie)
+      .then(response => {
+        dispatch({
+          type: "UPDATE_EDIT_CATEGORIE_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+      })
   }
 };
 
 export {
   handlerInputsValueAction,
   handlerFilterAction,
-  getNameModalAction,
   getAllUsersAction,
   getAllPagesAction,
   getAllCategoriesAction,
@@ -194,7 +282,9 @@ export {
   statusLogInAction,
   getEditablePageAction, 
   updateEditPageAction,
+  updateEditCategorieAction,
   addNewUserAction,
   addNewPageAction,
+  addNewCategorieAction,
   deletePageAction
 }

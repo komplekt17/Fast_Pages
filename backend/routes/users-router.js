@@ -81,8 +81,8 @@ router.route('/add').post((req, res) => {
     .then(() => {
     	return res.status(200).json({
     		success: true,
-        data: newUser,
-        message: 'User created!'
+            data: newUser,
+            message: 'User created!'
     	})
     })
     .catch(error => {

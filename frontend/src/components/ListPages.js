@@ -1,26 +1,31 @@
 import React from 'react';
+import SearchPanel  from '../components/SearchPanel';
 import ItemPage from './ItemPage';
-import Loader from './Loader'
 
 const ListPages = (props) => {
 
 	const { 
-		auth, 
-		loading, 
+		auth,
 		pages,
-		getNameModal, 
 		getEditablePage, 
-		deletePage } = props;
+		deletePage, 
+		search,
+		searchDetails,
+		handlerInputsValue,
+		handlerSearchService } = props;
 	
 	return(
 		<div className="bg-light">
+  		<SearchPanel 
+  			search={search}
+  			searchDetails={searchDetails} 
+        handlerInputsValue={handlerInputsValue}
+        handlerSearchService={handlerSearchService} />
 			<ItemPage
 				auth={auth} 
-				pages={pages} 
-				getNameModal={getNameModal}
+				pages={pages}
 				getEditablePage={getEditablePage}
 				deletePage={deletePage} />
-      {loading ? <Loader /> : null}
   	</div>
 	);
 } 

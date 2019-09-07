@@ -22,3 +22,15 @@
 	cursor: pointer;
 }
 
+.nav-item{
+	color: rgba(255,255,255,0.75);
+}
+
+.nav-item:hover{
+	color: #fff;
+}
+
+.nav-item a:hover{
+	text-decoration: none;
+}
+

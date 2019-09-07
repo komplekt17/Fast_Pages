@@ -1,9 +1,10 @@
-//const img = 'https://i-love-png.com/images/no-image-png-7.png';
+import $ from "jquery";
+
 const img = 'http://www.skart-info.ru/myProjects/img-fast-pages/riffisen.jpg';
 const link = 'https://ya.ru/';
 const initialState = {
 	auth: false,
-	nameModal: '', // названия header/button ModalMassages
+	textModal: '', // названия header/button ModalMassages
 	pageDetails: {},
 	searchDetails: { // поисковый запрос
 		selectSearch:'google', 
@@ -20,29 +21,30 @@ const initialState = {
 		{service: 'mailru', link: 'https://go.mail.ru/search?q='}, 
 		{service: 'yahoo', link: 'https://search.yahoo.com/search?p='}
 	],
-	userProfile: {userID: '', login: '', pass: '', newPass: '', status: ''}, 
+	userProfile: {userID: '', login: '', pass: '', newPass: '', status: ''},
+	adminProfile: {allUsers: {}, allPages: {}, allCategorie: {}},
 	categories: [
-		{_id:'',catName:'Banking',catClass:'banking',userId:''}, 
-		{_id:'',catName: 'Torrents', catClass: 'torrents', userId:''}, 
-		{_id:'',catName: 'AudioBooks', catClass: 'audiobooks', userId:''}, 
-		{_id:'',catName: 'WebWallets', catClass: 'webwallets', userId:''},
-		{_id:'',catName: 'Freelance', catClass: 'freelance', userId:''},
-		{_id:'',catName: 'Services', catClass: 'services', userId:''},
-		{_id:'',catName: 'Programming', catClass: 'programming', userId:''},
-		{_id:'',catName: 'Trading', catClass: 'trading', userId:''},
-		{_id:'',catName: 'SocialNets', catClass: 'socialnets', userId:''}
+		{_id:'5d636c50349128976d09806a', catName: 'Banking', catClass:'banking', catColor: '#c0c0c0', catBGC: '#008040', userId:''}, 
+		{_id:'5d636c50349128976d09806b', catName: 'Torrents', catClass: 'torrents', catColor: '#c0c0c0', catBGC: '#008040', userId:''}, 
+		{_id:'5d636c50349128976d09806c', catName: 'AudioBooks', catClass: 'audiobooks', catColor: '#000000', catBGC: '#008040', userId:''}, 
+		{_id:'5d636c50349128976d09806d', catName: 'WebWallets', catClass: 'webwallets', catColor: '#c0c0c0', catBGC: '#008040', userId:''},
+		{_id:'5d636c50349128976d09806e', catName: 'Freelance', catClass: 'freelance', catColor: '#c0c0c0', catBGC: '#008040', userId:''},
+		{_id:'5d636c50349128976d09806f', catName: 'Services', catClass: 'services', catColor: '#c0c0c0', catBGC: '#008040', userId:''},
+		{_id:'5d636c50349128976d098070', catName: 'Programming', catClass: 'programming', catColor: '#c0c0c0', catBGC: '#008040', userId:''},
+		{_id:'5d636c50349128976d098071', catName: 'Trading', catClass: 'trading', catColor: '#c0c0c0', catBGC: '#008040', userId:''},
+		{_id:'5d636c50349128976d098072', catName: 'SocialNets', catClass: 'socialnets', catColor: '#000000', catBGC: '#008040', userId:''}
 	],
 	pages: [
-		{id: 0, name: 'N-0', link: link, ctgrId: 'banking', userId: 'komp', screen: img},
-		{id: 1, name: 'N-1', link: link, ctgrId: 'banking', userId: 'komp', screen: img},
-		{id: 2, name: 'N-2', link: link, ctgrId: 'banking', userId: 'komp', screen: img},
-		{id: 3, name: 'N-3', link: link, ctgrId: 'audiobooks', userId: 'komp', screen: img},
-		{id: 4, name: 'N-4', link: link, ctgrId: 'torrents', userId: 'komp', screen: img},
-		{id: 5, name: 'N-5', link: link, ctgrId: 'torrents', userId: 'komp', screen: img},
-		{id: 6, name: 'N-6', link: link, ctgrId: 'webwallets', userId: 'komp', screen: img},
-		{id: 7, name: 'N-7', link: link, ctgrId: 'webwallets', userId: 'komp', screen: img},
-		{id: 8, name: 'N-8', link: link, ctgrId: 'freelance', userId: 'komp', screen: img},
-		{id: 9, name: 'N-9', link: link, ctgrId: 'freelance', userId: 'komp', screen: img}
+		{_id: '5d6409f4349128976d09807c', name: 'N-0', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d09807d', name: 'N-1', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d09807e', name: 'N-2', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d09807f', name: 'N-3', link: link, ctgrId: '5d636c50349128976d09806c', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d098080', name: 'N-4', link: link, ctgrId: '5d636c50349128976d09806b', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d098081', name: 'N-5', link: link, ctgrId: '5d636c50349128976d09806b', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d098082', name: 'N-6', link: link, ctgrId: '5d636c50349128976d09806d', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d098083', name: 'N-7', link: link, ctgrId: '5d636c50349128976d09806d', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d098084', name: 'N-8', link: link, ctgrId: '5d636c50349128976d09806e', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
+		{_id: '5d6409f4349128976d098085', name: 'N-9', link: link, ctgrId: '5d636c50349128976d09806e', ctgrClass: '', userId: '', screen: img}
 	]
 }
 
@@ -52,9 +54,9 @@ const findEditablePage = (state, idPage) => {
  	const arr = state.pages.slice();
 
  	// получаем index элемента массива page с id === idPage
- 	const idx = arr.findIndex(param => param.id === idPage);
+ 	const idx = arr.findIndex(param => param._id === idPage);
 
- 	// присвамваем obj-ту значение найденного объекта
+ 	// сохраняем найденный объект
  	const obj = arr[idx];
 
  	return obj;
@@ -70,6 +72,28 @@ const saveInputValuePage = (state, name, value) => {
 		if(key === name) obj[key] = value;
 	}
 	return obj;
+}
+
+// сохранение изменяемых полей input ListCategories
+const saveInputValueCategorie = (state, nameInput, valueArr) => {
+	const arr = state.categories;
+
+	// деструктурируем массив
+	const [value, idCategorie] = valueArr;
+
+ 	// получаем index элемента массива categories с id === idCategorie
+ 	const idx = arr.findIndex(param => param._id === idCategorie);
+
+ 	// сохраняем найденный объект
+ 	const obj = arr[idx];
+
+	// перебираем свойства объекта и при совпадении полей 
+	// присваиваем полю новое значение value
+	for(var key in obj){
+		if(key === nameInput) obj[key] = value;
+	}
+	//console.log(obj);
+	return arr;
 }
 
 // обработчик полей SearchPanel
@@ -105,15 +129,8 @@ const handlerSearchFields = (state, name, value) => {
 // добавление в pages новой page
 const addingPage = (state, obj) => {
 	const arr = state.pages.slice();
-	const newPage = {
-		id: '',
-		name: obj.name,
-		link: obj.link,
-		type: obj.type,
-		user: state.userProfile.login,
-		screen: obj.screen
-	}
-	arr.push(newPage);
+
+	arr.push(obj);
 	return arr;
 }
 
@@ -122,27 +139,17 @@ const deletingPage = (state, idx) => {
 	const arr = state.pages.slice();
 	//ищем заметку с id === idx
   for (let i = 0; i < arr.length; i++) {
-    	if (arr[i].id === idx) arr.splice(i, 1);// вырезаем элемент
+    	if (arr[i]._id === idx) arr.splice(i, 1);// вырезаем элемент
 	}
 	return arr;
 }
 
-// получение "нормализованного" массива pages
-// с читаемым классом принадлежности к категории
-const getPagesArr = (pages, categories) =>{
-	for(var i=0; i <= pages.length; i++){
-		for(var j=0; j <= categories.length; j++){
-			for(var kk in pages[i]){
-				for(var dd in categories[j]){
-					if(pages[i]['ctgrId'] === categories[j]['_id']){
-						pages[i]['ctgrId'] = categories[j]['catClass']
-						console.log(kk, dd)
-					}
-				}
-			}
-		}
-	}
-	return pages;
+// добавление в categories новой categorie
+const addingCategorie = (state, obj) => {
+	const arr = state.categories.slice();
+
+	arr.push(obj);
+	return arr;
 }
 
 const Reducer = (state = initialState, action) => {
@@ -156,6 +163,7 @@ const Reducer = (state = initialState, action) => {
     	};
 
 		case 'LOAD_FAILURE_DATA_ACTION':
+		console.log(action.error)
 			return {
 				...state,
 				loading: false,
@@ -181,7 +189,7 @@ const Reducer = (state = initialState, action) => {
 					newPass: '',
 					status: action.result.data.user.status
 				},
-				pages: getPagesArr(action.result.data.pages, action.result.data.categories),
+				pages: action.result.data.pages,
 				categories: action.result.data.categories,
 				loading: false,
 				loaded: true,
@@ -198,17 +206,18 @@ const Reducer = (state = initialState, action) => {
 					pass: action.result.data.pass, 
 					newPass: '',
 					status: action.result.data.status
-				}
+				},
+				loading: false,
+				loaded: true,
 			};	
 
 		case 'GET_NAME_MODAL_ACTION':
 			return { 
 				...state,
-				nameModal: action.text
+				textModal: action.text
 			};
 
 		case 'HANDLER_INPUTS_VALUE_ACTION':
-
 			// select выбора поискового сервиса
 			if(action.nameInput === 'selectSearch'){
 				return { 
@@ -224,6 +233,18 @@ const Reducer = (state = initialState, action) => {
 					searchDetails: handlerSearchFields(state, action.nameInput, action.value)
 				};
 			} 
+
+			// inputs редактирования categories 
+			else if(
+				action.nameInput === 'catName' ||
+				action.nameInput === 'catClass' ||
+				action.nameInput === 'catColor' ||
+				action.nameInput === 'catBGC'){
+				return {
+					...state,
+					categories: saveInputValueCategorie(state, action.nameInput, action.value)
+				}
+			}
 
 			// раные инпуты: редактирование page
 			else {
@@ -260,24 +281,55 @@ const Reducer = (state = initialState, action) => {
 				pageDetails: findEditablePage(state, action.idPage)
 			};
 
+		case 'ADD_NEW_PAGE_ACTION':
+			$("#modal-success").modal("show");
+			return { 
+				...state,
+				pages: addingPage(state, action.result.data),
+				loading: false,
+				loaded: true,
+				textModal: action.result.message
+			};
+
 		case 'UPDATE_EDIT_PAGE_ACTION':
+			//$("#modal-success").modal("show");
 			return { 
 				...state,
 				pageDetails: {},
-				//pages: updatingPages(state, action.obj)
-			};
-
-		case 'ADD_NEW_PAGE_ACTION':
-			return { 
-				...state,
-				pages: addingPage(state, action.obj)
+				loading: false,
+				loaded: true,
+				textModal: action.result.message
 			};
 
 		case 'DELETE_PAGE_ACTION':
+			$("#modal-success").modal("show");
 			return {
 				...state,
-				pages: deletingPage(state, action.idx)
-			}
+				pages: deletingPage(state, action.result.data._id),
+				loading: false,
+				loaded: true,
+				textModal: action.result.message
+			};
+
+		case 'ADD_NEW_CATEGORIE_ACTION':
+			$("#modal-success").modal("show");
+			//console.log(action.result)
+			return { 
+				...state,
+				categories: addingCategorie(state, action.result.data),
+				loading: false,
+				loaded: true,
+				textModal: action.result.message
+			};
+
+		case 'UPDATE_EDIT_CATEGORIE_ACTION':
+			$("#modal-success").modal("show");
+			return { 
+				...state,
+				loading: false,
+				loaded: true,
+				textModal: action.result.message
+			};
 
 		default:
 			return state

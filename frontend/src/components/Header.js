@@ -1,5 +1,6 @@
 import React from 'react';
 import $ from "jquery";
+import { NavLink } from "react-router-dom";
 
 import '../styles/Header.css';
 
@@ -8,9 +9,9 @@ const Header = (props) => {
 	const { 
 		auth, 
 		user, 
-		statusLogIn, 
-		getNameModal,
-		getDataByLogin } = props;
+		statusLogIn,
+		getDataByLogin,
+		handlerSearchService } = props;
 
 	return(
 		<nav className="navbar navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-dark bg-dark">
@@ -28,19 +29,33 @@ const Header = (props) => {
 	    	className="collapse navbar-collapse justify-content-md-between"
     		id="navbarsExample08">
 	      <ul className="navbar-nav">
-	        <li className="nav-item" onClick={()=>console.log('Settings')}>
-	          <span className="nav-link">
-	          	<i className="fas fa-cogs"></i> Settings
-	          	{/*<i className="fas fa-spin fa-cog"></i>*/}
-	          </span>
+	        <li className="nav-item">
+            <NavLink to="/">
+              <span 
+              	className="nav-link item-menu d-none" 
+	      				onClick={()=>{
+	      					$(".item-menu").toggleClass("d-none");
+	      					handlerSearchService();
+	      				}}>
+              	<i className="fas fa-home"></i> Home
+            	</span>
+            </NavLink>
+	        </li>
+	        <li className="nav-item">
+	        	<NavLink to="/settings/">
+	          	<span 
+	          		className="nav-link item-menu" 
+	      				onClick={()=>$(".item-menu").toggleClass("d-none")}>
+		          	<i className="fas fa-cogs"></i> Settings
+	          	</span>
+        		</NavLink>
 	        </li>
 	        <li 
 	        	className="nav-item" 
 	        	onClick={()=>{
-	        		getNameModal('Add');
-	        		$("#modal-editpage").modal("show")}}>
+	        		$("#modal-createpage").modal("show")}}>
 	          <span className="nav-link">
-		          <i className="fas fa-plus-square"></i> Add Page
+		          <i className="fas fa-plus-square"></i> Create Page
 	          </span>
 	        </li>
 	      </ul>
@@ -58,15 +73,16 @@ const Header = (props) => {
 	            <span 
 	            	className="dropdown-item" 
 		        		onClick={()=>{
-	        				getNameModal('Change password');
-		        			$("#modal-adduser").modal("show")}} >
+		        			$("#modal-edituser").modal("show")}} >
 	            	Change pass
 	            	</span>
-	            <span 
-	            	className="dropdown-item"
-	            	onClick={()=>statusLogIn(auth)}>
-	            	LogOut
-            	</span>
+	            <NavLink to="/">
+		            <span 
+		            	className="dropdown-item"
+		            	onClick={()=>statusLogIn(auth)}>
+		            	LogOut
+	            	</span>
+	            </NavLink>
 	          </div>
 	        </li>
 	        <li className="nav-item active">
@@ -87,7 +103,6 @@ const Header = (props) => {
 				      <button 
 				      	type="button" 
 		        		onClick={()=>{
-	        				getNameModal('Registration');
 		        			$("#modal-adduser").modal("show")}
 		        		} 
 				      	className="btn btn-sm btn-danger">
@@ -111,7 +126,7 @@ const Header = (props) => {
 					    </div>
 					    <div className="col">
 					      <button 
-					      	className="btn btn-sm btn-outline-success"
+					      	className="btn btn-sm btn-success"
 					      	type="button" 
 					      	onClick={()=>{
 					      		let login = $('#userLogin').val();
@@ -120,9 +135,6 @@ const Header = (props) => {
 					      			getDataByLogin(login);
 					      			login = '';
 					      			pass = '';
-					      		}else {
-					        		getNameModal('Enter all fields');
-					        		$("#modal-alert").modal("show")
 					      		}
 					      	}}>
 					      	LogIn
