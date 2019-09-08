@@ -64,11 +64,15 @@ const CreatePageModal = (props) => {
 
   const { 
     userID,
+    countPages,
     categories,
     addNewPage } = props;
 
   const validateForm = (obj) => {
-    
+
+    // если автозаполнено 0, то присваиваем значение длины pages[]
+    if(obj.orderNum === 0) obj.orderNum = countPages;
+
     // счётчик количества НЕкорректно заполненных полей
     let invalidCount = 0;
 
@@ -92,15 +96,16 @@ const CreatePageModal = (props) => {
       $('#namePage').val(''); 
       $('#linkPage').val(''); 
       $('#ctgrIdPage').val('');
-      $('#screenPage').val('');
+      $('#screenPage').val(''); 
+      $('#orderPage').val('');
 
-      //console.log(obj)
-      addNewPage(obj);
+      console.log(obj)
+      //addNewPage(obj);
       $("#modal-createpage").modal("hide"); // закрываем окно
     }
   } 
 
-  let categoriesList = <h3>{ERROR_TEXT}</h3>;
+  let categoriesList = ERROR_TEXT;
 
   if(categories.length !== 0){
     categoriesList = categories.map((item, index)=>{
@@ -133,42 +138,44 @@ const CreatePageModal = (props) => {
           <div className="modal-body">
 
             <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
-              <div className="form-label-group">
+
+                <label htmlFor="namePage">Name Page</label>
                 <input
                   type="text" id="namePage" className="form-control" 
                   placeholder="enter Name Page" 
-                  aria-describedby="editPage" />
-                <label htmlFor="name">Name Page</label>
-              </div>
+                  aria-describedby="addPage" />
 
-              <div className="form-label-group">
+                <label htmlFor="linkPage">Link Page</label>
                 <input
                   type="text" id="linkPage" className="form-control" 
                   placeholder="enter Link Page" 
-                  aria-describedby="editPage" />
-                <label htmlFor="link">Link Page</label>
-              </div>
+                  aria-describedby="addPage" />
 
-              <div className="form-label-group">
+                <label htmlFor="screenPage">Link Preview Page</label>
                 <input
                   type="text" id="screenPage" 
                   className="form-control" 
                   placeholder="enter Link Preview Page" 
-                  aria-describedby="editPage" />
-                <label htmlFor="screen">Link Preview Page</label>
-              </div>
+                  aria-describedby="addPage" />
 
-              <div className="form-label-group">
+                <label htmlFor="ctgrIdPage">Select Cathegorie</label>
                 <select
                   id="ctgrIdPage" 
-                  className="form-control">
+                  className="form-control" 
+                  aria-describedby="addPage">
                    {categoriesList}
                 </select>
-                <label htmlFor="ctgrId">Select Cathegorie</label>
-              </div>
+
+                <label htmlFor="orderPage">Order Page</label>
+                <input
+                  type="number" id="orderPage" 
+                  className="form-control" 
+                  placeholder={countPages+1}
+                  aria-describedby="addPage" />
+
               <button 
                 id="addPage"
-                className="btn btn-info btn-block" type="button"
+                className="btn btn-info btn-block mt-3" type="button"
                 onClick={(ev)=>validateForm(
                   {
                     name: $('#namePage').val(), 
@@ -176,10 +183,12 @@ const CreatePageModal = (props) => {
                     ctgrId: $('#ctgrIdPage').val(),
                     userId: userID,
                     screen: $('#screenPage').val(),
+                    orderNum: Number($('#orderPage').val())
                   }
                 )}>
                 Create Page
-              </button>  
+              </button>
+
             </form>
           </div>
         </div>
@@ -223,7 +232,7 @@ const EditPageModal = (props) => {
     }
   } 
 
-	let categoriesList = <h3>{ERROR_TEXT}</h3>;
+	let categoriesList = ERROR_TEXT;
   
 	if(categories.length !== 0){
     categoriesList = categories.map((item, index)=>{
@@ -257,12 +266,14 @@ const EditPageModal = (props) => {
           <div className="modal-body">
 
             <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
+
 						  <div className="form-label-group">
 						    <input
                   onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
                   value={pageDetails.name}
 						    	type="text" id="name" className="form-control" 
-						    	placeholder="enter Name Page" />
+						    	placeholder="enter Name Page"
+                  aria-describedby="editPage" />
 						    <label htmlFor="name">Name Page</label>
 						  </div>
 
@@ -271,7 +282,8 @@ const EditPageModal = (props) => {
                   value={pageDetails.link} 
                   onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
 						    	type="text" id="link" className="form-control" 
-						    	placeholder="enter Link Page" />
+						    	placeholder="enter Link Page"
+                  aria-describedby="editPage" />
 						    <label htmlFor="link">Link Page</label>
 						  </div>
 
@@ -280,7 +292,8 @@ const EditPageModal = (props) => {
                   value={pageDetails.screen} 
                   onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
 						    	type="text" id="screen" className="form-control" 
-						    	placeholder="enter Link Preview Page"  />
+						    	placeholder="enter Link Preview Page"
+                  aria-describedby="editPage" />
 						    <label htmlFor="screen">Link Preview Page</label>
 						  </div>
 
@@ -288,11 +301,24 @@ const EditPageModal = (props) => {
 						  	<select
                   value={pageDetails.ctgrId}
                   onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
-  					    	id="ctgrId" className="form-control">
+  					    	id="ctgrId" className="form-control"
+                  aria-describedby="editPage" >
 					         {categoriesList}
 				      	</select>
 						    <label htmlFor="type">Select Cathegorie</label>
 						  </div>
+
+              <div className="form-label-group">
+                <input
+                  value={pageDetails.orderNum}
+                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
+                  type="number" id="orderNum" 
+                  className="form-control" 
+                  placeholder="order page"
+                  aria-describedby="editPage" />
+                <label htmlFor="orderNum">Order Page</label>
+              </div>
+
 						  <button 
                 id="editPage"
                 className="btn btn-info btn-block" type="button"
@@ -306,7 +332,8 @@ const EditPageModal = (props) => {
                     ctgrColor: pageDetails.ctgrColor,
                     ctgrBGC: pageDetails.ctgrBGC,
                     userId: pageDetails.userId,
-                    screen: pageDetails.screen
+                    screen: pageDetails.screen,
+                    orderNum: Number(pageDetails.orderNum)
                   }
                 )}>
                 Save Page Changes

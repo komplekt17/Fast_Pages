@@ -8,17 +8,9 @@ const SearchPanel = (props) => {
 	const { 
 		search, 
 		searchDetails, 
-		handlerInputsValue,
-		handlerSearchService } = props;
+		handlerInputsValue } = props;
 
-	const { querySearch, linkSearch } = searchDetails;
-
-	// получение selectSearch из класса
-	const getServiceName = (nameClass) => {
-		const arr = nameClass.split(" ");
-		//console.log(arr[0]);
-		return arr[0];
-	}
+	const { selectSearch, querySearch, linkSearch } = searchDetails;
 
 	let searchList = ERROR_TEXT;
 	
@@ -40,12 +32,13 @@ const SearchPanel = (props) => {
 				<div className="col-12 col-lg-8 offset-lg-2 input-group">
 					<div className="input-group-prepend">
 					    <select
+					    	onClick={()=>$('#selectSearch').val('')}
 					    	onChange={(ev) => {
-					    		handlerInputsValue(getServiceName(ev.target.className), ev.target.id);
-					    		handlerSearchService()
+					    		handlerInputsValue(ev.target.value, ev.target.id);
 					    	}}
 					    	id="selectSearch"
-					    	className={"google form-control"}>
+					    	value={selectSearch}
+					    	className={selectSearch}>
 					        {searchList}
 			      	</select>
 		  			</div>

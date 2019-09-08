@@ -29,6 +29,7 @@ router.route('/add').post((req, res) => {
   const ctgrBGC = '';
   const userId = req.body.userId;
   const screen = req.body.screen;
+  const orderNum = req.body.orderNum;
 
   const newPage = new Page({
     name,
@@ -38,7 +39,8 @@ router.route('/add').post((req, res) => {
     ctgrColor,
     ctgrBGC,
     userId,
-    screen
+    screen,
+    orderNum
   });
 
   newPage
@@ -75,6 +77,7 @@ router.route('/update/:id').put((req, res) => {
     page.ctgrBGC = req.body.ctgrBGC;
     page.userId = req.body.userId;
     page.screen = req.body.screen;
+    page.orderNum = req.body.orderNum;
 
     page.save()
       .then(() => {
@@ -85,6 +88,7 @@ router.route('/update/:id').put((req, res) => {
         })
       })
       .catch(error => {
+        console.log(error)
         return res.status(400).json({
           error,
           message: 'Page not updated!'

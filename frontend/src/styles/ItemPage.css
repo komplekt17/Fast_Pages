@@ -1,6 +1,6 @@
 
 .page-body{
-	padding: 5px;
+	padding: 2px 5px;
 }
 
 .card{
@@ -27,7 +27,6 @@
 
 .page-categorie{
 	position: relative;
-	/*position: absolute;*/
 	opacity: 1;
 	font-size: 12px;
 	color: #fff;

@@ -193,11 +193,11 @@ const updateEditPageAction = (objPage) => {
         });
       })
       .catch((error) => {
+        console.log(error);
         dispatch({
           type: "GET_DATA_FAILURE_ACTION",
           error: error
         });
-        console.log(error);
       })
   }
 };

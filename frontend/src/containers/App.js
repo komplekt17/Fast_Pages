@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import $ from "jquery";
 import "bootswatch/dist/superhero/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
@@ -39,15 +39,12 @@ import {
 
 import "../styles/App.css";
 
-class App extends React.Component {
+const App = (props) => {
 
-	componentDidMount = () => {
-
-		// очищаем от текста поле селекта после монтирования 
-		$('#selectSearch').val('');
-  };
-
-	render(){
+		useEffect(() => {
+	    // очищаем от текста поле селекта после монтирования 
+			$('#selectSearch').val('');
+  	});
 
 		const {
 			store,
@@ -64,7 +61,7 @@ class App extends React.Component {
 			addNewUserToApp,
 			addNewPageToApp,
 			addNewCategorieToApp,
-			deletePageToApp } = this.props;
+			deletePageToApp } = props;
 
 		const { 
 			pageDetails,
@@ -77,15 +74,6 @@ class App extends React.Component {
 			searchDetails,
 			search,
 			loading } = store;
-
-		// обработка фона селекта поиска
-		const handlerSearchService = () => {
-		  const name = $('#selectSearch').val();
-	   	$('#selectSearch').removeClass().addClass(name+" form-control");
-
-			// очищаем от текста поле селекта после клика по option 
-	   	$('#selectSearch').val('');
-		}
 
 		// фильтрация массива pages по значению
 		// активного фильтра state.filter  
@@ -120,11 +108,30 @@ class App extends React.Component {
 			return pages;
 		}
 
+		const getSortedArray = (arr, nameArr) => {
+			// по возрастанию
+	    //const  kk = [...arr].sort((a, b) => (a.orderNum < b.orderNum) * 2 - 1);
+	    if(nameArr === 'Pages'){
+				// по убыванию
+		    const  kk = [...arr].sort((a, b) => (a.orderNum > b.orderNum) * 2 - 1);
+		    return kk;
+	    }
+	    else{
+	    	// по убыванию
+		    const  kk = [...arr].sort((a, b) => (a.catName > b.catName) * 2 - 1);
+		    return kk;
+	    }
+	  };
+
+	  const sortedPages = getSortedArray(pages, 'Pages');
+
+	  const sortedCategories = getSortedArray(categories, 'Categories');
+
 		// определяем массив видимых pages для рендеринга
 		// согласно выбранного фильтра
 		let normalizePages;
-		if(categories.length === 0) normalizePages = pages; 
-		else normalizePages = getPagesArr(pages, categories)
+		if(categories.length === 0) normalizePages = sortedPages; 
+		else normalizePages = getPagesArr(sortedPages, categories)
 
 		const visibleItems = filterNotes(normalizePages, filter);
 
@@ -134,14 +141,13 @@ class App extends React.Component {
 		    <Router>
 					<NavigationPanel 
 		    		auth={auth} 
-						categories={categories} 
+						categories={sortedCategories} 
 						handlerFilter={handlerFilterToApp} />
 		    	<Header 
 		    		auth={auth} 
 		    		user={userProfile}
 		    		getDataByLogin={getDataByUserLoginToApp}
-		    		statusLogIn={statusLogInToApp}
-  					handlerSearchService={handlerSearchService} />
+		    		statusLogIn={statusLogInToApp} />
       		{loading ? <Loader /> : null}
           <Switch>
           	<Route
@@ -150,7 +156,7 @@ class App extends React.Component {
 	            render={() => (
 					    	<SettingsPanel 
 		    					user={userProfile} 
-		    					categories={categories} 
+		    					categories={sortedCategories} 
 		    					countPages={pages.length} 
 		    					countCats={categories.length}
             			handlerInputsValue={handlerInputsValueToApp}
@@ -169,8 +175,7 @@ class App extends React.Component {
 									deletePage={deletePageToApp} 
 					  			search={search}
 					  			searchDetails={searchDetails} 
-			            handlerInputsValue={handlerInputsValueToApp}
-			            handlerSearchService={handlerSearchService} />
+			            handlerInputsValue={handlerInputsValueToApp} />
 	            )}
           	/>
           </Switch>
@@ -178,13 +183,14 @@ class App extends React.Component {
 	        	textModal={textModal} />
 	        <SuccessMessage  
 	        	textModal={textModal} />
-	        <CreatePageModal
-	        	categories={categories} 
+	        <CreatePageModal 
+  					countPages={pages.length}
+	        	categories={sortedCategories} 
             addNewPage={addNewPageToApp}
             userID={userProfile.userID}/>
 	        <EditPageModal
 	        	pageDetails={pageDetails}
-	        	categories={categories}
+	        	categories={sortedCategories}
             handlerInputsValue={handlerInputsValueToApp}
             updateEditPage={updateEditPageToApp}/>
 	        <CreateUserModal 
@@ -193,7 +199,6 @@ class App extends React.Component {
             addNewUser={addNewUserToApp}/>
 		    </Router>
 	  );
-  }
 }
 
 const mapStateToProps = (state) => {

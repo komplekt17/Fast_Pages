@@ -23,9 +23,14 @@ const ItemPage = (props) => {
 				key={index} data-category={item.ctgrId}>
 	      	<div className="card">
 	      		<div 
-	      			className="page-categorie px-2" 
-	      			style={{backgroundColor: item.ctgrBGC, color: item.ctgrColor}}>
-	      			{item.ctgrClass}
+	      			style={{backgroundColor: item.ctgrBGC, color: item.ctgrColor}} 
+	      			className="page-categorie px-2 d-flex justify-content-between">
+		      		<div>
+		      			{item.ctgrClass}
+		      		</div>
+		      		<div>
+		      			{item.orderNum}
+		      		</div>
 	      		</div>
 	      		{
 	      			auth ?

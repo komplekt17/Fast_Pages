@@ -33,6 +33,10 @@ const pagesSchema = new Schema({
   	type: String, 
   	required: true, 
   	trim: true 
+  },
+  orderNum: { 
+    type: Number, 
+    required: true
   }
 }, {
   timestamps: true,

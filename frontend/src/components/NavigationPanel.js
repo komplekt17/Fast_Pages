@@ -1,4 +1,5 @@
 import React from 'react';
+import $ from "jquery";
 import Flickity from 'react-flickity-component'
 import {ERROR_TEXT} from '../constants';
 
@@ -12,6 +13,15 @@ const flickityOptions = {
 }
 
 const NavigationPanel = ({ auth, categories, handlerFilter }) => {
+
+  // change is-checked class on NavigationPanel
+  $('.site-header').each( function( i, navGroup ) {
+    var $navGroup = $( navGroup );
+    $navGroup.on( 'click', '.carousel-cell', function() {
+      $navGroup.find('.is-checked').removeClass('is-checked');
+      $( this ).addClass('is-checked');
+    });
+  });
 
   let navList = ERROR_TEXT;
   if(categories.length !== 0){

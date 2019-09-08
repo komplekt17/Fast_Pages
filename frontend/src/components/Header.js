@@ -10,8 +10,7 @@ const Header = (props) => {
 		auth, 
 		user, 
 		statusLogIn,
-		getDataByLogin,
-		handlerSearchService } = props;
+		getDataByLogin } = props;
 
 	return(
 		<nav className="navbar navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-dark bg-dark">
@@ -35,7 +34,6 @@ const Header = (props) => {
               	className="nav-link item-menu d-none" 
 	      				onClick={()=>{
 	      					$(".item-menu").toggleClass("d-none");
-	      					handlerSearchService();
 	      				}}>
               	<i className="fas fa-home"></i> Home
             	</span>

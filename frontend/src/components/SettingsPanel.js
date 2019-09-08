@@ -37,14 +37,14 @@ const SettingsPanel = (props) => {
 		      	<div><h4>Total stats: pages - {countPages}, categories - {countCats}</h4></div>
 		      </nav>
 
-					<ListCategories 
-						categories={categories}
-						handlerInputsValue={handlerInputsValue}
-						updateEditCategorie={updateEditCategorie} />
 					<FormAddNewCategorie 
   					userID={user.userID}
 						addNewCategorie={addNewCategorie}
 						handlerInputsValue={handlerInputsValue} />
+					<ListCategories 
+						categories={categories}
+						handlerInputsValue={handlerInputsValue}
+						updateEditCategorie={updateEditCategorie} />
 
 		    </div>
 	  	</div>

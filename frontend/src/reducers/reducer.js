@@ -6,7 +6,8 @@ const initialState = {
 	auth: false,
 	textModal: '', // названия header/button ModalMassages
 	pageDetails: {},
-	searchDetails: { // поисковый запрос
+	// поисковый запрос
+	searchDetails: { 
 		selectSearch:'google', 
 		linkSearch:'https://www.google.com/search?q=', 
 		querySearch: ''
@@ -35,16 +36,16 @@ const initialState = {
 		{_id:'5d636c50349128976d098072', catName: 'SocialNets', catClass: 'socialnets', catColor: '#000000', catBGC: '#008040', userId:''}
 	],
 	pages: [
-		{_id: '5d6409f4349128976d09807c', name: 'N-0', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d09807d', name: 'N-1', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d09807e', name: 'N-2', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d09807f', name: 'N-3', link: link, ctgrId: '5d636c50349128976d09806c', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d098080', name: 'N-4', link: link, ctgrId: '5d636c50349128976d09806b', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d098081', name: 'N-5', link: link, ctgrId: '5d636c50349128976d09806b', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d098082', name: 'N-6', link: link, ctgrId: '5d636c50349128976d09806d', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d098083', name: 'N-7', link: link, ctgrId: '5d636c50349128976d09806d', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d098084', name: 'N-8', link: link, ctgrId: '5d636c50349128976d09806e', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img},
-		{_id: '5d6409f4349128976d098085', name: 'N-9', link: link, ctgrId: '5d636c50349128976d09806e', ctgrClass: '', userId: '', screen: img}
+		{_id: '5d6409f4349128976d09807c', name: 'N-0', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 10},
+		{_id: '5d6409f4349128976d09807d', name: 'N-1', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 1},
+		{_id: '5d6409f4349128976d09807e', name: 'N-2', link: link, ctgrId: '5d636c50349128976d09806a', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 2},
+		{_id: '5d6409f4349128976d09807f', name: 'N-3', link: link, ctgrId: '5d636c50349128976d09806c', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 3},
+		{_id: '5d6409f4349128976d098080', name: 'N-4', link: link, ctgrId: '5d636c50349128976d09806b', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 4},
+		{_id: '5d6409f4349128976d098081', name: 'N-5', link: link, ctgrId: '5d636c50349128976d09806b', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 5},
+		{_id: '5d6409f4349128976d098082', name: 'N-6', link: link, ctgrId: '5d636c50349128976d09806d', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 6},
+		{_id: '5d6409f4349128976d098083', name: 'N-7', link: link, ctgrId: '5d636c50349128976d09806d', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 7},
+		{_id: '5d6409f4349128976d098084', name: 'N-8', link: link, ctgrId: '5d636c50349128976d09806e', ctgrClass: '', ctgrColor: '', ctgrBGC: '', userId: '', screen: img, orderNum: 8},
+		{_id: '5d6409f4349128976d098085', name: 'N-9', link: link, ctgrId: '5d636c50349128976d09806e', ctgrClass: '', userId: '', screen: img, orderNum: 9}
 	]
 }
 
@@ -98,12 +99,12 @@ const saveInputValueCategorie = (state, nameInput, valueArr) => {
 
 // обработчик полей SearchPanel
 const handlerSearchFields = (state, name, value) => {
-
 	const objectSearch = state.searchDetails;
 	let arr, idx, link;
 
 	// только для input selectSearch
 	if(name === 'selectSearch'){
+	console.log(name, value)
 		arr = state.search.slice();
 
 	 	// получаем index элемента массива search с .service === name
