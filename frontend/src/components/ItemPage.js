@@ -9,7 +9,8 @@ const ItemPage = (props) => {
 	const { 
 		auth, 
 		pages,
-		getEditablePage, 
+		getEditablePage,  
+		getNormalizeClass,
 		deletePage } = props;
 
 	let listItems = <h3>{ERROR_TEXT}</h3>;
@@ -19,7 +20,8 @@ const ItemPage = (props) => {
 		listItems = pages.map((item, index)=>{
 			
 			return (
-				<div className={"px-1 mb-4 col-6 col-sm-6 col-md-3 col-lg-2 "+item.ctgrClass}
+				<div 
+					className={"px-1 mb-4 col-6 col-sm-6 col-md-3 col-lg-2 "+getNormalizeClass(item.ctgrClass)}
 				key={index} data-category={item.ctgrId}>
 	      	<div className="card">
 	      		<div 

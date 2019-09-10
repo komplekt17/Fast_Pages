@@ -1,6 +1,12 @@
 import React  from 'react';
 import $ from "jquery";
-import {ERROR_TEXT} from '../constants';
+import { Link } from "react-router-dom";
+import {
+  ERROR_TEXT,
+  PATTERN_TEXT,
+  PATTERN_LINK,
+  PATTERN_EMAIL,
+  PATTERN_PASS } from '../constants';
 
 import '../styles/ModalMessages.css';
 
@@ -66,44 +72,9 @@ const CreatePageModal = (props) => {
     userID,
     countPages,
     categories,
-    addNewPage } = props;
-
-  const validateForm = (obj) => {
-
-    // если автозаполнено 0, то присваиваем значение длины pages[]
-    if(obj.orderNum === 0) obj.orderNum = countPages;
-
-    // счётчик количества НЕкорректно заполненных полей
-    let invalidCount = 0;
-
-    for(var key in obj){
-
-      if(obj[key] === null || obj[key] === ''){
-        document.getElementById(key).classList.remove("is-invalid", "is-valid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.remove("text-danger", "text-success");
-        
-        document.getElementById(key).classList.add("is-invalid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.add("text-danger");
-
-        invalidCount += 1;
-      }
-    }
-      
-    if(invalidCount === 0){
-      // clear feilds
-      $('#namePage').val(''); 
-      $('#linkPage').val(''); 
-      $('#ctgrIdPage').val('');
-      $('#screenPage').val(''); 
-      $('#orderPage').val('');
-
-      console.log(obj)
-      //addNewPage(obj);
-      $("#modal-createpage").modal("hide"); // закрываем окно
-    }
-  } 
+    isValideField,
+    validateForm,
+    handlerInputsValue } = props;
 
   let categoriesList = ERROR_TEXT;
 
@@ -137,27 +108,61 @@ const CreatePageModal = (props) => {
           </div>
           <div className="modal-body">
 
-            <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
+            <form 
+              id="addPage" 
+              onSubmit={(e)=>e.preventDefault()} 
+              className="needs-validation" noValidate >
 
+              <div className="form-label-group">
                 <label htmlFor="namePage">Name Page</label>
-                <input
+                <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_TEXT;
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}
                   type="text" id="namePage" className="form-control" 
                   placeholder="enter Name Page" 
                   aria-describedby="addPage" />
+                  <div className="invalid-feedback">
+                    Please enter a page name (minimum 3 symbols, only digits or letters)
+                  </div>
+              </div>
 
+              <div className="form-label-group">
                 <label htmlFor="linkPage">Link Page</label>
                 <input
+                  onChange={(ev) => {
+                    const pattern = PATTERN_LINK;
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}
                   type="text" id="linkPage" className="form-control" 
                   placeholder="enter Link Page" 
                   aria-describedby="addPage" />
+                <div className="invalid-feedback">
+                  Please enter a preview link (http://....)
+                </div>
+              </div>
 
+              <div className="form-label-group">
                 <label htmlFor="screenPage">Link Preview Page</label>
                 <input
+                  onChange={(ev) => {
+                    const pattern = PATTERN_LINK;
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}
                   type="text" id="screenPage" 
                   className="form-control" 
                   placeholder="enter Link Preview Page" 
                   aria-describedby="addPage" />
+                <div className="invalid-feedback">
+                  Please enter a preview link (http://....)
+                </div>
+              </div>
 
+              <div className="form-label-group">
                 <label htmlFor="ctgrIdPage">Select Cathegorie</label>
                 <select
                   id="ctgrIdPage" 
@@ -165,27 +170,40 @@ const CreatePageModal = (props) => {
                   aria-describedby="addPage">
                    {categoriesList}
                 </select>
+                <div className="invalid-feedback">
+                  Please select a page categorie
+                </div>
+              </div>
 
+              <div className="form-label-group">
                 <label htmlFor="orderPage">Order Page</label>
                 <input
                   type="number" id="orderPage" 
                   className="form-control" 
                   placeholder={countPages+1}
                   aria-describedby="addPage" />
+                <div className="invalid-feedback">
+                  Please enter a page Order (minimum 3 symbols)
+                </div>
+              </div>
 
               <button 
-                id="addPage"
+                name="addPage"
                 className="btn btn-info btn-block mt-3" type="button"
-                onClick={(ev)=>validateForm(
-                  {
-                    name: $('#namePage').val(), 
-                    link: $('#linkPage').val(), 
-                    ctgrId: $('#ctgrIdPage').val(),
+                onClick={(ev)=>{
+                  let orderNum = Number($('#orderPage').val());
+                  // если автозаполнено 0, 
+                  //то присваиваем значение длины pages[]
+                  if(orderNum === 0) orderNum = countPages+1;
+                  validateForm({
+                    namePage: $('#namePage').val(), 
+                    linkPage: $('#linkPage').val(), 
+                    ctgrIdPage: $('#ctgrIdPage').val(),
                     userId: userID,
-                    screen: $('#screenPage').val(),
-                    orderNum: Number($('#orderPage').val())
-                  }
-                )}>
+                    screenPage: $('#screenPage').val(),
+                    orderNum: orderNum
+                  }, ev.target.name);
+                }}>
                 Create Page
               </button>
 
@@ -203,36 +221,10 @@ const EditPageModal = (props) => {
     categories, 
     pageDetails, 
     handlerInputsValue,
-    updateEditPage } = props;
+    isValideField,
+    validateForm } = props;
 
-  const validateForm = (obj) => {
-    
-    // счётчик количества НЕкорректно заполненных полей
-    let invalidCount = 0;
-
-    for(var key in obj){
-
-      if(obj[key] === null || obj[key] === ''){
-        // document.getElementById(key).classList.remove("is-invalid", "is-valid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.remove("text-danger", "text-success");
-        
-        // document.getElementById(key).classList.add("is-invalid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.add("text-danger");
-
-        invalidCount += 1;
-      }
-    }
-
-    if(invalidCount === 0){
-
-      updateEditPage(obj)
-      $("#modal-editpage").modal("hide") // закрываем окно
-    }
-  } 
-
-	let categoriesList = ERROR_TEXT;
+	let categoriesList = ERROR_TEXT; 
   
 	if(categories.length !== 0){
     categoriesList = categories.map((item, index)=>{
@@ -247,8 +239,10 @@ const EditPageModal = (props) => {
 	}
 
 	return(
-		<div className="modal fade" id="modal-editpage" tabIndex="-1" role="dialog" 
-	        aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div 
+      className="modal fade" id="modal-editpage" 
+      tabIndex="-1" role="dialog"
+      aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-success">
@@ -265,77 +259,105 @@ const EditPageModal = (props) => {
           </div>
           <div className="modal-body">
 
-            <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
+            <form 
+              id="editPage"
+              onSubmit={(e)=>e.preventDefault()} 
+              className="needs-validation" noValidate >
 
 						  <div className="form-label-group">
+                <label htmlFor="name">Name Page</label>
 						    <input
-                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
-                  value={pageDetails.name}
+                  value={pageDetails.name == null ? '' : pageDetails.name} 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_TEXT;
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}
 						    	type="text" id="name" className="form-control" 
 						    	placeholder="enter Name Page"
                   aria-describedby="editPage" />
-						    <label htmlFor="name">Name Page</label>
+                <div className="invalid-feedback">
+                  Please enter a page name (minimum 3 symbols, only digits or letters)
+                </div>
 						  </div>
 
 						  <div className="form-label-group">
+                <label htmlFor="link">Link Page</label>
 						    <input
-                  value={pageDetails.link} 
-                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
+                  value={pageDetails.link == null ? '' : pageDetails.link} 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_LINK
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}
 						    	type="text" id="link" className="form-control" 
 						    	placeholder="enter Link Page"
                   aria-describedby="editPage" />
-						    <label htmlFor="link">Link Page</label>
+                <div className="invalid-feedback">
+                  Please enter a preview link (http://....)
+                </div>
 						  </div>
 
 						  <div className="form-label-group">
+                <label htmlFor="screen">Link Preview Page</label>
 						    <input
-                  value={pageDetails.screen} 
-                  onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
+                  value={pageDetails.screen == null ? '' : pageDetails.screen} 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_LINK
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}
 						    	type="text" id="screen" className="form-control" 
 						    	placeholder="enter Link Preview Page"
                   aria-describedby="editPage" />
-						    <label htmlFor="screen">Link Preview Page</label>
+                <div className="invalid-feedback">
+                  Please enter a preview link (http://....)
+                </div>
 						  </div>
 
 						  <div className="form-label-group">
+                <label htmlFor="type">Select Cathegorie</label>
 						  	<select
-                  value={pageDetails.ctgrId}
+                  value={pageDetails.ctgrId == null ? '' : pageDetails.ctgrId}
                   onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
   					    	id="ctgrId" className="form-control"
                   aria-describedby="editPage" >
 					         {categoriesList}
 				      	</select>
-						    <label htmlFor="type">Select Cathegorie</label>
+                <div className="invalid-feedback">
+                  Please select a page categorie
+                </div>
 						  </div>
 
               <div className="form-label-group">
+                <label htmlFor="orderNum">Order Page</label>
                 <input
-                  value={pageDetails.orderNum}
+                  value={pageDetails.orderNum == null ? '' : pageDetails.orderNum}
                   onChange={(ev) => handlerInputsValue(ev.target.value, ev.target.id)}
                   type="number" id="orderNum" 
                   className="form-control" 
                   placeholder="order page"
                   aria-describedby="editPage" />
-                <label htmlFor="orderNum">Order Page</label>
+                <div className="invalid-feedback">
+                  Please enter a page Order (minimum 3 symbols)
+                </div>
               </div>
 
-						  <button 
-                id="editPage"
-                className="btn btn-info btn-block" type="button"
-                onClick={(ev)=>validateForm(
-                  {
-                    _id: pageDetails._id,
-                    name: pageDetails.name, 
-                    link: pageDetails.link, 
-                    ctgrId: pageDetails.ctgrId,
-                    ctgrClass: pageDetails.ctgrClass,
-                    ctgrColor: pageDetails.ctgrColor,
-                    ctgrBGC: pageDetails.ctgrBGC,
-                    userId: pageDetails.userId,
-                    screen: pageDetails.screen,
-                    orderNum: Number(pageDetails.orderNum)
-                  }
-                )}>
+						  <button
+                name="editPage"
+                className="btn btn-info btn-block mt-3" type="button"
+                onClick={(ev)=>validateForm({
+                  _id: pageDetails._id,
+                  name: pageDetails.name, 
+                  link: pageDetails.link, 
+                  ctgrId: pageDetails.ctgrId,
+                  ctgrClass: pageDetails.ctgrClass,
+                  ctgrColor: pageDetails.ctgrColor,
+                  ctgrBGC: pageDetails.ctgrBGC,
+                  userId: pageDetails.userId,
+                  screen: pageDetails.screen,
+                  orderNum: Number(pageDetails.orderNum)
+                }, ev.target.name)}>
                 Save Page Changes
               </button>
 						</form>
@@ -346,7 +368,12 @@ const EditPageModal = (props) => {
 	);
 }
 
-const CreateUserModal = ({addNewUser}) => {
+const CreateUserModal = (props) => {
+
+  const {
+    isValideField,
+    validateForm,
+    handlerInputsValue } = props;
 
 	return(
 		<div className="modal fade" id="modal-adduser" tabIndex="-1" role="dialog" 
@@ -366,44 +393,82 @@ const CreateUserModal = ({addNewUser}) => {
             </button>
           </div>
           <div className="modal-body">
-          <form className="form-signin" onSubmit={(e)=>e.preventDefault()}>
+
+            <form 
+              id="addUser" 
+              className="form-signin needs-validation" 
+              noValidate onSubmit={(ev)=>ev.preventDefault()}>
+
               <div className="form-label-group">
+                <label htmlFor="inputEmail">Email address</label>
                 <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_EMAIL
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}   
                   type="email" id="inputEmail" className="form-control" 
                   placeholder="Email address" required autoFocus/>
-                <label htmlFor="inputEmail">Email address</label>
+                <div className="invalid-feedback">
+                  Please enter a email (min 4 symbols)
+                </div>
               </div>
 
               <div className="form-label-group">
+                <label htmlFor="inputPassword">enter Password</label>
                 <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_PASS
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}  
                   type="password" id="inputPassword" className="form-control" 
                   placeholder="enter Password" required/>
-                <label htmlFor="inputPassword">enter Password</label>
+                <div className="invalid-feedback">
+                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                </div>
               </div>
 
               <div className="form-label-group">
+                <label htmlFor="repeatPassword">repeat Password</label>
                 <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_PASS
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}  
                   type="password" id="repeatPassword" 
                   className="form-control" 
                   placeholder="repeat Password" required/>
-                <label htmlFor="repeatPassword">repeat Password</label>
+                <div className="invalid-feedback">
+                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                </div>
               </div>
+
               <button
-                onClick={()=>{
+                name="addUser"
+                onClick={(ev)=>{
                   let login = $('#inputEmail').val();
                   let pass = $('#inputPassword').val();
                   let repeat = $('#repeatPassword').val()
                   if(login !== '' && pass !== '' && pass === repeat){
-                    addNewUser(login, pass);
-                    $('#inputEmail').val('');
-                    $('#inputPassword').val('');
-                    $('#repeatPassword').val('');
-                    $('#modal-adduser').modal('hide');
-                  }else alert('complete all fields')
+                    const objUser = {
+                      inputEmail: login, 
+                      inputPassword: pass,
+                      repeatPassword: repeat
+                    }
+                    validateForm(objUser, ev.target.name);
+                  }
                 }} 
-                className="btn btn-info btn-block" type="button"> 
+                className="btn btn-info btn-block mt-3" type="button"> 
                 Save
               </button>
+
+              <Link 
+                to="#" onClick={()=>alert('on development stage')}>
+                Forgot password?
+              </Link>
+
             </form>
           </div>
         </div>
@@ -412,7 +477,13 @@ const CreateUserModal = ({addNewUser}) => {
 	);
 }
 
-const EditUserModal = ({nameModal}) => {
+const EditUserModal = (props) => {
+
+  const {
+    user,
+    handlerInputsValue,
+    isValideField,
+    validateForm } = props;
 
   return(
     <div className="modal fade" id="modal-edituser" tabIndex="-1" role="dialog" 
@@ -433,35 +504,72 @@ const EditUserModal = ({nameModal}) => {
           </div>
           <div className="modal-body">
             <form 
+              id="editUser" 
               className="form-signin needs-validation" 
               noValidate onSubmit={(ev)=>ev.preventDefault()}>
 
               <div className="form-label-group">
+                <label htmlFor="inputOldPass">enter Old Password</label>
                 <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_PASS
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }} 
                   type="password" id="inputOldPass" className="form-control" 
                   placeholder="enter Old Password" required autoFocus/>
-                <label htmlFor="inputOldPass">enter Old Password</label>
+                <div className="invalid-feedback">
+                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                </div>
               </div>
 
               <div className="form-label-group">
+                <label htmlFor="inputNewPass">enter New Password</label>
                 <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_PASS
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}  
                   type="password" id="inputNewPass" className="form-control" 
                   placeholder="enter New Password" required/>
-                <label htmlFor="inputNewPass">enter New Password</label>
+                <div className="invalid-feedback">
+                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                </div>
               </div>
 
               <div className="form-label-group">
+                <label htmlFor="repeatNewPass">repeat New Password</label>
                 <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_PASS
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }}  
                   type="password" id="repeatNewPass" 
                   className="form-control" 
                   placeholder="repeat New Password" required/>
-                <label htmlFor="repeatNewPass">repeat New Password</label>
+                <div className="invalid-feedback">
+                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                </div>
               </div>
 
               <button 
-                onClick={()=>alert('Soon be')}
-                className="btn btn-info btn-block" type="button"> 
-                {/*data-dismiss="modal" aria-label="Close"*/}
+                name="editUser"
+                onClick={(ev)=>{
+                  let oldPass = $('#inputOldPass').val();
+                  let newPass = $('#inputNewPass').val();
+                  let repeat = $('#repeatNewPass').val()
+                  if(oldPass !== '' && newPass !== '' && newPass === repeat){
+                    const objUser = {
+                      _id: user.userID, 
+                      login: user.login, 
+                      pass: newPass
+                    };
+                    validateForm(objUser, ev.target.name);
+                  }
+                }} 
+                className="btn btn-info btn-block mt-3" type="button">
                 Save Changes
               </button>
             </form>

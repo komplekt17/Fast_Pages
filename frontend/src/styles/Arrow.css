@@ -1,0 +1,11 @@
+#toTop{
+    z-index: 3;
+    display:none;
+    padding:5px;
+    position:fixed;
+    bottom: 0;
+    right:50px;
+    cursor:pointer;
+    color: #00bc8c;
+    font-size:60px;
+}

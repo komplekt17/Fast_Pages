@@ -21,14 +21,14 @@ router.route('/').get((req, res) => {
 // добавление новой page
 router.route('/add').post((req, res) => {
   
-  const name = req.body.name;
-  const link = req.body.link;
-  const ctgrId = req.body.ctgrId;
+  const name = req.body.namePage;
+  const link = req.body.linkPage;
+  const ctgrId = req.body.ctgrIdPage;
   const ctgrClass = '';
   const ctgrColor = '';
   const ctgrBGC = '';
   const userId = req.body.userId;
-  const screen = req.body.screen;
+  const screen = req.body.screenPage;
   const orderNum = req.body.orderNum;
 
   const newPage = new Page({

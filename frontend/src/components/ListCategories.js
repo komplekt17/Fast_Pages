@@ -6,13 +6,14 @@ const ListCategories = (props) => {
 	const { 
 		categories,
 		updateEditCategorie,
+    getNormalizeClass,
 		handlerInputsValue } = props;
 
   const validateForm = (obj) => {
     
     // счётчик количества НЕкорректно заполненных полей
     let invalidCount = 0;
-		/**/
+
     for(var key in obj){
 
       if(obj[key] === null || obj[key] === ''){
@@ -34,7 +35,7 @@ const ListCategories = (props) => {
     }
   } 
 
-  let categoriesTable = <h3>{ERROR_TEXT}</h3>;
+  let categoriesTable = ERROR_TEXT;
 
   if(categories.length !== 0){
 
@@ -46,14 +47,13 @@ const ListCategories = (props) => {
             <input
               value={item.catName}
               onChange={(ev)=>{
-              	// отправляю 3 параметра,
+              	// необходимо отправить 3 параметра,
               	// но принимается 2 параметра,
               	// поэтому первый параметр массив
               	handlerInputsValue([ev.target.value, item._id], ev.target.name);
-              	//обрезаем пробелы и убираем заглавные буквы
-          			const catClassNew = ev.target.value.replace(/\s+/g, '').toLowerCase();
           			// обновляем поле catClass
-          			handlerInputsValue([catClassNew, item._id], 'catClass');
+          			handlerInputsValue(
+                  [getNormalizeClass(ev.target.value), item._id], 'catClass');
               }}
               name="catName" className="form-control"
               type="text"/>
@@ -63,7 +63,7 @@ const ListCategories = (props) => {
             <div 
             	className="py-1" 
             	style={{backgroundColor: item.catBGC, color: item.catColor}}>
-            	{item.catClass}
+            	{item.catName}
             </div>
         </td>
         <td className="text-center">
@@ -74,7 +74,7 @@ const ListCategories = (props) => {
             	)}
             	value={item.catColor}
 	            type="color" 
-	            name="catColor" className="form-control jscolor"/>
+	            name="catColor" className="form-control"/>
       		</div>	
         </td>
         <td className="text-center">
@@ -85,7 +85,7 @@ const ListCategories = (props) => {
             	}}
             	value={item.catBGC}
 	            type="color" 
-	            name="catBGC" className="form-control jscolor"/>
+	            name="catBGC" className="form-control"/>
       		</div>
         </td>
         <td className="text-center">

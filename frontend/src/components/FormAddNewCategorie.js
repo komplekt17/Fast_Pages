@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 import $ from "jquery";
 
-const FormAddNewCategorie = ({ addNewCategorie, userID }) => {
+const FormAddNewCategorie = (props) => {
+
+	const { 
+		userID,  
+		addNewCategorie,
+		getNormalizeClass } = props;
+
+	// state for id="catClass"
+	const [itemText, setText] = useState('cat Name');
+	const [itemColor, setColor] = useState('#fff');
+	const [itemBGC, setBGC] = useState('#000');
 
   const validateForm = (obj) => {
     
@@ -29,8 +39,8 @@ const FormAddNewCategorie = ({ addNewCategorie, userID }) => {
       $('#catBGC').val('');
       
       //console.log(obj, invalidCount)
-
       addNewCategorie(obj);
+
     }else alert('Enter all fields');
   }
 
@@ -42,7 +52,7 @@ const FormAddNewCategorie = ({ addNewCategorie, userID }) => {
 	        <thead>
 	          <tr>
 	            <th scope="col" className="text-left">Categorie Name</th>
-	            <th scope="col" className="text-center">Class Name</th>
+	            <th scope="col" className="text-center">Visible Name</th>
 	            <th scope="col" className="text-center">Text Color</th>
 	            <th scope="col" className="text-center">Background</th>
 	            <th scope="col" className="text-center">Action</th>
@@ -53,19 +63,22 @@ const FormAddNewCategorie = ({ addNewCategorie, userID }) => {
 			        <td className="text-left">
 			      		<div className="input-group input-group-sm">
 			            <input
+			            	onChange={(ev)=>setText(ev.target.value)}
 			              id="catName" className="form-control"
 			              type="text"/>
 			      		</div>	
 			        </td>
 			        <td className="text-center">
 			          <div 
+			          	style={{backgroundColor: itemBGC, color: itemColor}}
 			          	className="py-1" id="catClass">
-			            Class Name
+			            {itemText}
 			      		</div>	
 			        </td>
 			        <td className="text-center">
 			      		<div className="input-group input-group-sm">
 				          <input
+			            	onChange={(ev)=>setColor(ev.target.value)}
 				            type="color" 
 				            id="catColor" className="form-control"/>
 			      		</div>	
@@ -73,6 +86,7 @@ const FormAddNewCategorie = ({ addNewCategorie, userID }) => {
 			        <td className="text-center">
 			      		<div className="input-group input-group-sm">
 				          <input
+			            	onChange={(ev)=>setBGC(ev.target.value)}
 				            type="color" 
 				            id="catBGC" className="form-control"/>
 			      		</div>
@@ -82,7 +96,7 @@ const FormAddNewCategorie = ({ addNewCategorie, userID }) => {
 				        		onClick={(ev)=>validateForm(
 		                  {
 		                    catName: $('#catName').val(), 
-		                    catClass: $('#catName').val().replace(/\s+/g, '').toLowerCase(),
+		                    catClass: getNormalizeClass($('#catName').val()),
 		                    catColor: $('#catColor').val(),
 		                    catBGC: $('#catBGC').val(),
 		                    userId: userID

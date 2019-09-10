@@ -23,7 +23,7 @@ router.route('/').get((req, res) => {
 // получение юзера по логину, 
 // а затем pages и categories по ID полученного юзера
 router.route('/:login').get((req, res) => {
-
+    //console.log(req.params)
     let result = {user: '', pages: '', categories: ''}
 
     User.findOne({login: req.params.login}, (error, user) =>{
@@ -32,7 +32,7 @@ router.route('/:login').get((req, res) => {
         }
         Page.find({userId: user._id}, (error, pages) => {
             for(var key in result){
-                if(key === 'pages') result[key] = pages
+                if(key === 'pages') result[key] = pages 
             }
         })
         .catch(error => {
@@ -53,10 +53,10 @@ router.route('/:login').get((req, res) => {
             })
         })
         .then(() => {
-            //console.log('result string_59', result)
+            //console.log('result string_56', result)
             return res.status(200).json({
                 success: true,
-                data: result
+                data: result  
             })
         })
     })
@@ -70,19 +70,20 @@ router.route('/:login').get((req, res) => {
 
 // добавление нового юзера
 router.route('/add').post((req, res) => {
-  const login = req.body.login;
-  const pass = req.body.pass;
+  //console.log(req.body)
+  const login = req.body.inputEmail;
+  const pass = req.body.inputPassword;
   const status = 'user';
 
   const newUser = new User({login, pass, status});
-
+  //console.log('string_78', newUser)
   newUser
   	.save()
     .then(() => {
     	return res.status(200).json({
     		success: true,
             data: newUser,
-            message: 'User created!'
+            message: 'User was created successful!'
     	})
     })
     .catch(error => {
@@ -91,6 +92,37 @@ router.route('/add').post((req, res) => {
     		message: 'User not created!'
     	})
     });
+});
+
+// обновление user
+router.route('/update/:id').put((req, res) => {
+  //console.log(req.body)
+  User.findOne({ _id: req.params.id }, (error, user) => {
+    if (error) {
+      return res.status(404).json({
+          error,
+          message: 'User not found!',
+      })
+    }
+    user.login = req.body.login;
+    user.pass = req.body.pass;
+
+    user.save()
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          data: user,
+          message: 'Password was updated successful!'
+        })
+      })
+      .catch(error => {
+        console.log(error)
+        return res.status(400).json({
+          error,
+          message: 'User not updated!'
+        })
+      });
+  })
 });
 
 module.exports = router;

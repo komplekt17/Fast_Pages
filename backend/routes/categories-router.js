@@ -51,7 +51,7 @@ router.route('/add').post((req, res) => {
     catBGC,
     userId
   });
-  console.log('string 60: ', newCategorie)
+  //console.log('string 60: ', newCategorie)
 
   newCategorie
     .save()

@@ -13,7 +13,7 @@ const Header = (props) => {
 		getDataByLogin } = props;
 
 	return(
-		<nav className="navbar navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-dark bg-dark">
+		<nav className="navbar navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-dark bg-dark sticky-top">
       <button 
         className="navbar-toggler" 
         type="button" data-toggle="collapse" 

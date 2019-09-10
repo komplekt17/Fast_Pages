@@ -1,14 +1,16 @@
 import React from 'react';
 import SearchPanel  from '../components/SearchPanel';
 import ItemPage from './ItemPage';
+import Arrow from "./Arrow";
 
 const ListPages = (props) => {
 
 	const { 
 		auth,
-		pages,
+		pages, 
+		deletePage,
 		getEditablePage, 
-		deletePage, 
+		getNormalizeClass,
 		search,
 		searchDetails,
 		handlerInputsValue,
@@ -24,8 +26,10 @@ const ListPages = (props) => {
 			<ItemPage
 				auth={auth} 
 				pages={pages}
+				deletePage={deletePage}
 				getEditablePage={getEditablePage}
-				deletePage={deletePage} />
+				getNormalizeClass={getNormalizeClass} />
+			<Arrow />	
   	</div>
 	);
 } 

@@ -15,11 +15,12 @@ const SettingsPanel = (props) => {
 		countCats,
 		handlerInputsValue,
 		addNewCategorie,
+		getNormalizeClass,
 		updateEditCategorie } = props;
 
 	return(
 		<div className="bg-light">
-			<div className="d-flex bg-dark" id="wrapper">
+			<div className="d-flex bg-dark toggled" id="wrapper">
 
 				<SideBarCategories user={user}/>
 
@@ -31,8 +32,8 @@ const SettingsPanel = (props) => {
 		      			$(".menu-switch").toggleClass("d-none")
 		      		}} 
 		      		id="menu-toggle">
-			      		<i className="menu-switch d-none fas fa-angle-double-right"></i>
-			      		<i className="menu-switch fas fa-angle-double-left"></i>
+			      		<i className="menu-switch fas fa-angle-double-right"></i>
+			      		<i className="menu-switch d-none fas fa-angle-double-left"></i>
 		      	</div>
 		      	<div><h4>Total stats: pages - {countPages}, categories - {countCats}</h4></div>
 		      </nav>
@@ -40,9 +41,11 @@ const SettingsPanel = (props) => {
 					<FormAddNewCategorie 
   					userID={user.userID}
 						addNewCategorie={addNewCategorie}
+  					getNormalizeClass={getNormalizeClass}
 						handlerInputsValue={handlerInputsValue} />
 					<ListCategories 
 						categories={categories}
+  					getNormalizeClass={getNormalizeClass}
 						handlerInputsValue={handlerInputsValue}
 						updateEditCategorie={updateEditCategorie} />
 

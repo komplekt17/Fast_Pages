@@ -5,6 +5,7 @@ const port = 'http://localhost:5000';
 // получение юзера по логину
 const getDataByUserLoginAction = (login) => {
   return dispatch => {
+    //console.log(login)
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
@@ -30,15 +31,15 @@ const getDataByUserLoginAction = (login) => {
 };
 
 // добавление нового юзера
-const addNewUserAction = (login, pass) => {
+const addNewUserAction = (objUser) => {
+  //console.log(objUser);
   return dispatch => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    const user = {login: login, pass: pass}
-    axios.post(`${port}/users/add`, user)
+    axios.post(`${port}/users/add`, objUser)
       .then(response => {
-        //console.log(res.data.id);
+        //console.log(response.data);
         dispatch({
           type: "ADD_NEW_USER_ACTION",
           result: response.data
@@ -53,6 +54,31 @@ const addNewUserAction = (login, pass) => {
       })
   }
 }
+
+// обработчик обновления user
+const updateEditUserAction = (objUser) => {
+  const id = objUser._id;
+  //console.log(objUser)
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.put(`${port}/users/update/${id}`, objUser)
+      .then(response => {
+        dispatch({
+          type: "UPDATE_USER_ACTION",
+          result: response.data
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch({
+          type: "GET_DATA_FAILURE_ACTION",
+          error: error
+        });
+      })
+  }
+};
 
 // обработчик статуса логина (залогинен или нет User)
 const statusLogInAction = (status) => {
@@ -204,6 +230,7 @@ const updateEditPageAction = (objPage) => {
 
 // обработчик обновления редактируемой page
 const deletePageAction = (idx) => {
+  //console.log(idx)
   return dispatch => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
@@ -281,6 +308,7 @@ export {
   getDataByUserLoginAction,
   statusLogInAction,
   getEditablePageAction, 
+  updateEditUserAction,
   updateEditPageAction,
   updateEditCategorieAction,
   addNewUserAction,
