@@ -21,7 +21,7 @@ const ItemPage = (props) => {
 			
 			return (
 				<div 
-					className={"px-1 mb-4 col-6 col-sm-6 col-md-3 col-lg-2 "+getNormalizeClass(item.ctgrClass)}
+					className={"px-1 mb-4 col-6 col-sm-4 col-md-3 col-lg-2 "+getNormalizeClass(item.ctgrClass)}
 				key={index} data-category={item.ctgrId}>
 	      	<div className="card">
 	      		<div 

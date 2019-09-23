@@ -111,19 +111,24 @@ const ListCategories = (props) => {
 
 	return(
 		<div className="container">
-      <h1 className="mt-2">Edit categories</h1>
-      <table className="table table-hover table-dark table-sm">
-        <thead>
-          <tr>
-            <th scope="col" className="text-left">Categorie Name</th>
-            <th scope="col" className="text-center">Class Name</th>
-            <th scope="col" className="text-center">Text Color</th>
-            <th scope="col" className="text-center">Background</th>
-            <th scope="col" className="text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>{categoriesTable}</tbody>
-      </table>
+      {categories.length !== 0 ? 
+        <div>
+          <h1 className="mt-2">Edit categories</h1>
+          <table className="table table-hover table-dark table-sm">
+            <thead>
+              <tr>
+                <th scope="col" className="text-left">Categorie Name</th>
+                <th scope="col" className="text-center">Class Name</th>
+                <th scope="col" className="text-center">Text Color</th>
+                <th scope="col" className="text-center">Background</th>
+                <th scope="col" className="text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody>{categoriesTable}</tbody>
+          </table>
+        </div>
+      : '' 
+      }
     </div>
 	);
 }

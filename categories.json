@@ -1,0 +1,13 @@
+{"_id":"5d636c50349128976d09806a","catName":"Banking","catClass":"banking","userId":"5d595b728883fc03fcfe0683","catBGC":"#8080c0","catColor":"#ffffff"},
+{"_id":"5d636c50349128976d09806b","catName":"Torrents","catClass":"torrents","userId":"5d595b728883fc03fcfe0683","catBGC":"#ff8080","catColor":"#000000"},
+{"_id":"5d636c50349128976d09806c","catName":"AudioBooks","catClass":"audiobooks","userId":"5d595b728883fc03fcfe0683","catBGC":"#ff8000","catColor":"#800040"},
+{"_id":"5d636c50349128976d09806d","catName":"Web Wallets","catClass":"webwallets","userId":"5d595b728883fc03fcfe0683","catBGC":"#804040","catColor":"#ffffff"},
+{"_id":"5d636c50349128976d09806e","catName":"Freelance","catClass":"freelance","userId":"5d595b728883fc03fcfe0683","catBGC":"#408080","catColor":"#ffffff"},
+{"_id":"5d636c50349128976d09806f","catName":"Web Services","catClass":"webservices","userId":"5d595b728883fc03fcfe0683","catBGC":"#80ff80","catColor":"#000000"},
+{"_id":"5d636c50349128976d098070","catName":"Programming","catClass":"programming","userId":"5d595b728883fc03fcfe0683","catBGC":"#8000ff","catColor":"#ffffff"},
+{"_id":"5d636c50349128976d098071","catName":"Trading","catClass":"trading","userId":"5d595b728883fc03fcfe0683","catBGC":"#800000","catColor":"#ffffff"},
+{"_id":"5d636c50349128976d098072","catName":"SocialNets","catClass":"socialnets","userId":"5d595b728883fc03fcfe0683","catBGC":"#0080ff","catColor":"#ffffff"},
+{"_id":"5d636ff2349128976d098075","catName":"Web Library","catClass":"weblibrary","userId":"5d595b728883fc03fcfe0683","catBGC":"#008000","catColor":"#ffffff"},
+{"_id":"5d76311ed4e520152c7a73b5","catName":"Web Cabinets","catClass":"webcabinets","userId":"5d595b728883fc03fcfe0683","catBGC":"#000080","catColor":"#c0c0c0"},
+{"_id":"5d772a8d86874d09f466ae62","catName":"Mining","catClass":"mining","userId":"5d595b728883fc03fcfe0683","catBGC":"#ffff80","catColor":"#000000"},
+{"_id":"5d78048b775332217c8d1fea","catName":"MusicServices","catClass":"musicservices","userId":"5d595b728883fc03fcfe0683","catBGC":"#ff80ff","catColor":"#000000"}

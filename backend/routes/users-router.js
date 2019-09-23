@@ -180,7 +180,39 @@ router.route('/enter').post( async (req, res) => {
 
 // Восстановление пароля пользователя
 router.route('/reset-pass').post( async (req, res) => {
-    const { login } = req.body
+
+  const { inputLogin } = req.body
+  //console.log('string_185', inputLogin)
+
+  User.findOne({ login: inputLogin }, async (error, user) => {
+    if (error) {
+      const data = {error, message: 'User not found!'}
+      return res.status(404).json(data)
+    }
+    if (!user) {
+      const data = {error, message: `Your email ${inputLogin} not registered!`}
+      return res.status(201).json(data)
+    }
+    else{
+      user.pass = await User.getRundomPass();
+      await User.sendNewPassword(user);
+
+      user.save()
+        .then(() => {
+          const data = {
+            success: true,
+            //data: user,
+            message: `New Password sent on ${inputLogin}, Check spam`
+          } 
+          return res.status(201).json(data)
+        })
+        .catch(error => {
+          const data = {error, message: 'Email not found!'}
+          return res.status(400).json(data)
+          console.log(error)
+        });
+    }
+  })
 })
 
 // Просмотр авторизованного профиля пользователя

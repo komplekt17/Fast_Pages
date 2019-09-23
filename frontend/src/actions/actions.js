@@ -1,29 +1,31 @@
 import axios from 'axios';
-
-const port = 'http://localhost:5000';
+import { SERVER_URI } from '../constants';
 
 // получение юзера по логину
-const getDataByUserLoginAction = (login) => {
+const getDataByUserLoginAction = (objUser) => {
   return dispatch => {
-    //console.log(login)
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
     // const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
     // const targetUrl = 'http://www.skart-info.ru/JSONS/fastpages.json';
     // axios.get(proxyUrl+targetUrl)
-    axios.get(`${port}/users/${login}`)
+    // axios.post(`${SERVER_URI}/users/login`, objUser)
+    axios.post(`${SERVER_URI}/users/enter`, objUser)
       .then(response => {
+        //console.log(response.data)
         dispatch({
           type: "GET_DATA_BY_USER_LOGIN_ACTION",
-          result: response.data
+          result: response,
+          //oldPass: objUser.pass
           // result: response
         });
       })
-      .catch((error) => {
+      .catch( error => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
-          error: error
+          type: "LOAD_FAILURE_DATA_ACTION",
+          error: error,
+          message: 'error getting data from server'
         });
         console.log(error);
       })
@@ -31,23 +33,23 @@ const getDataByUserLoginAction = (login) => {
 };
 
 // добавление нового юзера
-const addNewUserAction = (objUser) => {
-  //console.log(objUser);
+const addNewUserAction = (objNewUser) => {
+  //console.log(objNewUser);
   return dispatch => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.post(`${port}/users/add`, objUser)
+    axios.post(`${SERVER_URI}/users/new`, objNewUser)
       .then(response => {
         //console.log(response.data);
         dispatch({
           type: "ADD_NEW_USER_ACTION",
-          result: response.data
+          result: response
         });
       })
       .catch((error) => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
         console.log(error);
@@ -63,28 +65,69 @@ const updateEditUserAction = (objUser) => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.put(`${port}/users/update/${id}`, objUser)
+    axios.put(`${SERVER_URI}/users/update/${id}`, objUser)
       .then(response => {
         dispatch({
           type: "UPDATE_USER_ACTION",
-          result: response.data
+          result: response
         });
       })
       .catch((error) => {
         console.log(error);
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
       })
   }
 };
 
+// сброс пароля
+const resetPasswordAction = (objUser) => {
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.post(`${SERVER_URI}/users/reset-pass`, objUser)
+      .then(response => {
+        console.log(response)
+        dispatch({
+          type: "RESET_PASSWORD_ACTION",
+          result: response
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "LOAD_FAILURE_DATA_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
+  }
+}
+
 // обработчик статуса логина (залогинен или нет User)
-const statusLogInAction = (status) => {
-  return {
-      type: 'STATUS_LOGIN_ACTION',
-      status: status
+// выход из всех сессий (сброс токенов)
+const statusLogInAction = (token) => {
+  return dispatch => {
+    dispatch({
+      type: "LOAD_REQUESTED_DATA_ACTION"
+    });
+    axios.get(`${SERVER_URI}/users/me/logoutall/${token}`)
+      .then(response => {
+          //console.log(response)
+        dispatch({
+          type: "STATUS_LOGIN_ACTION",
+          result: response
+        });
+      })
+      .catch((error) => {
+        dispatch({
+          type: "LOAD_FAILURE_DATA_ACTION",
+          error: error
+        });
+        console.log(error);
+      })
   }
 };
 
@@ -110,7 +153,7 @@ const getAllUsersAction = () => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.get(`${port}/users/`)
+    axios.get(`${SERVER_URI}/users/`)
       .then(response => {
         dispatch({
           type: "GET_ALL_USERS_ACTION",
@@ -119,7 +162,7 @@ const getAllUsersAction = () => {
       })
       .catch((error) => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
         console.log(error);
@@ -133,7 +176,7 @@ const getAllPagesAction = () => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.get(`${port}/pages/`)
+    axios.get(`${SERVER_URI}/pages/`)
       .then(response => {
         dispatch({
           type: "GET_ALL_PAGES_ACTION",
@@ -142,7 +185,7 @@ const getAllPagesAction = () => {
       })
       .catch((error) => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
         console.log(error);
@@ -156,7 +199,7 @@ const getAllCategoriesAction = () => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.get(`${port}/categories/`)
+    axios.get(`${SERVER_URI}/categories/`)
       .then(response => {
         dispatch({
           type: "GET_ALL_CATEGORIES_ACTION",
@@ -165,7 +208,7 @@ const getAllCategoriesAction = () => {
       })
       .catch((error) => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
         console.log(error);
@@ -187,7 +230,7 @@ const addNewPageAction = (objPage) => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.post(`${port}/pages/add`, objPage)
+    axios.post(`${SERVER_URI}/pages/add`, objPage)
       .then(response => {
         dispatch({
           type: "ADD_NEW_PAGE_ACTION",
@@ -196,7 +239,7 @@ const addNewPageAction = (objPage) => {
       })
       .catch((error) => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
         console.log(error);
@@ -211,7 +254,7 @@ const updateEditPageAction = (objPage) => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.put(`${port}/pages/update/${id}`, objPage)
+    axios.put(`${SERVER_URI}/pages/update/${id}`, objPage)
       .then(response => {
         dispatch({
           type: "UPDATE_EDIT_PAGE_ACTION",
@@ -221,7 +264,7 @@ const updateEditPageAction = (objPage) => {
       .catch((error) => {
         console.log(error);
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
       })
@@ -235,7 +278,7 @@ const deletePageAction = (idx) => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.delete(`${port}/pages/remove/${idx}`)
+    axios.delete(`${SERVER_URI}/pages/remove/${idx}`)
       .then(response => {
         dispatch({
           type: "DELETE_PAGE_ACTION",
@@ -244,7 +287,7 @@ const deletePageAction = (idx) => {
       })
       .catch((error) => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
         console.log(error);
@@ -258,7 +301,7 @@ const addNewCategorieAction = (objCategorie) => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.post(`${port}/categories/add`, objCategorie)
+    axios.post(`${SERVER_URI}/categories/add`, objCategorie)
       .then(response => {
         dispatch({
           type: "ADD_NEW_CATEGORIE_ACTION",
@@ -267,7 +310,7 @@ const addNewCategorieAction = (objCategorie) => {
       })
       .catch((error) => {
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
         console.log(error);
@@ -282,7 +325,7 @@ const updateEditCategorieAction = (objCategorie) => {
     dispatch({
       type: "LOAD_REQUESTED_DATA_ACTION"
     });
-    axios.put(`${port}/categories/update/${id}`, objCategorie)
+    axios.put(`${SERVER_URI}/categories/update/${id}`, objCategorie)
       .then(response => {
         dispatch({
           type: "UPDATE_EDIT_CATEGORIE_ACTION",
@@ -292,7 +335,7 @@ const updateEditCategorieAction = (objCategorie) => {
       .catch((error) => {
         console.log(error);
         dispatch({
-          type: "GET_DATA_FAILURE_ACTION",
+          type: "LOAD_FAILURE_DATA_ACTION",
           error: error
         });
       })
@@ -307,6 +350,7 @@ export {
   getAllCategoriesAction,
   getDataByUserLoginAction,
   statusLogInAction,
+  resetPasswordAction,
   getEditablePageAction, 
   updateEditUserAction,
   updateEditPageAction,

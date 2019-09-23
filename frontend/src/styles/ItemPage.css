@@ -5,14 +5,16 @@
 
 .card{
 	position: relative;
-  transition: ease-in-out opacity .8s;
+  transition: ease-in-out opacity .8s, box-shadow .4s;
+  border-radius: 10px;
+  border: none;
 }
-
 .card:hover{
-	border-right: 2px solid #20c997;
+	box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.8);
 }
 
-/*.card:hover .icon-close{
+/*
+.card:hover .icon-close{
 	opacity: 1;
 }*/
 
@@ -22,13 +24,14 @@
 	opacity: 1;
 } 
 .card:hover .page-categorie{
-	font-size: 11px;
+	font-size: 13px;
 }
 
 .page-categorie{
 	position: relative;
 	opacity: 1;
 	font-size: 12px;
+	height: 18px;
 	color: #fff;
 	background-color: #4e5d6c;
   transition: ease-in-out opacity .5s;

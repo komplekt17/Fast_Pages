@@ -2,6 +2,10 @@
 	height: 45px;
 }
 
+#formHeader{
+  margin-top: -4px;
+}
+
 #formHeader .col{
   height: 20px;
   padding: 0 2px;
@@ -14,7 +18,7 @@
 }
 
 #formHeader .btn-sm{
-  height: 24px;
+  height: 22px;
   padding: 0 5px;
 }
 
@@ -32,5 +36,40 @@
 
 .nav-item a:hover{
 	text-decoration: none;
+}
+
+@media (max-width: 767.98px) {
+
+  .auth-false .nav-link-name{
+    display: none;    
+  }
+
+  .auth-false i{
+    font-size: 20px;    
+  }
+
+  #formHeader .form-control-sm{
+    width: 130px;
+  }
+}
+
+@media (max-width: 400px) {
+
+  .auth-false i{
+    font-size: 18px;    
+  }
+
+  #formHeader .form-control-sm{
+    width: 100px;
+  }
+}
+
+@media (max-width: 335px) {
+
+  .auth-false i{
+    display: none;    
+  }
+
+
 }
 

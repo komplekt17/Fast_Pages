@@ -13,20 +13,11 @@ const Header = (props) => {
 		getDataByLogin } = props;
 
 	return(
-		<nav className="navbar navbar-expand-sm navbar-expand-md navbar-expand-lg navbar-dark bg-dark sticky-top">
-      <button 
-        className="navbar-toggler" 
-        type="button" data-toggle="collapse" 
-        data-target="#navbarsExample08" 
-        aria-controls="navbarsExample08" 
-        aria-expanded="false" aria-label="Toggle navigation">
-        	<span className="navbar-toggler-icon"></span>
-      </button>
+		<nav className="navbar navbar-expand navbar-dark bg-dark sticky-top">
       { auth ? // если user авторизован
-		<div className="container">
+		<div className="container auth-true">
 	    <div 
-	    	className="collapse navbar-collapse justify-content-md-between"
-    		id="navbarsExample08">
+	    	className="collapse navbar-collapse justify-content-between">
 	      <ul className="navbar-nav">
 	        <li className="nav-item">
             <NavLink to="/">
@@ -71,13 +62,13 @@ const Header = (props) => {
 	            <span 
 	            	className="dropdown-item" 
 		        		onClick={()=>{
-		        			$("#modal-edituser").modal("show")}} >
-	            	Change pass
+		        			$("#modal-edituser").modal("show")}}>
+	            		Change pass
 	            	</span>
 	            <NavLink to="/">
 		            <span 
 		            	className="dropdown-item"
-		            	onClick={()=>statusLogIn(auth)}>
+		            	onClick={()=>statusLogIn(user.token)}>
 		            	LogOut
 	            	</span>
 	            </NavLink>
@@ -92,29 +83,37 @@ const Header = (props) => {
 	    </div>
   	</div>
 	    	: // если user не авторизован
-		<div className="container">
+		<div className="container auth-false">
 	    <div 
-	    	className="collapse navbar-collapse justify-content-md-between"
-    		id="navbarsExample08">
-	      	<div className="row">
-				    <div className="col">
-				      <button 
-				      	type="button" 
-		        		onClick={()=>{
-		        			$("#modal-adduser").modal("show")}
-		        		} 
-				      	className="btn btn-sm btn-danger">
-				      	Registration
-			      	</button>
-				    </div>
-	      	</div>
+	    	className="collapse navbar-collapse justify-content-between">
+	      	<ul className="navbar-nav">
+				    <li className="nav-item">
+				      <span 
+              	className="nav-link" 
+		        		onClick={()=>$("#modal-adduser").modal("show")}>
+		        		<i
+	        			 	data-toggle="tooltip" data-placement="bottom" title="Registration" 
+		        			className="fas fa-key"></i>{" "}
+		        		<span className="nav-link-name">Registration</span>
+			      	</span>
+				    </li>
+				    <li className="nav-item">
+              <span 
+              	className="nav-link" 
+	      				onClick={()=>$("#modal-reset").modal("show")}>
+		          	<i data-toggle="tooltip" data-placement="bottom" title="Forgot password" 
+		          		className="fas fa-unlock-alt"></i>{" "}
+		          	<span className="nav-link-name">Forgot password</span>
+            	</span>
+				    </li>
+	      	</ul>
 	       	<form id="formHeader" onSubmit={(e)=>e.preventDefault()}>
 					  <div className="row">
 					    <div className="col">
 					      <input
 					      	id="userLogin"
 					      	type="text" className="form-control-sm" 
-					      	placeholder="enter your@mail" />
+					      	placeholder="enter your@mail.ru" />
 					    </div>
 					    <div className="col">
 					      <input
@@ -127,12 +126,12 @@ const Header = (props) => {
 					      	className="btn btn-sm btn-success"
 					      	type="button" 
 					      	onClick={()=>{
-					      		let login = $('#userLogin').val();
-					      		let pass = $('#userPass').val();
+					      		let login = $('#userLogin');
+					      		let pass = $('#userPass');
 					      		if(login !== '' && pass !== ''){
-					      			getDataByLogin(login);
-					      			login = '';
-					      			pass = '';
+					      			getDataByLogin({login: login.val(), pass: pass.val()});
+					      			login.val('');
+					      			pass.val('');
 					      		}
 					      	}}>
 					      	LogIn

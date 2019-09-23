@@ -1,8 +1,11 @@
 import React  from 'react';
 import $ from "jquery";
-import { Link } from "react-router-dom";
 import {
   ERROR_TEXT,
+  FEEDBACK_EMAIL,
+  FEEDBACK_PASS,
+  FEEDBACK_LINK,
+  FEEDBACK_TEXT,
   PATTERN_TEXT,
   PATTERN_LINK,
   PATTERN_EMAIL,
@@ -17,7 +20,7 @@ const AlertMessage = ({textModal}) => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-danger">
-            <h5 className="modal-title" id="exampleModalLongTitle">Alert Message</h5>
+            <h5 className="modal-title">Alert Message</h5>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -45,7 +48,7 @@ const SuccessMessage = ({textModal}) => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-success">
-            <h5 className="modal-title" id="exampleModalLongTitle">Success Message</h5>
+            <h5 className="modal-title">Success Message</h5>
             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -95,11 +98,7 @@ const CreatePageModal = (props) => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-success">
-            <h5 
-              className="modal-title" 
-              id="exampleModalLongTitle">
-              Creating new Page
-            </h5>
+            <h5 className="modal-title">Creating new Page</h5>
             <button 
               type="button" className="close" 
               data-dismiss="modal" aria-label="Close">
@@ -125,7 +124,7 @@ const CreatePageModal = (props) => {
                   placeholder="enter Name Page" 
                   aria-describedby="addPage" />
                   <div className="invalid-feedback">
-                    Please enter a page name (minimum 3 symbols, only digits or letters)
+                    {FEEDBACK_TEXT}
                   </div>
               </div>
 
@@ -141,7 +140,7 @@ const CreatePageModal = (props) => {
                   placeholder="enter Link Page" 
                   aria-describedby="addPage" />
                 <div className="invalid-feedback">
-                  Please enter a preview link (http://....)
+                  {FEEDBACK_LINK}
                 </div>
               </div>
 
@@ -158,7 +157,7 @@ const CreatePageModal = (props) => {
                   placeholder="enter Link Preview Page" 
                   aria-describedby="addPage" />
                 <div className="invalid-feedback">
-                  Please enter a preview link (http://....)
+                  {FEEDBACK_LINK}
                 </div>
               </div>
 
@@ -183,7 +182,7 @@ const CreatePageModal = (props) => {
                   placeholder={countPages+1}
                   aria-describedby="addPage" />
                 <div className="invalid-feedback">
-                  Please enter a page Order (minimum 3 symbols)
+                  Please enter a page Order
                 </div>
               </div>
 
@@ -246,11 +245,7 @@ const EditPageModal = (props) => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-success">
-            <h5 
-            	className="modal-title" 
-            	id="exampleModalLongTitle">
-            	Editor Page
-          	</h5>
+            <h5 className="modal-title">Editor Page</h5>
             <button 
             	type="button" className="close" 
             	data-dismiss="modal" aria-label="Close">
@@ -277,7 +272,7 @@ const EditPageModal = (props) => {
 						    	placeholder="enter Name Page"
                   aria-describedby="editPage" />
                 <div className="invalid-feedback">
-                  Please enter a page name (minimum 3 symbols, only digits or letters)
+                  {FEEDBACK_TEXT}
                 </div>
 						  </div>
 
@@ -294,7 +289,7 @@ const EditPageModal = (props) => {
 						    	placeholder="enter Link Page"
                   aria-describedby="editPage" />
                 <div className="invalid-feedback">
-                  Please enter a preview link (http://....)
+                  {FEEDBACK_LINK}
                 </div>
 						  </div>
 
@@ -311,7 +306,7 @@ const EditPageModal = (props) => {
 						    	placeholder="enter Link Preview Page"
                   aria-describedby="editPage" />
                 <div className="invalid-feedback">
-                  Please enter a preview link (http://....)
+                  {FEEDBACK_LINK}
                 </div>
 						  </div>
 
@@ -339,7 +334,7 @@ const EditPageModal = (props) => {
                   placeholder="order page"
                   aria-describedby="editPage" />
                 <div className="invalid-feedback">
-                  Please enter a page Order (minimum 3 symbols)
+                  Please enter a page Order
                 </div>
               </div>
 
@@ -381,11 +376,7 @@ const CreateUserModal = (props) => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-danger">
-            <h5 
-            	className="modal-title" 
-            	id="exampleModalLongTitle">
-            	Registration
-          	</h5>
+            <h5 className="modal-title"> Registration</h5>
             <button 
             	type="button" className="close" 
             	data-dismiss="modal" aria-label="Close">
@@ -410,7 +401,7 @@ const CreateUserModal = (props) => {
                   type="email" id="inputEmail" className="form-control" 
                   placeholder="Email address" required autoFocus/>
                 <div className="invalid-feedback">
-                  Please enter a email (min 4 symbols)
+                  {FEEDBACK_EMAIL}
                 </div>
               </div>
 
@@ -425,7 +416,7 @@ const CreateUserModal = (props) => {
                   type="password" id="inputPassword" className="form-control" 
                   placeholder="enter Password" required/>
                 <div className="invalid-feedback">
-                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                  {FEEDBACK_PASS}
                 </div>
               </div>
 
@@ -441,7 +432,7 @@ const CreateUserModal = (props) => {
                   className="form-control" 
                   placeholder="repeat Password" required/>
                 <div className="invalid-feedback">
-                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                  {FEEDBACK_PASS}
                 </div>
               </div>
 
@@ -463,11 +454,6 @@ const CreateUserModal = (props) => {
                 className="btn btn-info btn-block mt-3" type="button"> 
                 Save
               </button>
-
-              <Link 
-                to="#" onClick={()=>alert('on development stage')}>
-                Forgot password?
-              </Link>
 
             </form>
           </div>
@@ -491,11 +477,7 @@ const EditUserModal = (props) => {
       <div className="modal-dialog modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header alert-danger">
-            <h5 
-              className="modal-title" 
-              id="exampleModalLongTitle">
-              Editor User Profile
-            </h5>
+            <h5 className="modal-title"> Editor User Profile</h5>
             <button 
               type="button" className="close" 
               data-dismiss="modal" aria-label="Close">
@@ -512,14 +494,14 @@ const EditUserModal = (props) => {
                 <label htmlFor="inputOldPass">enter Old Password</label>
                 <input 
                   onChange={(ev) => {
-                    const pattern = PATTERN_PASS
-                    isValideField(ev.target.id, pattern)
+                    //const pattern = PATTERN_PASS
+                    //isValideField(ev.target.id, pattern)
                     handlerInputsValue(ev.target.value, ev.target.id)
                   }} 
                   type="password" id="inputOldPass" className="form-control" 
                   placeholder="enter Old Password" required autoFocus/>
                 <div className="invalid-feedback">
-                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                  {FEEDBACK_PASS}
                 </div>
               </div>
 
@@ -534,7 +516,7 @@ const EditUserModal = (props) => {
                   type="password" id="inputNewPass" className="form-control" 
                   placeholder="enter New Password" required/>
                 <div className="invalid-feedback">
-                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                  {FEEDBACK_PASS}
                 </div>
               </div>
 
@@ -550,7 +532,7 @@ const EditUserModal = (props) => {
                   className="form-control" 
                   placeholder="repeat New Password" required/>
                 <div className="invalid-feedback">
-                  Please enter a password (min 6 symbols - uppercase letters and numbers)
+                  {FEEDBACK_PASS}
                 </div>
               </div>
 
@@ -559,12 +541,13 @@ const EditUserModal = (props) => {
                 onClick={(ev)=>{
                   let oldPass = $('#inputOldPass').val();
                   let newPass = $('#inputNewPass').val();
-                  let repeat = $('#repeatNewPass').val()
+                  let repeat = $('#repeatNewPass').val();
                   if(oldPass !== '' && newPass !== '' && newPass === repeat){
                     const objUser = {
                       _id: user.userID, 
-                      login: user.login, 
-                      pass: newPass
+                      inputOldPass: oldPass, 
+                      inputNewPass: newPass,
+                      repeatNewPass: repeat
                     };
                     validateForm(objUser, ev.target.name);
                   }
@@ -580,6 +563,69 @@ const EditUserModal = (props) => {
   );
 }
 
+const ResetPasswordModal = (props) =>{
+
+	const {
+		validateForm,
+		isValideField,
+    handlerInputsValue } = props;
+
+	return(
+    <div className="modal fade" id="modal-reset" tabIndex="-1" role="dialog" 
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div className="modal-dialog modal-dialog-centered" role="document">
+        <div className="modal-content">
+          <div className="modal-header alert-danger">
+            <h5 className="modal-title">Reset Password</h5>
+            <button 
+              type="button" className="close" 
+              data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div className="modal-body">
+            <form 
+              id="resetPass" 
+              className="form-signin needs-validation" 
+              noValidate onSubmit={(ev)=>ev.preventDefault()}>
+
+              <div className="form-label-group">
+                <label htmlFor="inputLogin">enter your Email</label>
+                <input 
+                  onChange={(ev) => {
+                    const pattern = PATTERN_EMAIL
+                    isValideField(ev.target.id, pattern)
+                    handlerInputsValue(ev.target.value, ev.target.id)
+                  }} 
+                  type="text" id="inputLogin" className="form-control" 
+                  placeholder="your@mail.ru" required autoFocus/>
+                <div className="invalid-feedback">
+                  {FEEDBACK_EMAIL}
+                </div>
+              </div>
+
+              <button 
+                name="resetPass"
+                onClick={(ev)=>{
+                  let inputLogin = $('#inputLogin').val();
+                  if(inputLogin !== ''){
+                    const objUser = {
+                      inputLogin: inputLogin
+                    };
+                    validateForm(objUser, ev.target.name);
+                  }
+                }} 
+                className="btn btn-info btn-block mt-3" type="button">
+                Reset Password
+              </button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export {
   AlertMessage, 
@@ -587,5 +633,6 @@ export {
   CreatePageModal, 
   EditPageModal, 
   CreateUserModal, 
-  EditUserModal
+  EditUserModal,
+  ResetPasswordModal
 };

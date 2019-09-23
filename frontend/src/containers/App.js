@@ -16,6 +16,7 @@ import {
   getAllCategoriesAction,
   getDataByUserLoginAction,
   statusLogInAction,
+  resetPasswordAction,
   getEditablePageAction,
   updateEditUserAction,
   updateEditPageAction,
@@ -36,7 +37,8 @@ import {
 	CreatePageModal, 
 	EditPageModal,
 	CreateUserModal,
-	EditUserModal } from "../components/ModalMessages";
+	EditUserModal,
+	ResetPasswordModal } from "../components/ModalMessages";
 
 import "../styles/App.css";
 
@@ -56,6 +58,7 @@ const App = (props) => {
 			// getAllCategoriesToApp,
 			getDataByUserLoginToApp,
 			statusLogInToApp,
+			resetPasswordToApp,
 			getEditablePageToApp,
 			updateEditUserToApp,
 			updateEditPageToApp,
@@ -125,10 +128,25 @@ const App = (props) => {
     	else if(idForm === 'editUser'){
     		updateEditUserToApp(obj);
     		$("#modal-edituser").modal("hide");
+
+				// clear feilds and remove classes is-valid is-invalid
+		    for(let key in obj){
+	      	$('#'+key).removeClass("is-valid is-invalid").val('');
+		    }
+    	}
+    	// для формы resetPass
+    	else if(idForm === 'resetPass'){
+    		resetPasswordToApp(obj);
+    		$("#modal-reset").modal("hide");
+
+				// clear feilds and remove classes is-valid is-invalid
+		    for(let key in obj){
+	      	$('#'+key).removeClass("is-valid is-invalid").val('');
+		    }
     	}
     }
   } 
-
+	
   // универсальный валидатор отдельного поля формы
   const isValideField = (nameId, pattern) => {
     const elem = $('#'+nameId);
@@ -219,7 +237,7 @@ const App = (props) => {
 
 	const visibleItems = filterNotes(normalizePages, filter);
 
-	console.log(store);
+	//console.log(store);
 
 	return (
     <Router>
@@ -292,6 +310,10 @@ const App = (props) => {
 				validateForm={validateForm}
 				isValideField={isValideField}
         handlerInputsValue={handlerInputsValueToApp}/>
+      <ResetPasswordModal
+				validateForm={validateForm}
+				isValideField={isValideField}
+        handlerInputsValue={handlerInputsValueToApp}/>
     </Router>
   );
 }
@@ -306,16 +328,17 @@ const mapDispatchToProps = (dispatch) => {
     	dispatch(handlerInputsValueAction(value, id))
     },
 		handlerFilterToApp: (categorie) => dispatch(handlerFilterAction(categorie)),
-    statusLogInToApp: (status) => dispatch(statusLogInAction(status)),
+    statusLogInToApp: (token) => dispatch(statusLogInAction(token)),
+    resetPasswordToApp: (obj) => dispatch(resetPasswordAction(obj)),
     getAllUsersToApp: () => dispatch(getAllUsersAction()),
     getAllPagesToApp: () => dispatch(getAllPagesAction()),
     getAllCategoriesToApp: () => dispatch(getAllCategoriesAction()),
-    getDataByUserLoginToApp: (login) => dispatch(getDataByUserLoginAction(login)),
+    getDataByUserLoginToApp: (obj) => dispatch(getDataByUserLoginAction(obj)),
 		getEditablePageToApp: (id) => dispatch(getEditablePageAction(id)),
     updateEditUserToApp: (obj) => dispatch(updateEditUserAction(obj)),
     updateEditPageToApp: (obj) => dispatch(updateEditPageAction(obj)),
    	updateEditCategorieToApp: (obj) => dispatch(updateEditCategorieAction(obj)),
-		addNewUserToApp: (login, pass) => dispatch(addNewUserAction(login, pass)),
+		addNewUserToApp: (objNewUser) => dispatch(addNewUserAction(objNewUser)),
 		addNewPageToApp: (obj) => dispatch(addNewPageAction(obj)),
 		addNewCategorieToApp: (obj) => dispatch(addNewCategorieAction(obj)),
     deletePageToApp: (idx) => dispatch(deletePageAction(idx)),

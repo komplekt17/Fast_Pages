@@ -12,9 +12,7 @@
     "react-scripts": "3.0.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "2.13.8",
-    "redux-thunk": "2.3.0"
-  },
-  "devDependencies": {
+    "redux-thunk": "2.3.0",
     "axios": "^0.19.0",
     "bootstrap": "^4.3.1",
     "bootswatch": "^4.3.1",
@@ -23,6 +21,7 @@
     "react-flickity-component": "^3.3.1",
     "typescript": "3.3.3"
   },
+  "devDependencies": {},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -34,5 +33,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "proxy": "http://localhost:3000"
 }
