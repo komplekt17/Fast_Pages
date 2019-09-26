@@ -21,8 +21,8 @@ if (process.env.NODE_ENV === 'production') {
   //   res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
   // });
 
-// const uri = process.env.ATLAS_URI;
-const uri = process.env.LOCAL_URI;
+const uri = process.env.ATLAS_URI;
+// const uri = process.env.LOCAL_URI;
 // const uri = process.env.MLAB_URI;
 
 // подключение mongoose к БД 

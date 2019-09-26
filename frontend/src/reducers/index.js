@@ -1,8 +1,3 @@
-import { combineReducers } from 'redux';
-import page from './page';
-import user from './user';
-import categorie from './categorie';
+import Reducer from './reducer';
 
-export default combineReducers({
-  page, user, categorie 
-})
+export default Reducer
