@@ -147,6 +147,24 @@ const App = (props) => {
                     $('#' + key).removeClass("is-valid is-invalid").val('');
                 }
             }
+            // для формы addCategorie
+            else if (idForm === 'addCategorie') {
+                addNewCategorieToApp(obj);
+
+                // clear feilds and remove classes is-valid is-invalid
+                for (let key in obj) {
+                    $('#' + key).removeClass("is-valid is-invalid").val('');
+                }
+            }
+            // для формы editCategorie
+            else if (idForm === 'editCategorie') {
+                updateEditCategorieToApp(obj);
+
+                // clear feilds and remove classes is-valid is-invalid
+                for (let key in obj) {
+                    $('#' + key).removeClass("is-valid is-invalid").val('');
+                }
+            }
         }
     }
 
@@ -195,35 +213,14 @@ const App = (props) => {
     // с читаемым классом принадлежности к категории и цветовым оформлением 
     // http://javascript.ru/forum/misc/78380-kak-poluchit-novyjj-massiv-posle-sravneniya-2-kh-iskhodnykh.html#post512491
 
-    // const getPagesArr = (pages, categories) => {
-    //     for (var i = 0; i <= pages.length; i++) {
-    //         for (var j = 0; j <= categories.length; j++) {
-    //             for (var kk in pages[i]) {
-    //                 for (var dd in categories[j]) {
-    //                     if (categories[j]['_id'] === pages[i]['ctgrId']) {
-    //                         pages[i]['ctgrClass'] = categories[j]['catName']
-    //                         pages[i]['ctgrColor'] = categories[j]['catColor']
-    //                         pages[i]['ctgrBGC'] = categories[j]['catBGC']
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
-    //     return pages;
-    // }
-
     const getPagesArr = (pages, categories) => {
-      return pages.map(p => {
-
-        var x = categories.find(c => c._id === p.ctgrId);
-        x && (p.ctgrClass = x.catName) && 
-          (p.ctgrColor = x.catColor) && 
-          (p.ctgrBGC = x.catBGC);
-
-        console.log(p)
-        return p;
-
-      });
+        return pages.map(p => {
+            var x = categories.find(c => c._id === p.ctgrId);
+            x && (p.ctgrClass = x.catName) &&
+                (p.ctgrColor = x.catColor) &&
+                (p.ctgrBGC = x.catBGC);
+            return p;
+        });
 
     }
 
@@ -281,9 +278,8 @@ const App = (props) => {
               countPages={pages.length} 
               countCats={categories.length}
               getNormalizeClass={getNormalizeClass}
-              handlerInputsValue={handlerInputsValueToApp}
-              addNewCategorie={addNewCategorieToApp}
-              updateEditCategorie={updateEditCategorieToApp} />
+            validateForm={validateForm}
+              handlerInputsValue={handlerInputsValueToApp} />
           )}
         />
         <Route

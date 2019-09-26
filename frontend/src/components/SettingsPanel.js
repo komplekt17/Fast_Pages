@@ -2,7 +2,7 @@ import React from 'react';
 import $ from "jquery";
 import SideBarCategories from '../components/SideBarCategories';
 import ListCategories from '../components/ListCategories';
-import FormAddNewCategorie from '../components/FormAddNewCategorie';
+import AddCategorie from '../components/AddCategorie';
 
 import '../styles/SettingsPanel.css'
 
@@ -14,9 +14,8 @@ const SettingsPanel = (props) => {
 		countPages, 
 		countCats,
 		handlerInputsValue,
-		addNewCategorie,
-		getNormalizeClass,
-		updateEditCategorie } = props;
+		validateForm,
+		getNormalizeClass } = props;
 
 	return(
 		<div className="bg-light">
@@ -38,16 +37,16 @@ const SettingsPanel = (props) => {
 		      	<div><h4>Total stats: pages - {countPages}, categories - {countCats}</h4></div>
 		      </nav>
 
-					<FormAddNewCategorie 
+					<AddCategorie 
   					userID={user.userID}
-						addNewCategorie={addNewCategorie}
+						validateForm={validateForm}
   					getNormalizeClass={getNormalizeClass}
 						handlerInputsValue={handlerInputsValue} />
 					<ListCategories 
 						categories={categories}
+						validateForm={validateForm}
   					getNormalizeClass={getNormalizeClass}
-						handlerInputsValue={handlerInputsValue}
-						updateEditCategorie={updateEditCategorie} />
+						handlerInputsValue={handlerInputsValue} />
 
 		    </div>
 	  	</div>

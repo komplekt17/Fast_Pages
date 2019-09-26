@@ -5,35 +5,9 @@ const ListCategories = (props) => {
 
 	const { 
 		categories,
-		updateEditCategorie,
+    validateForm,
     getNormalizeClass,
 		handlerInputsValue } = props;
-
-  const validateForm = (obj) => {
-    
-    // счётчик количества НЕкорректно заполненных полей
-    let invalidCount = 0;
-
-    for(var key in obj){
-
-      if(obj[key] === null || obj[key] === ''){
-        //document.getElementById(key).classList.remove("is-invalid", "is-valid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.remove("text-danger", "text-success");
-        
-        //document.getElementById(key).classList.add("is-invalid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.add("text-danger");
-
-        invalidCount += 1;
-      }
-    }
-
-    if(invalidCount === 0){
-
-      updateEditCategorie(obj);
-    }
-  } 
 
   let categoriesTable = ERROR_TEXT;
 
@@ -69,9 +43,9 @@ const ListCategories = (props) => {
         <td className="text-center">
       		<div className="input-group input-group-sm">
 	          <input
-              onChange={(ev)=>handlerInputsValue(
-              		[ev.target.value, item._id], ev.target.name
-            	)}
+              onChange={(ev)=>{
+                handlerInputsValue([ev.target.value, item._id], ev.target.name)
+              }}
             	value={item.catColor}
 	            type="color" 
 	            name="catColor" className="form-control"/>
@@ -90,6 +64,7 @@ const ListCategories = (props) => {
         </td>
         <td className="text-center">
 	        	<button 
+              name="editCategorie"
 	        		onClick={(ev)=>validateForm(
                 {
                 	_id: item._id,
@@ -98,8 +73,7 @@ const ListCategories = (props) => {
                   catColor: item.catColor,
                   catBGC: item.catBGC,
                   userId: item.userId
-                }
-              )}
+                }, ev.target.name)}
 	        		type="button" className="btn btn-sm btn-success">
 	        			Save
 	      		</button>

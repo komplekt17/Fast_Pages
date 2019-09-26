@@ -4,45 +4,14 @@ import $ from "jquery";
 const FormAddNewCategorie = (props) => {
 
 	const { 
-		userID,  
-		addNewCategorie,
+		userID,
+		validateForm,
 		getNormalizeClass } = props;
 
 	// state for id="catClass"
 	const [itemText, setText] = useState('cat Name');
 	const [itemColor, setColor] = useState('#fff');
 	const [itemBGC, setBGC] = useState('#000');
-
-  const validateForm = (obj) => {
-    
-    // счётчик количества НЕкорректно заполненных полей
-    let invalidCount = 0;
-
-    for(var key in obj){
-
-      if(obj[key] === null || obj[key] === ''){
-        //document.getElementById(key).classList.remove("is-invalid", "is-valid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.remove("text-danger", "text-success");
-        
-        //document.getElementById(key).classList.add("is-invalid");
-        // document.getElementById(key).previousSibling.firstChild
-        //   .classList.add("text-danger");
-
-        invalidCount += 1;
-      }
-    }
-    if(invalidCount === 0){
-      // clear feilds
-      $('#catName').val('');
-      $('#catColor').val('');
-      $('#catBGC').val('');
-      
-      //console.log(obj, invalidCount)
-      addNewCategorie(obj);
-
-    }else alert('Enter all fields');
-  }
 
 	return(
 		<div className="container">
@@ -93,6 +62,7 @@ const FormAddNewCategorie = (props) => {
 			        </td>
 			        <td className="text-center">
 				        	<button 
+                		name="addCategorie" 
 				        		onClick={(ev)=>validateForm(
 		                  {
 		                    catName: $('#catName').val(), 
@@ -100,8 +70,7 @@ const FormAddNewCategorie = (props) => {
 		                    catColor: $('#catColor').val(),
 		                    catBGC: $('#catBGC').val(),
 		                    userId: userID
-		                  }
-		                )}
+		                  }, ev.target.name)}
 				        		type="button" className="btn btn-sm btn-info">Add
 				      		</button>
 			        </td>
