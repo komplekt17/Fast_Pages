@@ -6,8 +6,8 @@ const Loader = () => {
 		<div className="spin-loader">
 			<i className="fa fa-spinner fa-spin fa-lg" />
 			{/*<i className="fa fa-spin fa-atom"></i>*/}
-		</div> 
-	)
-}
+		</div>
+	);
+};
 
 export default Loader;
