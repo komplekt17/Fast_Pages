@@ -20,6 +20,7 @@ if (env.TYPE_ENV === 'production') {
 }
 
 const uri = env.HOSTING_URI;
+// const uri = env.LOCAL_URI;
 
 // подключение mongoose к БД
 mongoose
@@ -29,7 +30,7 @@ mongoose
 		useUnifiedTopology: true
 	})
 	.then(() => console.log(`MongoDB connected successfully`))
-	.catch(err => console.error('Could not connect to MongoDB...'));
+	.catch(err => console.error(`${err}: Could not connect to MongoDB...`));
 
 const pagesRouter = require('./routes/pages-router');
 const usersRouter = require('./routes/users-router');
