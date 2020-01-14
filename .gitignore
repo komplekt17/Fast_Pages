@@ -2,6 +2,8 @@
 
 # dependencies
 /node_modules
+/credentials.json
+/token.json
 /package-lock.json
 client/node_modules/
 client/build/
@@ -10,6 +12,8 @@ client/public/images/
 *.*yaml
 *.*sql
 *.*zip
+*.*jpg
+*.*png
 
 
 # testing
