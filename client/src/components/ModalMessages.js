@@ -9,7 +9,9 @@ import {
   PATTERN_TEXT,
   PATTERN_LINK,
   PATTERN_EMAIL,
-  PATTERN_PASS } from '../constants';
+  PATTERN_PASS,
+  LINK_PAGE_PREVIEW
+} from '../constants';
 
 import '../styles/ModalMessages.css';
 
@@ -144,14 +146,15 @@ const CreatePageModal = (props) => {
                 </div>
               </div>
 
-              <div className="form-label-group">
+              <div className="form-label-group d-none">
                 <label htmlFor="screenPage">Link Preview Page</label>
                 <input
                   onChange={(ev) => {
-                    const pattern = PATTERN_LINK;
-                    isValideField(ev.target.id, pattern)
-                    handlerInputsValue(ev.target.value, ev.target.id)
+                    // const pattern = PATTERN_LINK;
+                    // isValideField(ev.target.id, pattern)
+                    // handlerInputsValue(ev.target.value, ev.target.id)
                   }}
+                  value={LINK_PAGE_PREVIEW}
                   type="text" id="screenPage" 
                   className="form-control" 
                   placeholder="enter Link Preview Page" 
@@ -174,7 +177,7 @@ const CreatePageModal = (props) => {
                 </div>
               </div>
 
-              <div className="form-label-group">
+              <div className="form-label-group d-none">
                 <label htmlFor="orderPage">Order Page</label>
                 <input
                   type="number" id="orderPage" 
