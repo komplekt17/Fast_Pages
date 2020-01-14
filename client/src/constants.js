@@ -11,7 +11,7 @@ const FEEDBACK_TEXT =
 	'Please enter a page name (minimum 3 symbols, only digits or letters)';
 
 const LINK_PAGE_PREVIEW =
-	'http://www.skart-info.ru/myProjects/img-fast-pages/riffisen.jpg';
+	'https://www.skart-info.ru/myProjects/img-fast-pages/imgProcessing.gif';
 const PATTERN_TEXT = /[а-яА-ЯёЁa-zA-Z0-9.]{3,}$/;
 const PATTERN_LINK = /^https?:\/\/[\w/?.@&-=]+$/;
 const PATTERN_EMAIL = /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/;
