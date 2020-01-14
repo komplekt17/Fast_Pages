@@ -11,6 +11,7 @@
 		"googleapis": "^39.2.0",
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^5.5.8",
+		"node-webshot": "^1.0.3",
 		"nodemailer": "^6.3.0",
 		"nodemon": "^1.19.2",
 		"validator": "^11.0.0",
