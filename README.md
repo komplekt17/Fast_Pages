@@ -4,8 +4,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 In the project directory, you can run client:
 
-`cd client`
-`npm install`
+`cd client`<br />
+`npm install`<br />
 `npm start`
 
 Runs the app in the development mode.<br />
@@ -16,7 +16,7 @@ You will also see any lint errors in the console.
 
 In the project directory, you can run server:
 
-`npm install`
+`npm install`<br />
 `npm start`
 
 Runs the server in the development mode.<br />
