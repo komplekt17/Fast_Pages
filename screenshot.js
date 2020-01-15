@@ -2,8 +2,9 @@ const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
 const webshot = require('node-webshot');
+let Page = require('./models/pages-model');
 
-const getScreenShot = (sitename, nameImageFile, userID) => {
+const getScreenShot = (req, res) => {
 	// If modifying these scopes, delete token.json.
 	const SCOPES = ['https://www.googleapis.com/auth/drive'];
 
@@ -19,7 +20,7 @@ const getScreenShot = (sitename, nameImageFile, userID) => {
 		quality: 30
 	};
 
-	webshot(sitename, nameImageFile, options, err => {
+	webshot(req.body.linkPage, `${req.body.namePage}.jpg`, options, err => {
 		if (err) console.log(err);
 		else {
 			console.log(`Screenshot done!`);
@@ -32,7 +33,7 @@ const getScreenShot = (sitename, nameImageFile, userID) => {
 				// Authorize a client with credentials, then call the Google Drive API.
 				else {
 					authorize(JSON.parse(content), uploadImage);
-					console.log(`Image ${nameImageFile} uploaded`);
+					console.log(`Image ${req.body.namePage}.jpg uploaded`);
 				}
 			});
 		}
@@ -103,19 +104,19 @@ const getScreenShot = (sitename, nameImageFile, userID) => {
 	// https://stackoverflow.com/questions/10311092/displaying-files-e-g-images-stored-in-google-drive-on-a-website
 	// https://developers.google.com/drive/api/v3/folder
 
-	function uploadImage(auth) {
+	const uploadImage = auth => {
 		const drive = google.drive('v3');
 
 		const folderID = '1InuTI56CE3s3RCyEtX0QaYptPKTFwwXp'; // id img-fast-pages
 
 		const fileMetaData = {
-			name: `${userID}__${nameImageFile}`,
+			name: `${req.body.userId}__${req.body.namePage}.jpg`,
 			parents: [folderID] // parentFolder
 		};
 
 		const media = {
 			mimeType: 'image/png',
-			body: fs.createReadStream(nameImageFile)
+			body: fs.createReadStream(`${req.body.namePage}.jpg`)
 		};
 
 		drive.files.create(
@@ -133,15 +134,43 @@ const getScreenShot = (sitename, nameImageFile, userID) => {
 					console.log(`file id: ${response.data.id}`);
 
 					// removing image file
-					const pathFile = `./${nameImageFile}`;
+					const pathFile = `./${req.body.namePage}.jpg`;
 					fs.unlink(pathFile, err => {
 						if (err) console.error(err);
-						else console.log(`Image ${nameImageFile} removed`);
+						else console.log(`Image ${req.body.namePage}.jpg removed`);
 					});
+
+					const newPage = new Page({
+						name: req.body.namePage,
+						link: req.body.linkPage,
+						ctgrId: req.body.ctgrIdPage,
+						ctgrClass: '',
+						ctgrColor: '',
+						ctgrBGC: '',
+						userId: req.body.userId,
+						screen: `https://docs.google.com/uc?id=${response.data.id}`,
+						orderNum: req.body.orderNum
+					});
+
+					newPage
+						.save()
+						.then(() => {
+							return res.status(200).json({
+								success: true,
+								data: newPage,
+								message: 'New Page was created successful!'
+							});
+						})
+						.catch(error => {
+							return res.status(400).json({
+								error,
+								message: 'Page not created!'
+							});
+						});
 				}
 			}
 		);
-	}
+	};
 };
 
 module.exports = getScreenShot;
