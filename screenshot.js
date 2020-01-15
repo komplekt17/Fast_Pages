@@ -1,11 +1,9 @@
 const fs = require('fs');
 const readline = require('readline');
 const { google } = require('googleapis');
-
-// https://www.npmjs.com/package/node-webshot
 const webshot = require('node-webshot');
 
-const getScreenShot = (sitename, nameImageFile) => {
+const getScreenShot = (sitename, nameImageFile, userID) => {
 	// If modifying these scopes, delete token.json.
 	const SCOPES = ['https://www.googleapis.com/auth/drive'];
 
@@ -14,7 +12,14 @@ const getScreenShot = (sitename, nameImageFile) => {
 	// time.
 	const TOKEN_PATH = 'token.json';
 
-	webshot(sitename, nameImageFile, err => {
+	// https://www.npmjs.com/package/node-webshot
+	const options = {
+		windowSize: { width: 1024, height: 768 },
+		shotSize: { width: 'window', height: 'window' },
+		quality: 30
+	};
+
+	webshot(sitename, nameImageFile, options, err => {
 		if (err) console.log(err);
 		else {
 			console.log(`Screenshot done!`);
@@ -95,24 +100,17 @@ const getScreenShot = (sitename, nameImageFile) => {
 	// https://www.youtube.com/results?search_query=how+to+upload+file+to+google+drive+with+nodejs
 	// NodeJS - Upload File To Google Drive Using Google Drive APIs
 	// https://www.youtube.com/watch?v=wsErOwZZ_AU
-
-	// генератор случайного пароля
-	const getRundomPrefix = () => {
-		var length = 8,
-			charset =
-				'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-			retVal = '';
-		for (var i = 0, n = charset.length; i < length; ++i) {
-			retVal += charset.charAt(Math.floor(Math.random() * n));
-		}
-		return retVal;
-	};
+	// https://stackoverflow.com/questions/10311092/displaying-files-e-g-images-stored-in-google-drive-on-a-website
+	// https://developers.google.com/drive/api/v3/folder
 
 	function uploadImage(auth) {
 		const drive = google.drive('v3');
 
-		const filesMetadata = {
-			name: `${getRundomPrefix()}_${nameImageFile}`
+		const folderID = '1InuTI56CE3s3RCyEtX0QaYptPKTFwwXp'; // id img-fast-pages
+
+		const fileMetaData = {
+			name: `${userID}__${nameImageFile}`,
+			parents: [folderID] // parentFolder
 		};
 
 		const media = {
@@ -123,12 +121,24 @@ const getScreenShot = (sitename, nameImageFile) => {
 		drive.files.create(
 			{
 				auth: auth,
-				resource: filesMetadata,
-				media: media
+				resource: fileMetaData,
+				media: media,
+				fields: 'id'
 			},
-			err => {
+			(err, response) => {
 				if (err) console.log(err);
-				// else console.log(`File ${nameImageFile} uploaded`);
+				else {
+					// https://docs.google.com/uc?id=1nfPWpdvU5xCl8H1dlLxA7pCGb6fQuoV_
+					// https://stackoverflow.com/questions/10311092/displaying-files-e-g-images-stored-in-google-drive-on-a-website
+					console.log(`file id: ${response.data.id}`);
+
+					// removing image file
+					const pathFile = `./${nameImageFile}`;
+					fs.unlink(pathFile, err => {
+						if (err) console.error(err);
+						else console.log(`Image ${nameImageFile} removed`);
+					});
+				}
 			}
 		);
 	}
