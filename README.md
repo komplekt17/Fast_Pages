@@ -1,6 +1,6 @@
 Cintanotes-Web
 
-![Image alt](http://www.skart-info.ru/myProjects/img-fast-pages/fp.gif)
+![](http://www.skart-info.ru/myProjects/img-fast-pages/fp.gif)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
