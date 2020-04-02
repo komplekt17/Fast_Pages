@@ -1,5 +1,4 @@
-Cintanotes-Web
-
+Fast-Pages
 ![](fp.gif)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
