@@ -1,6 +1,6 @@
 Fast-Pages
 
-![](https://github.com/komplekt17/Edu_Projects/blob/master/gifs/fp.gif)
+![](https://github.com/komplekt17/Test-Tasks/blob/master/gifs/fp.gif)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
