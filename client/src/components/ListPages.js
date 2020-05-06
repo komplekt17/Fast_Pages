@@ -1,9 +1,7 @@
 import React from 'react';
-import SearchPanel from '../components/SearchPanel';
-import ItemPage from './ItemPage';
-import Arrow from './Arrow';
+import { SearchPanel, ItemPage, Arrow } from '../components';
 
-const ListPages = props => {
+const ListPages = (props) => {
 	const {
 		auth,
 		pages,
@@ -13,7 +11,7 @@ const ListPages = props => {
 		search,
 		searchDetails,
 		handlerInputsValue,
-		handlerSearchService
+		handlerSearchService,
 	} = props;
 
 	return (
@@ -24,13 +22,18 @@ const ListPages = props => {
 				handlerInputsValue={handlerInputsValue}
 				handlerSearchService={handlerSearchService}
 			/>
-			<ItemPage
-				auth={auth}
-				pages={pages}
-				deletePage={deletePage}
-				getEditablePage={getEditablePage}
-				getNormalizeClass={getNormalizeClass}
-			/>
+			{auth === true ? (
+				<ItemPage
+					auth={auth}
+					pages={pages}
+					deletePage={deletePage}
+					getEditablePage={getEditablePage}
+					getNormalizeClass={getNormalizeClass}
+				/>
+			) : (
+				<div>HelloPage</div>
+				// <HelloPage/>
+			)}
 			<Arrow />
 		</div>
 	);

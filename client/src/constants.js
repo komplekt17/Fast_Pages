@@ -3,6 +3,8 @@
 const SERVER_URI = 'http://localhost:5000';
 const ERROR_TEXT = 'no data for render';
 
+const NAME_LOCAL_STORAGE = 'data';
+
 const FEEDBACK_EMAIL = 'Please enter a email (min 4 symbols)';
 const FEEDBACK_PASS =
 	'Please enter a password (min 6 symbols - lowercase/uppercase only latin letters and numbers)';
@@ -28,5 +30,6 @@ export {
 	PATTERN_EMAIL,
 	PATTERN_PASS,
 	SERVER_URI,
-	LINK_PAGE_PREVIEW
+	LINK_PAGE_PREVIEW,
+	NAME_LOCAL_STORAGE,
 };

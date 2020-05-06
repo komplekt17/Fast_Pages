@@ -1,11 +1,19 @@
-#toTop{
-    z-index: 3;
-    display:none;
-    padding:5px;
-    position:fixed;
-    bottom: 0;
-    right:50px;
-    cursor:pointer;
-    color: #00bc8c;
-    font-size:60px;
+#toTop {
+	z-index: 3;
+	display: none;
+	padding: 5px;
+	position: fixed;
+	bottom: 0;
+	right: 50px;
+	cursor: pointer;
+	color: #00bc8c;
+	font-size: 60px;
+}
+
+@media (max-width: 500px) {
+	#toTop {
+		font-size: 40px;
+		right: 20px;
+		bottom: 15px;
+	}
 }

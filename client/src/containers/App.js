@@ -20,7 +20,7 @@ import {
 	addNewUserAction,
 	addNewPageAction,
 	addNewCategorieAction,
-	deletePageAction
+	deletePageAction,
 } from '../actions/actions';
 import {
 	AlertMessage,
@@ -34,16 +34,21 @@ import {
 	NavigationPanel,
 	SettingsPanel,
 	SuccessMessage,
-	ResetPasswordModal
+	ResetPasswordModal,
 } from '../components';
+import { NAME_LOCAL_STORAGE } from '../constants';
 
 import '../styles/App.css';
 
-const App = props => {
+const App = (props) => {
 	useEffect(() => {
 		// очищаем от текста поле селекта после монтирования
 		$('#selectSearch').val('');
 	});
+
+	const dataLocalStorage = JSON.parse(
+		localStorage.getItem(NAME_LOCAL_STORAGE)
+	);
 
 	const {
 		store,
@@ -62,21 +67,26 @@ const App = props => {
 		addNewUserToApp,
 		addNewPageToApp,
 		addNewCategorieToApp,
-		deletePageToApp
+		deletePageToApp,
 	} = props;
 
 	const {
 		pageDetails,
-		userProfile,
-		auth,
 		textModal,
 		filter,
-		categories,
-		pages,
 		searchDetails,
 		search,
-		loading
+		loading,
 	} = store;
+
+	let { userProfile, auth, categories, pages } = store;
+
+	if (dataLocalStorage !== null) {
+		userProfile = dataLocalStorage.userProfile;
+		auth = dataLocalStorage.auth;
+		categories = dataLocalStorage.categories;
+		pages = dataLocalStorage.pages;
+	}
 
 	// валидатор всей формы
 	const validateForm = (obj, idForm) => {
@@ -202,7 +212,7 @@ const App = props => {
 	// фильтрация массива pages по значению
 	// активного фильтра state.filter
 	const filterNotes = (arr, filterPage) => {
-		const newArr = arr.filter(item => {
+		const newArr = arr.filter((item) => {
 			let qqq;
 			if (filterPage === getNormalizeClass(item.ctgrClass)) {
 				qqq = getNormalizeClass(item.ctgrClass);
@@ -215,7 +225,7 @@ const App = props => {
 
 	// получение "нормализованного" catClass, ctgrClass
 	// обрезаем пробелы и убираем заглавные буквы
-	const getNormalizeClass = string => {
+	const getNormalizeClass = (string) => {
 		const normStringClass = string.replace(/\s+/g, '').toLowerCase();
 		return normStringClass;
 	};
@@ -225,8 +235,8 @@ const App = props => {
 	// http://javascript.ru/forum/misc/78380-kak-poluchit-novyjj-massiv-posle-sravneniya-2-kh-iskhodnykh.html#post512491
 
 	const getPagesArr = (pages, categories) => {
-		return pages.map(p => {
-			var x = categories.find(c => c._id === p.ctgrId);
+		return pages.map((p) => {
+			var x = categories.find((c) => c._id === p.ctgrId);
 			x &&
 				(p.ctgrClass = x.catName) &&
 				(p.ctgrColor = x.catColor) &&
@@ -241,7 +251,9 @@ const App = props => {
 		//const  kk = [...arr].sort((a, b) => (a.orderNum < b.orderNum) * 2 - 1);
 		if (nameArr === 'Pages') {
 			// по убыванию
-			const kk = [...arr].sort((a, b) => (a.orderNum > b.orderNum) * 2 - 1);
+			const kk = [...arr].sort(
+				(a, b) => (a.orderNum > b.orderNum) * 2 - 1
+			);
 			return kk;
 		}
 		// сортировка categories
@@ -295,22 +307,19 @@ const App = props => {
 						/>
 					)}
 				/>
-				<Route
-					path="/"
-					render={() => (
-						<ListPages
-							auth={auth}
-							pages={visibleItems}
-							loading={loading}
-							getNormalizeClass={getNormalizeClass}
-							getEditablePage={getEditablePageToApp}
-							deletePage={deletePageToApp}
-							search={search}
-							searchDetails={searchDetails}
-							handlerInputsValue={handlerInputsValueToApp}
-						/>
-					)}
-				/>
+				<Route path="/">
+					<ListPages
+						auth={auth}
+						pages={visibleItems}
+						loading={loading}
+						getNormalizeClass={getNormalizeClass}
+						getEditablePage={getEditablePageToApp}
+						deletePage={deletePageToApp}
+						search={search}
+						searchDetails={searchDetails}
+						handlerInputsValue={handlerInputsValueToApp}
+					/>
+				</Route>
 			</Switch>
 			<AlertMessage textModal={textModal} />
 			<SuccessMessage textModal={textModal} />
@@ -350,36 +359,35 @@ const App = props => {
 	);
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
 	return { store: state };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
 	return {
 		handlerInputsValueToApp: (value, id) => {
 			dispatch(handlerInputsValueAction(value, id));
 		},
-		handlerFilterToApp: categorie =>
+		handlerFilterToApp: (categorie) =>
 			dispatch(handlerFilterAction(categorie)),
-		statusLogInToApp: token => dispatch(statusLogInAction(token)),
-		resetPasswordToApp: obj => dispatch(resetPasswordAction(obj)),
+		statusLogInToApp: (token) => dispatch(statusLogInAction(token)),
+		resetPasswordToApp: (obj) => dispatch(resetPasswordAction(obj)),
 		getAllUsersToApp: () => dispatch(getAllUsersAction()),
 		getAllPagesToApp: () => dispatch(getAllPagesAction()),
 		getAllCategoriesToApp: () => dispatch(getAllCategoriesAction()),
-		getDataByUserLoginToApp: obj => dispatch(getDataByUserLoginAction(obj)),
-		getEditablePageToApp: id => dispatch(getEditablePageAction(id)),
-		updateEditUserToApp: obj => dispatch(updateEditUserAction(obj)),
-		updateEditPageToApp: obj => dispatch(updateEditPageAction(obj)),
-		updateEditCategorieToApp: obj =>
+		getDataByUserLoginToApp: (obj) =>
+			dispatch(getDataByUserLoginAction(obj)),
+		getEditablePageToApp: (id) => dispatch(getEditablePageAction(id)),
+		updateEditUserToApp: (obj) => dispatch(updateEditUserAction(obj)),
+		updateEditPageToApp: (obj) => dispatch(updateEditPageAction(obj)),
+		updateEditCategorieToApp: (obj) =>
 			dispatch(updateEditCategorieAction(obj)),
-		addNewUserToApp: objNewUser => dispatch(addNewUserAction(objNewUser)),
-		addNewPageToApp: obj => dispatch(addNewPageAction(obj)),
-		addNewCategorieToApp: obj => dispatch(addNewCategorieAction(obj)),
-		deletePageToApp: idx => dispatch(deletePageAction(idx))
+		addNewUserToApp: (objNewUser) =>
+			dispatch(addNewUserAction(objNewUser)),
+		addNewPageToApp: (obj) => dispatch(addNewPageAction(obj)),
+		addNewCategorieToApp: (obj) => dispatch(addNewCategorieAction(obj)),
+		deletePageToApp: (idx) => dispatch(deletePageAction(idx)),
 	};
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
