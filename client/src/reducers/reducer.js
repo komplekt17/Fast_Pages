@@ -120,7 +120,20 @@ const addingCategorie = (state, obj) => {
 };
 
 // редактирование categorie
-const editingCategorie = (state, categorieObj) => {};
+const editingCategorie = (state, categorieObj) => {
+	const arr = state.categories.slice();
+	// получаем index элемента массива tags с id === id
+	const index = arr.findIndex((param) => param._id === categorieObj._id);
+
+	// присваиваем изменённые значения полям
+	for (let key in arr[index]) {
+		if (arr[index][key] !== categorieObj[key]) {
+			arr[index][key] = categorieObj[key];
+		}
+	}
+
+	return arr;
+};
 
 // установка данных в localStorage
 const manageDataLocalStorage = (nameData, action, state) => {
@@ -187,9 +200,25 @@ const manageDataLocalStorage = (nameData, action, state) => {
 			})
 		);
 	} else if (nameData === 'addCategorie') {
-		console.log(nameData);
+		localStorage.setItem(
+			NAME_LOCAL_STORAGE,
+			JSON.stringify({
+				auth: state.auth,
+				userProfile: state.userProfile,
+				categories: addingCategorie(state, action.result.data),
+				pages: state.pages,
+			})
+		);
 	} else if (nameData === 'editCategorie') {
-		console.log(nameData);
+		localStorage.setItem(
+			NAME_LOCAL_STORAGE,
+			JSON.stringify({
+				auth: state.auth,
+				userProfile: state.userProfile,
+				categories: editingCategorie(state, action.result.data),
+				pages: state.pages,
+			})
+		);
 	} else if (nameData === 'removeAllData') {
 		localStorage.removeItem(NAME_LOCAL_STORAGE);
 	}
@@ -425,7 +454,7 @@ const Reducer = (state = initialState, action) => {
 
 		case 'ADD_NEW_CATEGORIE_ACTION':
 			$('#modal-success').modal('show');
-			//console.log(action.result)
+			manageDataLocalStorage('addCategorie', action, state);
 			return {
 				...state,
 				categories: addingCategorie(state, action.result.data),
@@ -436,8 +465,10 @@ const Reducer = (state = initialState, action) => {
 
 		case 'UPDATE_EDIT_CATEGORIE_ACTION':
 			$('#modal-success').modal('show');
+			manageDataLocalStorage('editCategorie', action, state);
 			return {
 				...state,
+				categories: editingCategorie(state, action.result.data),
 				loading: false,
 				loaded: true,
 				textModal: action.result.message,
