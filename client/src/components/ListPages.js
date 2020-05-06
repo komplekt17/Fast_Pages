@@ -1,5 +1,5 @@
 import React from 'react';
-import { SearchPanel, ItemPage, Arrow } from '../components';
+import { SearchPanel, ItemPage, Arrow, HelloPage } from '../components';
 
 const ListPages = (props) => {
 	const {
@@ -31,8 +31,7 @@ const ListPages = (props) => {
 					getNormalizeClass={getNormalizeClass}
 				/>
 			) : (
-				<div>HelloPage</div>
-				// <HelloPage/>
+				<HelloPage />
 			)}
 			<Arrow />
 		</div>

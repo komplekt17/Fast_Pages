@@ -1,0 +1,8 @@
+.hello-page {
+	position: relative;
+	top: 50%;
+	margin: 0 auto;
+	background-color: teal;
+	padding: 15px;
+	border-radius: 10px;
+}

@@ -9,7 +9,7 @@ import ListPages from './ListPages';
 import Loader from './Loader';
 import Arrow from './Arrow';
 import ItemPage from './ItemPage';
-// import HelloPage from './HelloPage';
+import HelloPage from './HelloPage';
 
 import {
 	AlertMessage,
@@ -24,7 +24,7 @@ import {
 export {
 	AddCategorie,
 	Header,
-	// HelloPage,
+	HelloPage,
 	ListCategories,
 	ListPages,
 	ItemPage,
