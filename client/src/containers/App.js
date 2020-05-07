@@ -13,6 +13,7 @@ import {
 	getDataByUserLoginAction,
 	statusLogInAction,
 	resetPasswordAction,
+	getTextModalAction,
 	getEditablePageAction,
 	updateEditUserAction,
 	updateEditPageAction,
@@ -21,7 +22,7 @@ import {
 	addNewPageAction,
 	addNewCategorieAction,
 	deletePageAction,
-} from '../actions/actions';
+} from '../actions';
 import {
 	AlertMessage,
 	CreatePageModal,
@@ -60,6 +61,7 @@ const App = (props) => {
 		getDataByUserLoginToApp,
 		statusLogInToApp,
 		resetPasswordToApp,
+		getTextModalToApp,
 		getEditablePageToApp,
 		updateEditUserToApp,
 		updateEditPageToApp,
@@ -82,8 +84,8 @@ const App = (props) => {
 	let { userProfile, auth, categories, pages } = store;
 
 	if (dataLocalStorage !== null) {
-		userProfile = dataLocalStorage.userProfile;
 		auth = dataLocalStorage.auth;
+		userProfile = dataLocalStorage.userProfile;
 		categories = dataLocalStorage.categories;
 		pages = dataLocalStorage.pages;
 	}
@@ -104,8 +106,6 @@ const App = (props) => {
 					.removeClass('is-invalid')
 					.addClass('is-valid');
 		}
-
-		//console.log(invalidCount, idForm)
 
 		if (invalidCount === 0) {
 			// для формы addPage
@@ -310,9 +310,11 @@ const App = (props) => {
 				<Route path="/">
 					<ListPages
 						auth={auth}
+						login={userProfile.login}
 						pages={visibleItems}
 						loading={loading}
 						getNormalizeClass={getNormalizeClass}
+						getTextModal={getTextModalToApp}
 						getEditablePage={getEditablePageToApp}
 						deletePage={deletePageToApp}
 						search={search}
@@ -346,6 +348,7 @@ const App = (props) => {
 			/>
 			<EditUserModal
 				user={userProfile}
+				getTextModal={getTextModalToApp}
 				validateForm={validateForm}
 				isValideField={isValideField}
 				handlerInputsValue={handlerInputsValueToApp}
@@ -377,6 +380,7 @@ const mapDispatchToProps = (dispatch) => {
 		getAllCategoriesToApp: () => dispatch(getAllCategoriesAction()),
 		getDataByUserLoginToApp: (obj) =>
 			dispatch(getDataByUserLoginAction(obj)),
+		getTextModalToApp: (message) => dispatch(getTextModalAction(message)),
 		getEditablePageToApp: (id) => dispatch(getEditablePageAction(id)),
 		updateEditUserToApp: (obj) => dispatch(updateEditUserAction(obj)),
 		updateEditPageToApp: (obj) => dispatch(updateEditPageAction(obj)),

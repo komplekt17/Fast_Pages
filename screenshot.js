@@ -17,27 +17,32 @@ const getScreenShot = (req, res) => {
 	const options = {
 		windowSize: { width: 1024, height: 768 },
 		shotSize: { width: 'window', height: 'window' },
-		quality: 30
+		quality: 30,
 	};
 
-	webshot(req.body.linkPage, `${req.body.namePage}.jpg`, options, err => {
-		if (err) console.log(err);
-		else {
-			console.log(`Screenshot done!`);
+	webshot(
+		req.body.linkPage,
+		`${req.body.namePage}.jpg`,
+		options,
+		(err) => {
+			if (err) console.log(err);
+			else {
+				console.log(`Screenshot done!`);
 
-			// Load client secrets from a local file.
-			fs.readFile('credentials.json', (err, content) => {
-				if (err) {
-					console.log('Error loading client secret file:', err);
-				}
-				// Authorize a client with credentials, then call the Google Drive API.
-				else {
-					authorize(JSON.parse(content), uploadImage);
-					console.log(`Image ${req.body.namePage}.jpg uploaded`);
-				}
-			});
+				// Load client secrets from a local file.
+				fs.readFile('credentials.json', (err, content) => {
+					if (err) {
+						console.log('Error loading client secret file:', err);
+					}
+					// Authorize a client with credentials, then call the Google Drive API.
+					else {
+						authorize(JSON.parse(content), uploadImage);
+						console.log(`Image ${req.body.namePage}.jpg uploaded`);
+					}
+				});
+			}
 		}
-	});
+	);
 
 	/*
 	 * Create an OAuth2 client with the given credentials, and then execute the
@@ -49,7 +54,7 @@ const getScreenShot = (req, res) => {
 		const {
 			client_secret,
 			client_id,
-			redirect_uris
+			redirect_uris,
 		} = credentials.installed;
 
 		const oAuth2Client = new google.auth.OAuth2(
@@ -75,21 +80,21 @@ const getScreenShot = (req, res) => {
 	function getAccessToken(oAuth2Client, callback) {
 		const authUrl = oAuth2Client.generateAuthUrl({
 			access_type: 'offline',
-			scope: SCOPES
+			scope: SCOPES,
 		});
 		console.log('Authorize this app by visiting this url:', authUrl);
 		const rl = readline.createInterface({
 			input: process.stdin,
-			output: process.stdout
+			output: process.stdout,
 		});
-		rl.question('Enter the code from that page here: ', code => {
+		rl.question('Enter the code from that page here: ', (code) => {
 			rl.close();
 			oAuth2Client.getToken(code, (err, token) => {
 				if (err)
 					return console.error('Error retrieving access token', err);
 				oAuth2Client.setCredentials(token);
 				// Store the token to disk for later program executions
-				fs.writeFile(TOKEN_PATH, JSON.stringify(token), err => {
+				fs.writeFile(TOKEN_PATH, JSON.stringify(token), (err) => {
 					if (err) return console.error(err);
 					console.log('Token stored to', TOKEN_PATH);
 				});
@@ -104,19 +109,19 @@ const getScreenShot = (req, res) => {
 	// https://stackoverflow.com/questions/10311092/displaying-files-e-g-images-stored-in-google-drive-on-a-website
 	// https://developers.google.com/drive/api/v3/folder
 
-	const uploadImage = auth => {
+	const uploadImage = (auth) => {
 		const drive = google.drive('v3');
 
 		const folderID = '1InuTI56CE3s3RCyEtX0QaYptPKTFwwXp'; // id img-fast-pages
 
 		const fileMetaData = {
 			name: `${req.body.userId}__${req.body.namePage}.jpg`,
-			parents: [folderID] // parentFolder
+			parents: [folderID], // parentFolder
 		};
 
 		const media = {
 			mimeType: 'image/png',
-			body: fs.createReadStream(`${req.body.namePage}.jpg`)
+			body: fs.createReadStream(`${req.body.namePage}.jpg`),
 		};
 
 		drive.files.create(
@@ -124,7 +129,7 @@ const getScreenShot = (req, res) => {
 				auth: auth,
 				resource: fileMetaData,
 				media: media,
-				fields: 'id'
+				fields: 'id',
 			},
 			(err, response) => {
 				if (err) console.log(err);
@@ -135,7 +140,7 @@ const getScreenShot = (req, res) => {
 
 					// removing image file
 					const pathFile = `./${req.body.namePage}.jpg`;
-					fs.unlink(pathFile, err => {
+					fs.unlink(pathFile, (err) => {
 						if (err) console.error(err);
 						else console.log(`Image ${req.body.namePage}.jpg removed`);
 					});
@@ -144,12 +149,12 @@ const getScreenShot = (req, res) => {
 						name: req.body.namePage,
 						link: req.body.linkPage,
 						ctgrId: req.body.ctgrIdPage,
-						ctgrClass: '',
-						ctgrColor: '',
-						ctgrBGC: '',
+						ctgrClass: req.body.ctgrClass,
+						ctgrColor: req.body.ctgrColor,
+						ctgrBGC: req.body.ctgrBGC,
 						userId: req.body.userId,
 						screen: `https://docs.google.com/uc?id=${response.data.id}`,
-						orderNum: req.body.orderNum
+						orderNum: req.body.orderNum,
 					});
 
 					newPage
@@ -158,13 +163,13 @@ const getScreenShot = (req, res) => {
 							return res.status(200).json({
 								success: true,
 								data: newPage,
-								message: 'New Page was created successful!'
+								message: 'New Page was created successful!',
 							});
 						})
-						.catch(error => {
+						.catch((error) => {
 							return res.status(400).json({
 								error,
-								message: 'Page not created!'
+								message: 'Page not created!',
 							});
 						});
 				}

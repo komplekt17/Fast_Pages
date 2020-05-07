@@ -4,15 +4,18 @@ import { NAME_LOCAL_STORAGE } from '../constants';
 
 // получение editable Page
 const findEditablePage = (state, idPage) => {
-	const arr = state.pages.slice();
+	let arr = state.pages.slice();
+	if (arr.length === 0) {
+		const dataLocalStorage = JSON.parse(
+			localStorage.getItem(NAME_LOCAL_STORAGE)
+		);
+		arr = dataLocalStorage.pages.slice();
+	}
 
 	// получаем index элемента массива page с id === idPage
 	const idx = arr.findIndex((param) => param._id === idPage);
 
-	// сохраняем найденный объект
-	const obj = arr[idx];
-
-	return obj;
+	return arr[idx];
 };
 
 // сохранение изменяемых полей input EditPageModal
@@ -28,7 +31,13 @@ const saveInputValuePage = (state, name, value) => {
 
 // сохранение изменяемых полей input ListCategories
 const saveInputValueCategorie = (state, nameInput, valueArr) => {
-	const arr = state.categories;
+	let arr = state.categories.slice();
+	if (arr.length === 0) {
+		const dataLocalStorage = JSON.parse(
+			localStorage.getItem(NAME_LOCAL_STORAGE)
+		);
+		arr = dataLocalStorage.categories.slice();
+	}
 
 	// деструктурируем массив
 	const [value, idCategorie] = valueArr;
@@ -36,15 +45,12 @@ const saveInputValueCategorie = (state, nameInput, valueArr) => {
 	// получаем index элемента массива categories с id === idCategorie
 	const idx = arr.findIndex((param) => param._id === idCategorie);
 
-	// сохраняем найденный объект
-	const obj = arr[idx];
-
 	// перебираем свойства объекта и при совпадении полей
 	// присваиваем полю новое значение value
-	for (var key in obj) {
-		if (key === nameInput) obj[key] = value;
+	for (var key in arr[idx]) {
+		if (key === nameInput) arr[idx][key] = value;
 	}
-	//console.log(obj);
+
 	return arr;
 };
 
@@ -79,7 +85,13 @@ const handlerSearchFields = (state, name, value) => {
 
 // добавление в pages новой page
 const addingPage = (state, obj) => {
-	const arr = state.pages.slice();
+	let arr = state.pages.slice();
+	if (arr.length === 0) {
+		const dataLocalStorage = JSON.parse(
+			localStorage.getItem(NAME_LOCAL_STORAGE)
+		);
+		arr = dataLocalStorage.pages.slice();
+	}
 
 	arr.push(obj);
 	return arr;
@@ -87,7 +99,13 @@ const addingPage = (state, obj) => {
 
 // редактирование page
 const editingPage = (state, pageObj) => {
-	const arr = state.pages.slice();
+	let arr = state.pages.slice();
+	if (arr.length === 0) {
+		const dataLocalStorage = JSON.parse(
+			localStorage.getItem(NAME_LOCAL_STORAGE)
+		);
+		arr = dataLocalStorage.pages.slice();
+	}
 	// получаем index элемента массива tags с id === id
 	const index = arr.findIndex((param) => param._id === pageObj._id);
 
@@ -103,7 +121,14 @@ const editingPage = (state, pageObj) => {
 
 // удаление из pages page с id === idx
 const deletingPage = (state, idx) => {
-	const arr = state.pages.slice();
+	let arr = state.pages.slice();
+	if (arr.length === 0) {
+		const dataLocalStorage = JSON.parse(
+			localStorage.getItem(NAME_LOCAL_STORAGE)
+		);
+		arr = dataLocalStorage.pages.slice();
+	}
+
 	//ищем заметку с id === idx
 	for (let i = 0; i < arr.length; i++) {
 		if (arr[i]._id === idx) arr.splice(i, 1); // вырезаем элемент
@@ -113,7 +138,13 @@ const deletingPage = (state, idx) => {
 
 // добавление в categories новой categorie
 const addingCategorie = (state, obj) => {
-	const arr = state.categories.slice();
+	let arr = state.categories.slice();
+	if (arr.length === 0) {
+		const dataLocalStorage = JSON.parse(
+			localStorage.getItem(NAME_LOCAL_STORAGE)
+		);
+		arr = dataLocalStorage.categories.slice();
+	}
 
 	arr.push(obj);
 	return arr;
@@ -121,7 +152,13 @@ const addingCategorie = (state, obj) => {
 
 // редактирование categorie
 const editingCategorie = (state, categorieObj) => {
-	const arr = state.categories.slice();
+	let arr = state.categories.slice();
+	if (arr.length === 0) {
+		const dataLocalStorage = JSON.parse(
+			localStorage.getItem(NAME_LOCAL_STORAGE)
+		);
+		arr = dataLocalStorage.categories.slice();
+	}
 	// получаем index элемента массива tags с id === id
 	const index = arr.findIndex((param) => param._id === categorieObj._id);
 
@@ -137,6 +174,7 @@ const editingCategorie = (state, categorieObj) => {
 
 // установка данных в localStorage
 const manageDataLocalStorage = (nameData, action, state) => {
+	const data = JSON.parse(localStorage.getItem(NAME_LOCAL_STORAGE));
 	if (nameData === 'setAllData') {
 		localStorage.setItem(
 			NAME_LOCAL_STORAGE,
@@ -173,9 +211,7 @@ const manageDataLocalStorage = (nameData, action, state) => {
 		localStorage.setItem(
 			NAME_LOCAL_STORAGE,
 			JSON.stringify({
-				auth: state.auth,
-				userProfile: state.userProfile,
-				categories: state.categories,
+				...data,
 				pages: addingPage(state, action.result.data),
 			})
 		);
@@ -183,9 +219,7 @@ const manageDataLocalStorage = (nameData, action, state) => {
 		localStorage.setItem(
 			NAME_LOCAL_STORAGE,
 			JSON.stringify({
-				auth: state.auth,
-				userProfile: state.userProfile,
-				categories: state.categories,
+				...data,
 				pages: editingPage(state, action.result.data),
 			})
 		);
@@ -193,9 +227,7 @@ const manageDataLocalStorage = (nameData, action, state) => {
 		localStorage.setItem(
 			NAME_LOCAL_STORAGE,
 			JSON.stringify({
-				auth: state.auth,
-				userProfile: state.userProfile,
-				categories: state.categories,
+				...data,
 				pages: deletingPage(state, action.result.data._id),
 			})
 		);
@@ -203,20 +235,16 @@ const manageDataLocalStorage = (nameData, action, state) => {
 		localStorage.setItem(
 			NAME_LOCAL_STORAGE,
 			JSON.stringify({
-				auth: state.auth,
-				userProfile: state.userProfile,
+				...data,
 				categories: addingCategorie(state, action.result.data),
-				pages: state.pages,
 			})
 		);
 	} else if (nameData === 'editCategorie') {
 		localStorage.setItem(
 			NAME_LOCAL_STORAGE,
 			JSON.stringify({
-				auth: state.auth,
-				userProfile: state.userProfile,
+				...data,
 				categories: editingCategorie(state, action.result.data),
-				pages: state.pages,
 			})
 		);
 	} else if (nameData === 'removeAllData') {
@@ -331,7 +359,7 @@ const Reducer = (state = initialState, action) => {
 				textModal: action.result.data.message,
 			};
 
-		case 'GET_NAME_MODAL_ACTION':
+		case 'GET_TEXT_MODAL_ACTION':
 			return {
 				...state,
 				textModal: action.text,

@@ -1,16 +1,17 @@
 import React from 'react';
 import $ from 'jquery';
-import { ERROR_TEXT } from '../constants';
+import { ERROR_TEXT, DEMO_LOGIN, DEMO_ALERT } from '../constants';
 
 import '../styles/ItemPage.css';
 
-const ItemPage = props => {
+const ItemPage = (props) => {
 	const {
-		auth,
+		login,
 		pages,
+		getTextModal,
 		getEditablePage,
 		getNormalizeClass,
-		deletePage
+		deletePage,
 	} = props;
 
 	let listItems = <h3>{ERROR_TEXT}</h3>;
@@ -28,27 +29,31 @@ const ItemPage = props => {
 				>
 					<div className="card">
 						<div
-							style={{ backgroundColor: item.ctgrBGC, color: item.ctgrColor }}
+							style={{
+								backgroundColor: item.ctgrBGC,
+								color: item.ctgrColor,
+							}}
 							className="page-categorie px-2 d-flex justify-content-between"
 						>
 							<div>{item.ctgrClass}</div>
 							<div>{item.orderNum}</div>
 						</div>
-						{auth ? (
+						{login === DEMO_LOGIN ? (
 							<i
-								onClick={() => {
-									deletePage(item._id);
-								}}
 								className="icon-close far fa-times-circle"
 								title="delete"
+								onClick={() => {
+									getTextModal(DEMO_ALERT);
+									$('#modal-alert').modal('show');
+								}}
 							></i>
 						) : (
 							<i
-								onClick={() => {
-									$('#modal-adduser').modal('show');
-								}}
 								className="icon-close far fa-times-circle"
 								title="delete"
+								onClick={() => {
+									deletePage(item._id);
+								}}
 							></i>
 						)}
 						<a rel="noopener noreferrer" href={item.link} target="_blank">
@@ -56,24 +61,14 @@ const ItemPage = props => {
 						</a>
 						<div className="page-body d-flex justify-content-between">
 							{item.name}
-							{auth ? (
-								<i
-									onClick={() => {
-										getEditablePage(item._id);
-										$('#modal-editpage').modal('show');
-									}}
-									className="icon-repair fas fa-tools"
-									title="edit"
-								></i>
-							) : (
-								<i
-									onClick={() => {
-										$('#modal-adduser').modal('show');
-									}}
-									className="icon-repair fas fa-tools"
-									title="edit"
-								></i>
-							)}
+							<i
+								className="icon-repair fas fa-tools"
+								title="edit"
+								onClick={() => {
+									getEditablePage(item._id);
+									$('#modal-editpage').modal('show');
+								}}
+							></i>
 						</div>
 					</div>
 				</div>

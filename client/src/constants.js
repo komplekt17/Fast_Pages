@@ -4,6 +4,9 @@ const SERVER_URI = 'http://localhost:5000';
 const ERROR_TEXT = 'no data for render';
 
 const NAME_LOCAL_STORAGE = 'data';
+const DEMO_LOGIN = 'demo@demo.com';
+const DEMO_PASS = 'demo';
+const DEMO_ALERT = 'This is demo mode. You can not to do this!';
 
 const FEEDBACK_EMAIL = 'Please enter a email (min 4 symbols)';
 const FEEDBACK_PASS =
@@ -32,4 +35,7 @@ export {
 	SERVER_URI,
 	LINK_PAGE_PREVIEW,
 	NAME_LOCAL_STORAGE,
+	DEMO_LOGIN,
+	DEMO_PASS,
+	DEMO_ALERT,
 };

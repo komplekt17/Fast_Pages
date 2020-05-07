@@ -1,5 +1,6 @@
 import React from 'react';
 import '../styles/HelloPage.css';
+import { DEMO_LOGIN, DEMO_PASS } from '../constants';
 
 const HelloPage = () => {
 	return (
@@ -10,8 +11,8 @@ const HelloPage = () => {
 						<h3>Welcome to Fast-Pages App</h3>
 						<p>Access to Demo mode:</p>
 						<ul>
-							<li>Login: demo@demo.com</li>
-							<li>Password: demo</li>
+							<li>Login: {DEMO_LOGIN}</li>
+							<li>Password: {DEMO_PASS}</li>
 						</ul>
 					</div>
 				</div>

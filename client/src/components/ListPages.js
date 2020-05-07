@@ -4,8 +4,10 @@ import { SearchPanel, ItemPage, Arrow, HelloPage } from '../components';
 const ListPages = (props) => {
 	const {
 		auth,
+		login,
 		pages,
 		deletePage,
+		getTextModal,
 		getEditablePage,
 		getNormalizeClass,
 		search,
@@ -24,9 +26,10 @@ const ListPages = (props) => {
 			/>
 			{auth === true ? (
 				<ItemPage
-					auth={auth}
+					login={login}
 					pages={pages}
 					deletePage={deletePage}
+					getTextModal={getTextModal}
 					getEditablePage={getEditablePage}
 					getNormalizeClass={getNormalizeClass}
 				/>
