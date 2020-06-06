@@ -1,75 +1,74 @@
-.navbar{
+.navbar {
 	height: 45px;
 }
 
-#formHeader{
-  margin-top: -4px;
+#formHeader {
+	margin-top: -4px;
 }
 
-#formHeader .col{
-  height: 20px;
-  padding: 0 2px;
+#formHeader .col {
+	height: 20px;
+	padding: 0 2px;
 }
 
-#formHeader .form-control-sm{
-  height: calc(1.5em + 0.5rem + -5px);
-  padding: 0.25rem 0.5rem;
-  width: 150px;
+#formHeader .form-control-sm {
+	height: calc(1.5em + 0.5rem + -5px);
+	padding: 0.25rem 0.5rem;
+	width: 150px;
 }
 
-#formHeader .btn-sm{
-  height: 22px;
-  padding: 0 5px;
+#formHeader .btn-sm {
+	height: 22px;
+	padding: 0 5px;
 }
 
-.nav-item span{
+.nav-item span {
 	cursor: pointer;
 }
 
-.nav-item{
-	color: rgba(255,255,255,0.75);
+.nav-item {
+	color: rgba(255, 255, 255, 0.75);
 }
 
-.nav-item:hover{
+.nav-item:hover {
 	color: #fff;
 }
 
-.nav-item a:hover{
+.nav-item a:hover {
 	text-decoration: none;
 }
 
 @media (max-width: 767.98px) {
+	.auth-false .nav-link-name {
+		display: none;
+	}
 
-  .auth-false .nav-link-name{
-    display: none;    
-  }
+	.auth-false i {
+		font-size: 20px;
+	}
 
-  .auth-false i{
-    font-size: 20px;    
-  }
-
-  #formHeader .form-control-sm{
-    width: 130px;
-  }
+	#formHeader .form-control-sm {
+		width: 130px;
+	}
 }
 
-@media (max-width: 400px) {
+@media (max-width: 401px) {
+	.auth-true .nav-link-name {
+		display: none;
+	}
 
-  .auth-false i{
-    font-size: 18px;    
-  }
+	.auth-false i,
+	.auth-true i {
+		font-size: 18px;
+	}
 
-  #formHeader .form-control-sm{
-    width: 100px;
-  }
+	#formHeader .form-control-sm {
+		width: 100px;
+	}
 }
 
 @media (max-width: 335px) {
-
-  .auth-false i{
-    display: none;    
-  }
-
-
+	.auth-false i {
+		display: none;
+	}
 }
-
