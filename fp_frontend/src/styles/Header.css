@@ -1,0 +1,84 @@
+.navbar {
+	height: 45px;
+}
+
+#formHeader {
+	margin-top: -4px;
+	display: flex;
+	width: 350px;
+}
+
+#formHeader .login-input,
+#formHeader .login-input input {
+	height: 25px;
+	padding: 0 8px;
+	width: 150px;
+}
+
+#formHeader .login-btn {
+	height: 20px;
+	padding: 0 2px;
+	width: 50px;
+}
+
+#formHeader .form-control-sm {
+	height: calc(1.5em + 0.5rem + -5px);
+	padding: 0.25rem 0.5rem;
+}
+
+#formHeader .btn-sm {
+	padding: 0 5px;
+}
+
+.nav-item span {
+	cursor: pointer;
+}
+
+.nav-item {
+	color: rgba(255, 255, 255, 0.75);
+}
+
+.nav-item:hover {
+	color: #fff;
+}
+
+.nav-item a:hover {
+	text-decoration: none;
+}
+
+@media (max-width: 767.98px) {
+	.auth-false .nav-link-name {
+		display: none;
+	}
+
+	.auth-false i {
+		font-size: 20px;
+	}
+
+	#formHeader .login-input,
+	#formHeader .login-input input {
+		width: 130px;
+	}
+}
+
+@media (max-width: 401px) {
+	.auth-true .nav-link-name {
+		display: none;
+	}
+
+	.auth-false i,
+	.auth-true i {
+		font-size: 18px;
+	}
+
+	#formHeader .login-input,
+	#formHeader .login-input input {
+		width: 100px;
+	}
+}
+
+@media (max-width: 335px) {
+	.auth-false i {
+		display: none;
+	}
+}

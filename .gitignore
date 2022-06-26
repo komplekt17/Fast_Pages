@@ -1,27 +1,27 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
-/node_modules
-/credentials.json
-/token.json
-/package-lock.json
-client/node_modules/
-client/build/
-client/package-lock.json
-client/public/images/
+# backend
+fp_backend/package-lock.json
+fp_backend/node_modules/
+#frontend
+fp_frontend/package-lock.json
+fp_frontend/node_modules/
+# production
+fp_frontend/build/
+fp_frontend/public/images/
+# testing
+fp_frontend/coverage
+# databases
+fastpagesDBcategories.json
+fastpagesDBpages.json
+fastpagesDBusers.json
+#common files
 *.*yaml
 *.*sql
 *.*zip
 *.*jpg
 *.*png
-
-
-# testing
-/coverage
-
-# production
-/build
-
+*.*txt
 # misc
 .DS_Store
 .env.local

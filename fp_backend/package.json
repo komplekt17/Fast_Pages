@@ -1,0 +1,36 @@
+{
+	"name": "fp_server",
+	"version": "2.1.0",
+	"main": "./src/server.js",
+	"license": "MIT",
+	"author": "red-partisan<komplekt_17@mail.ru>",
+	"scripts": {
+		"start": "babel-node ./src/server.js",
+		"server": "nodemon --exec babel-node ./src/server.js",
+		"client": "npm run start --prefix ../fp_frontend",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"body-parser": "^1.19.0",
+		"cors": "^2.8.5",
+		"express": "^4.17.1",
+		"googleapis": "^58.0.0",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.9.26",
+		"node-webshot": "^1.0.4",
+		"nodemailer": "^6.4.11",
+		"open-graph-scraper": "^4.5.1",
+		"validator": "^13.1.1",
+		"yenv": "^2.1.1"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.4.5",
+		"@babel/core": "^7.4.5",
+		"@babel/node": "^7.4.5",
+		"@babel/preset-env": "^7.4.5",
+		"concurrently": "^5.2.0",
+		"nodemon": "^2.0.4"
+	}
+}
