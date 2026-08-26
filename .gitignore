@@ -16,6 +16,7 @@ fastpagesDBcategories.json
 fastpagesDBpages.json
 fastpagesDBusers.json
 #common files
+*.*production
 *.*yaml
 *.*sql
 *.*zip

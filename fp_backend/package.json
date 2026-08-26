@@ -4,13 +4,6 @@
 	"main": "./src/server.js",
 	"license": "MIT",
 	"author": "red-partisan<komplekt_17@mail.ru>",
-	"scripts": {
-		"start": "babel-node ./src/server.js",
-		"server": "nodemon --exec babel-node ./src/server.js",
-		"client": "npm run start --prefix ../fp_frontend",
-		"dev": "concurrently \"npm run server\" \"npm run client\"",
-		"test": "echo \"Error: no test specified\" && exit 1"
-	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
 		"body-parser": "^1.19.0",
@@ -32,5 +25,12 @@
 		"@babel/preset-env": "^7.4.5",
 		"concurrently": "^5.2.0",
 		"nodemon": "^2.0.4"
+	},
+	"scripts": {
+		"start": "babel-node ./src/server.js",
+		"server": "nodemon --exec babel-node ./src/server.js",
+		"client": "npm run start --prefix ../fp_frontend",
+		"dev": "concurrently \"npm run server\" \"npm run client\"",
+		"test": "echo \"Error: no test specified\" && exit 1"
 	}
 }

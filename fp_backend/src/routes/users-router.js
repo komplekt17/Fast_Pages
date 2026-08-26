@@ -23,46 +23,6 @@ usersRouter.get('/', async (req, res) => {
 		});
 });
 
-// этот Router не используется, а используется router '/enter'
-// получение юзера по логину, а затем pages и categories по ID полученного юзера
-usersRouter.post('/login', async (req, res) => {
-	let result = { user: '', pages: '', categories: '' };
-
-	await User.findOne({ login: req.body.login }, async (error, user) => {
-		result.user = user;
-
-		await Page.find({ userId: user._id }, (error, pages) => {
-			result.pages = pages;
-		}).catch((error) => {
-			res.status(400).json({
-				error,
-				message: 'Pages not found!',
-			});
-		});
-		await Categorie.find({ userId: user._id }, (error, categories) => {
-			result.categories = categories;
-		})
-			.catch((error) => {
-				res.status(400).json({
-					error,
-					message: 'Categories not found!',
-				});
-			})
-			.then(() => {
-				//console.log('result string_56', result)
-				return res.status(200).json({
-					success: true,
-					data: result,
-				});
-			});
-	}).catch((error) => {
-		res.status(400).json({
-			error,
-			message: 'User not found!',
-		});
-	});
-});
-
 // используется router '/new'
 // добавление нового юзера
 usersRouter.post('/add', (req, res) => {
@@ -72,11 +32,9 @@ usersRouter.post('/add', (req, res) => {
 	const status = 'user';
 
 	const newUser = new User({ login, pass, status });
-	console.log('string_75', newUser);
 	newUser
 		.save()
 		.then(() => {
-			console.log('string_79', newUser);
 			return res.status(200).json({
 				success: true,
 				data: newUser,
@@ -160,7 +118,6 @@ usersRouter.post('/enter', async (req, res) => {
 		const { error } = user;
 		if (error) {
 			const data = { error };
-			//console.log('string_152', data)
 			res.status(201).send(data);
 		} else {
 			const token = await user.generateAuthToken();
@@ -178,7 +135,6 @@ usersRouter.post('/enter', async (req, res) => {
 // Восстановление пароля пользователя
 usersRouter.post('/reset-pass', async (req, res) => {
 	const { inputLogin } = req.body;
-	//console.log('string_185', inputLogin)
 
 	User.findOne({ login: inputLogin }, async (error, user) => {
 		if (error) {
