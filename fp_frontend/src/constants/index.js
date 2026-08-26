@@ -1,13 +1,5 @@
-// import yenv from 'yenv';
-
-// const env = yenv('env_fp.yaml', { env: 'development' });
-
-// const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
-// const targetUrl = 'http://77.87.213.246:5011';
-
-const SERVER_URI = 'http://77.87.213.246:5011/api';
-// const SERVER_URI = `${process.env.SITE_HOST}`;
-// const SERVER_URI = 'http://localhost:5011';
+const SERVER_URI =
+	process.env.REACT_APP_SERVER_URI || 'http://localhost:5011';
 const ERROR_TEXT = 'no data for render';
 
 const NAME_LOCAL_STORAGE = 'data';
@@ -29,7 +21,8 @@ const LINK_PAGE_PREVIEW =
 const PATTERN_TEXT = /[а-яА-ЯёЁa-zA-Z0-9.]{3,}$/;
 const PATTERN_LINK = /^https?:\/\/[\w/?.@&-=]+$/;
 const PATTERN_EMAIL = /^[-\w.]+@([A-z0-9][-A-z0-9]+\.)+[A-z]{2,4}$/;
-const PATTERN_PASS = /(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
+const PATTERN_PASS =
+	/(?=^.{6,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/;
 
 export {
 	ERROR_TEXT,
